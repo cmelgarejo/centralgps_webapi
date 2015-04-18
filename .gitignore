@@ -1,0 +1,10 @@
+# Mix artifacts
+/_build
+/rel
+/deps
+/*.ez
+/logs
+# Generate on crash by the VM
+erl_crash.dump
+#Mix lock file
+mix.lock
