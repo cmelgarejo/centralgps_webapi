@@ -4,6 +4,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
   import CentralGPS.Repo.Security.Functions
   plug :action
 
+  #TODO: Check definition of the API fn in the DB.
   def login(conn, params) do
     try do
       _k = [ "_login_user", "_password", "app_name", "ip_port", "status",
