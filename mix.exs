@@ -15,8 +15,8 @@ defmodule CentralGPSWebAPI.Mixfile do
 
   defp package do
     [ contributors: ["cmelgarejo"],
-      licenses: ["Pay Licensed Viewable-Source"],
-      links: %{"GitLab" => "https://gitlab.com/CentralGPS/centralgps_webapi"} ]
+      licenses: ["Licensed Closed Source"],
+      links: %{"GitLab" => "https://gitlab.com/CentralGPS/checkpoint_api"} ]
   end
 
   def application do
@@ -30,13 +30,13 @@ defmodule CentralGPSWebAPI.Mixfile do
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [{:reprise,             github: "herenowcoder/reprise", only: :dev},
+    [{:exrm,                github: "bitwalker/exrm"},
+     {:reprise,             github: "herenowcoder/reprise", only: :dev},
      {:logger_file_backend, github: "onkel-dirtus/logger_file_backend"},
-     {:exrm,                github: "bitwalker/exrm"},
-     {:postgrex,            github: "ericmj/postgrex", override: true},
-     {:phoenix,             github: "phoenixframework/phoenix", override: true},
-     {:phoenix_ecto,        github: "phoenixframework/phoenix_ecto", override: true},
-     #{:phoenix_live_reload, github: "phoenixframework/phoenix_live_reload", override: true},
+     {:phoenix,             "~> 0.12"},
+     {:phoenix_ecto,        "~> 0.3"},
+     {:postgrex,            ">= 0.0.0"},
+     {:phoenix_live_reload, "~> 0.3"},
      {:cowboy,              "~> 1.0"}]
   end
 end

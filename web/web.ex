@@ -41,7 +41,7 @@ defmodule CentralGPSWebAPI.Web do
       use Phoenix.View, root: "web/templates"
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2]
+      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
       # Import URL helpers from the router
       import CentralGPSWebAPI.Router.Helpers
@@ -51,6 +51,12 @@ defmodule CentralGPSWebAPI.Web do
     end
   end
 
+  def router do
+    quote do
+      use Phoenix.Router
+    end
+  end
+  
   def channel do
     quote do
       use Phoenix.Channel

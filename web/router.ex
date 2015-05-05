@@ -1,44 +1,37 @@
 defmodule CentralGPSWebAPI.Router do
   use Phoenix.Router
 
-  #pipeline :browser do
-  #  plug :accepts, ["html"]
-  #  plug :fetch_session
-  #  plug :fetch_flash
-  #  plug :protect_from_forgery
-  #end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/api/security", CentralGPSWebAPI.Controllers do
+  scope "/api/security/login", CentralGPSWebAPI.Controllers do
+    pipe_through :api
+    post    "/:my_account_type", Security.Login, :login
+  end
+
+  #A resource of security (an auth_token of a existing account) that has
+  # permissions can do actions on accounts (client and entity, typed C/E)
+  scope "/api/security/:_my_account_type/:_auth_token", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    post "/login", Security.Login, :login
-    #A resource of security (an auth_token of a existing account) that has
-    # permissions can do actions on accounts (client and entity, typed C/E)
-    get     "/:_auth_token/accounts/",      Security.Account, :account_list
-    get     "/:_auth_token/accounts/:__id",
-                                            Security.Account, :account_read
-    post    "/:_auth_token/accounts/create",
-                                            Security.Account, :account_create
-    put     "/:_auth_token/accounts/:__id",
-                                            Security.Account, :account_update
-    put     "/:_auth_token/accounts/:__id",
-                                            Security.Account, :account_activate
-    delete  "/:_auth_token/accounts/:__id",
-                                            Security.Account, :account_delete
+    put     "/accounts/activate/:id", Security.Account, :account_activate
+    post    "/accounts/create",         Security.Account, :account_create
+    get     "/accounts/:id/:_account_type",Security.Account, :account_read
+    put     "/accounts/:id", Security.Account, :account_update
+    delete  "/accounts/:__id", Security.Account, :account_delete
+    get     "/accounts/", Security.Account, :account_list
+
   end
 
   scope "/api/checkpoint/actions/:_auth_token", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    get     "/",       Checkpoint.Action, :action_list
-    get     "/:__id",  Checkpoint.Action, :action_read
     post    "/create", Checkpoint.Action, :action_create
+    get     "/:__id",  Checkpoint.Action, :action_read
     put     "/:__id",  Checkpoint.Action, :action_update
     delete  "/:__id",  Checkpoint.Action, :action_delete
+    get     "/",       Checkpoint.Action, :action_list
   end
 
   scope "/api/checkpoint/reasons/:_auth_token", CentralGPSWebAPI.Controllers do
