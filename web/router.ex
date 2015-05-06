@@ -15,12 +15,15 @@ defmodule CentralGPSWebAPI.Router do
   scope "/api/security/:_my_account_type/:_auth_token", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    put     "/accounts/activate/:id", Security.Account, :account_activate
-    post    "/accounts/create",         Security.Account, :account_create
-    get     "/accounts/:id/:_account_type",Security.Account, :account_read
-    put     "/accounts/:id", Security.Account, :account_update
-    delete  "/accounts/:__id", Security.Account, :account_delete
-    get     "/accounts/", Security.Account, :account_list
+    put     "/accounts/activate/:id",      Security.Account, :account_activate
+    post    "/accounts/create",            Security.Account, :account_create
+    get     "/accounts/:account_type/:account_id",
+                                           Security.Account, :account_read
+    put     "/accounts/:account_type/:account_id",
+                                           Security.Account, :account_update
+    delete  "/accounts/:account_type/:account_id",
+                                           Security.Account, :account_delete
+    get     "/accounts/",                  Security.Account, :account_list
 
   end
 
