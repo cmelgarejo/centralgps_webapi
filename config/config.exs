@@ -5,8 +5,9 @@
 # is restricted to this project.
 use Mix.Config
 
+# TODO: change :central_g_p_s_web_a_p_i to :centralgps_webapi
 # Configures the endpoint
-config :centralgps_webapi, CentralGPSWebAPI.Endpoint,
+config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   url: [host: "localhost"],
   root: Path.expand("..", __DIR__),
   secret_key_base: "aLIFKvszPTOoXoAYQ3RL9qdUfmhEyEesWFMi5OwQd80sME26l3tyrZzb9digCZXj",

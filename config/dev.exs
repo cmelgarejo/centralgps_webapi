@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :centralgps_webapi, CentralGPSWebAPI.Endpoint,
+config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   http: [port: 4001],
   debug_errors: true,
   code_reloader: true,
@@ -14,7 +14,7 @@ config :centralgps_webapi, CentralGPSWebAPI.Endpoint,
   watchers: []
 
 # Watch static and templates for browser reloading.
-config :centralgps_webapi, CentralGPSWebAPI.Endpoint,
+config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
@@ -23,7 +23,7 @@ config :centralgps_webapi, CentralGPSWebAPI.Endpoint,
     ]
   ]
 
-config :centralgps_webapi, CentralGPS.Repo,
+config :central_g_p_s_web_a_p_i, CentralGPS.Repo,
   adapter: Ecto.Adapters.Postgres,
   extensions: [{CentralGPS.Repo.Extensions.Postgrex.JSON, library: Poison}],
   username: "postgres",

@@ -1,9 +1,9 @@
 defmodule CentralGPSWebAPI.Endpoint do
-  use Phoenix.Endpoint, otp_app: :centralgps_webapi
+  use Phoenix.Endpoint, otp_app: :central_g_p_s_web_a_p_i
 
   # Serve at "/" the given assets from "priv/static" directory
   plug Plug.Static,
-    at: "/", from: :centralgps_webapi,
+    at: "/", from: :central_g_p_s_web_a_p_i,
     only: ~w(css images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the

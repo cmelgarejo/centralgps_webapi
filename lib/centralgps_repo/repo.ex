@@ -1,5 +1,5 @@
 defmodule CentralGPS.Repo do
-  use Ecto.Repo, otp_app: :centralgps_webapi
+  use Ecto.Repo, otp_app: :central_g_p_s_web_a_p_i
   import CentralGPS.Repo.Utilities
 
   @doc """
