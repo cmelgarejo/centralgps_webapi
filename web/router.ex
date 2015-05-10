@@ -7,74 +7,72 @@ defmodule CentralGPSWebAPI.Router do
 
   scope "/api/security/login", CentralGPSWebAPI.Controllers do
     pipe_through :api
-    post    "/:my_account_type", Security.Login, :login
+    post    "/:auth_type", Security.Login, :login
   end
 
   #A resource of security (an auth_token of a existing account) that has
   # permissions can do actions on accounts (client and entity, typed C/E)
-  scope "/api/:_my_account_type/:_auth_token/security/", CentralGPSWebAPI.Controllers do
+  scope "/api/security/", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    put     "/accounts/activate/:account_type/:account_id", Security.Account, :account_activate
-    post    "/accounts/create/:account_type",               Security.Account, :account_create
-    get     "/accounts/:account_type/:account_id",          Security.Account, :account_read
-    put     "/accounts/:account_type/:account_id",          Security.Account, :account_update
-    delete  "/accounts/:account_type/:account_id",          Security.Account, :account_delete
-    get     "/accounts",                                    Security.Account, :account_list
+    put     "/accounts/activate/:account_type/:account_id", Security.Account, :activate
+    post    "/accounts/create/:account_type",               Security.Account, :create
+    get     "/accounts/:account_type/:account_id",          Security.Account, :read
+    put     "/accounts/:account_type/:account_id",          Security.Account, :update
+    delete  "/accounts/:account_type/:account_id",          Security.Account, :delete
+    get     "/accounts",                                    Security.Account, :list
 
-    post    "/accounts/:account_type/:account_id/roles/create/:role_id",  Security.Account, :account_role_create
-    delete  "/accounts/:account_type/:account_id/roles/:role_id",         Security.Account, :account_role_delete
-    get     "/accounts/:account_type/:account_id/roles",                  Security.Account, :account_role_list
+    post    "/accounts/:account_type/:account_id/roles/create/:role_id",  Security.Account.Role, :create
+    delete  "/accounts/:account_type/:account_id/roles/:role_id",         Security.Account.Role, :delete
 
-    post    "/accounts/:account_type/:account_id/permissions/create/:permission_id",  Security.Account, :account_permission_create
-    delete  "/accounts/:account_type/:account_id/permissions/:permission_id",         Security.Account, :account_permission_delete
-    get     "/accounts/:account_type/:account_id/permissions",                        Security.Account, :account_permission_list
+    post    "/accounts/:account_type/:account_id/permissions/create/:permission_id",  Security.Account.Permission, :create
+    delete  "/accounts/:account_type/:account_id/permissions/:permission_id",         Security.Account.Permission, :delete
   end
 
-  scope "/api/:_my_account_type/:_auth_token/checkpoint/actions", CentralGPSWebAPI.Controllers do
+  scope "/api/checkpoint/actions", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    post    "/create",      Checkpoint.Action, :action_create
-    get     "/:action_id",  Checkpoint.Action, :action_read
-    put     "/:action_id",  Checkpoint.Action, :action_update
-    delete  "/:action_id",  Checkpoint.Action, :action_delete
-    get     "/",            Checkpoint.Action, :action_list
+    post    "/create",      Checkpoint.Action, :create
+    get     "/:action_id",  Checkpoint.Action, :read
+    put     "/:action_id",  Checkpoint.Action, :update
+    delete  "/:action_id",  Checkpoint.Action, :delete
+    get     "/",            Checkpoint.Action, :list
   end
 
-  scope "/api/:_my_account_type/:_auth_token/checkpoint/reasons", CentralGPSWebAPI.Controllers do
+  scope "/api/checkpoint/reasons", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    post    "/create",      Checkpoint.Reason, :reason_create
-    get     "/:reason_id",  Checkpoint.Reason, :reason_read
-    put     "/:reason_id",  Checkpoint.Reason, :reason_update
-    delete  "/:reason_id",  Checkpoint.Reason, :reason_delete
-    get     "/",            Checkpoint.Reason, :reason_list
+    post    "/create",      Checkpoint.Reason, :create
+    get     "/:reason_id",  Checkpoint.Reason, :read
+    put     "/:reason_id",  Checkpoint.Reason, :update
+    delete  "/:reason_id",  Checkpoint.Reason, :delete
+    get     "/",            Checkpoint.Reason, :list
   end
 
-  scope "/api/:_my_account_type/:_auth_token/checkpoint/venues", CentralGPSWebAPI.Controllers do
+  scope "/api/checkpoint/venues", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    post    "/create",     Checkpoint.Venue, :venue_create
-    get     "/:venue_id",  Checkpoint.Venue, :venue_read
-    put     "/:venue_id",  Checkpoint.Venue, :venue_update
-    delete  "/:venue_id",  Checkpoint.Venue, :venue_delete
-    get     "/",           Checkpoint.Venue, :venue_list
+    post    "/create",     Checkpoint.Venue, :create
+    get     "/:venue_id",  Checkpoint.Venue, :read
+    put     "/:venue_id",  Checkpoint.Venue, :update
+    delete  "/:venue_id",  Checkpoint.Venue, :delete
+    get     "/",           Checkpoint.Venue, :list
   end
 
-  scope "/api/:_my_account_type/:_auth_token/checkpoint/venue_types", CentralGPSWebAPI.Controllers do
+  scope "/api/checkpoint/venue_types", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    post    "/create",          Checkpoint.VenueType, :venue_type_create
-    get     "/:venue_type_id",  Checkpoint.VenueType, :venue_type_read
-    put     "/:venue_type_id",  Checkpoint.VenueType, :venue_type_update
-    delete  "/:venue_type_id",  Checkpoint.VenueType, :venue_type_delete
-    get     "/",                Checkpoint.VenueType, :venue_type_list
+    post    "/create",          Checkpoint.VenueType, :create
+    get     "/:venue_type_id",  Checkpoint.VenueType, :read
+    put     "/:venue_type_id",  Checkpoint.VenueType, :update
+    delete  "/:venue_type_id",  Checkpoint.VenueType, :delete
+    get     "/",                Checkpoint.VenueType, :list
   end
 
-  scope "/api/:_my_account_type/:_auth_token/monitor", CentralGPSWebAPI.Controllers do
+  scope "/api/monitor", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    get "/assets", Client.Asset, :asset_list
+    get "/assets", Client.Asset, :list
 
   end
 end

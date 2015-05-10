@@ -1,80 +1,103 @@
-defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
+defmodule CentralGPSWebAPI.Controllers.Security.Account do
   use CentralGPSWebAPI.Web, :controller
-  import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Security.Functions
+  import CentralGPS.Repo.Utilities
   plug :action
+
+  def activate(conn, params) do
+    try do
+      _k = [ :account_id, :account_type, :set_active ]
+      {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
+      {row_count, result} = params
+        |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
+        |> Map.values
+        |> fn_api_account_active
+        json (conn |> put_status 200), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{ok: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{ok: false, msg: e.message}
+    end
+  end
 
   def create(conn, params) do
     try do
-      _k = [ "_auth_token", "_my_account_type", "account_type", "client_id", "user__login_name", "user__login_password", "user_dob", "user_identity_document", "user_info_emails", "user_info_phones", "user_language_template_id", "user_name", "user_profile_image", "user_timezone", "user_xtra_info" ]
-      _h = objectify_map Enum.into(conn.req_headers, %{})
-      _ip_h = :"x-forwarded-for"
-      _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
-      _app_h = :"x-app-name"
-      _app = if Map.has_key?(_h,_app_h), do: to_string(_h[_app_h]), else: nil
-      {row_count, result} = objectify_map(params, _k)
+      _k = [ :account_type, :client_id, :user__login_name, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
+      {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
+      {row_count, result} = params
         |> (Map.update  :user_dob, nil,
           &(if (elem Ecto.Date.cast(&1), 0) == :ok,
             do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
             else: nil))
-        |> (Map.put :_the_app_name, _app)
-        |> (Map.put :_the_ip_port, _ip)
-        |> (Map.put :_xtra_info, nil)
         |> Map.values
         |> fn_api_account_create
-        result = hd(result) # the first result, if any.
-        {response_code, result} = (if result.success, do: {201, result},
-                          else: {200, result |> Map.take [:success, :message]})
+        {response_code, result} = (if result.ok, do: {201, result},
+                                   else: {200, result |> Map.take [:ok, :msg]})
         json (conn |> put_status response_code), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{success: false, message: e.message}
-      e in Exception -> json (conn |> put_status 500), %{success: false, message: e.message}
+      e in ArgumentError -> json (conn |> put_status 400), %{ok: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{ok: false, msg: e.message}
+    end
+  end
+
+  def read(conn, params) do
+    try do
+      _k = [ :_auth_token, :_auth_type, :account_id, :account_type ]
+      {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
+      {row_count, result} = params
+        |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
+        |> Map.values
+        |> fn_api_account_read
+        json (conn |> put_status 200), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{ok: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{ok: false, msg: e.message}
+    end
+  end
+
+  def update(conn, params) do
+    try do
+      _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
+      {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
+      {row_count, result} = params
+        |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
+        |> (Map.update  :user_dob, nil,
+          &(if (elem Ecto.Date.cast(&1), 0) == :ok,
+            do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
+            else: nil))
+        |> Map.values
+        |> fn_api_account_update
+        json (conn |> put_status 200), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{ok: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{ok: false, msg: e.message}
     end
   end
 
   def delete(conn, params) do
     try do
-      _k = [ "_auth_token", "_my_account_type", "account_id", "account_type" ]
-      _h = objectify_map Enum.into(conn.req_headers, %{})
-      _ip_h = :"x-forwarded-for"
-      _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
-      _app_h = :"x-app-name"
-      _app = if Map.has_key?(_h,_app_h), do: to_string(_h[_app_h]), else: nil
-      {row_count, result} = objectify_map(params, _k)
+      _k = [ :_auth_token, :_auth_type, :account_id, :account_type ]
+      {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
+      {row_count, result} = params
         |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
-        |> (Map.put :_the_app_name, _app)
-        |> (Map.put :_the_ip_port, _ip)
-        |> (Map.put :_xtra_info, nil)
         |> Map.values
         |> fn_api_account_delete
-        result = hd(result) # the first result, if any.
         json (conn |> put_status 200), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{success: false, message: e.message}
-      e in Exception -> json (conn |> put_status 500), %{success: false, message: e.message}
+      e in ArgumentError -> json (conn |> put_status 400), %{ok: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{ok: false, msg: e.message}
     end
   end
 
   def list(conn, params) do
     try do
-      _k = [ "_auth_token", "_my_account_type" ]
-      _h = objectify_map Enum.into(conn.req_headers, %{})
-      _ip_h = :"x-forwarded-for"
-      _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
-      _app_h = :"x-app-name"
-      _app = if Map.has_key?(_h,_app_h), do: to_string(_h[_app_h]), else: nil
-      {row_count, result} = objectify_map(params, _k)
-        |> (Map.put :_the_app_name, _app)
-        |> (Map.put :_the_ip_port, _ip)
+      {headers, params} = proc_headers_and_params(conn.req_headers, params)
+      {row_count, result} = params
         |> Map.values
-        |> Enum.concat([nil]) #|> Enum.concat(Map.to_list(_h)) #add xtra_info
         |> fn_api_account_list
-        #result = hd(result) # the first result, if any.
         json (conn |> put_status 200), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{success: false, message: e.message}
-      e in Exception -> json (conn |> put_status 500), %{success: false, message: e.message}
+      e in ArgumentError -> json (conn |> put_status 400), %{ok: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{ok: false, msg: e.message}
     end
   end
-
 end

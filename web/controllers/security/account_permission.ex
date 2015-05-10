@@ -1,4 +1,4 @@
-defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
+defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Security.Functions
@@ -6,13 +6,12 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
 
   def create(conn, params) do
     try do
-      _k = [ :account_id, :account_type, :role_id ]
+      _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
       {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
         |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
-        |> (Map.update! :role_id,    fn(v)->(Integer.parse(v) |> elem 0) end)
         |> Map.values
-        |> fn_api_account_role_create
+        |> fn_api_account_permission_create
         {response_code, result} = (if result.ok, do: {201, result},
                                 else: {200, result |> Map.take [:ok, :message]})
         json (conn |> put_status response_code), result
@@ -24,13 +23,12 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
 
   def delete(conn, params) do
     try do
-      _k = [ :account_id, :account_type, :role_id ]
+    _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
       {headers, params} = proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {row_count, result} = objectify_map(params, _k)
         |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
-        |> (Map.update! :role_id,    fn(v)->(Integer.parse(v) |> elem 0) end)
         |> Map.values
-        |> fn_api_account_role_delete
+        |> fn_api_account_permission_delete
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{ok: false, message: e.message}

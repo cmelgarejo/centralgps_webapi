@@ -2,6 +2,42 @@ defmodule CentralGPS.Repo.Utilities do
   alias Enum,   as: E
   alias String, as: S
   alias Tuple,  as: T
+
+  @doc """
+  Processes and returns a tuple with 2 maps:
+  params : All the parameters that have been passed on to the controller as JSON
+    mapped and checked against the filter_keys parameter of this function.
+  headers: First, checks if the "Authorization" header is set, so we can
+    authorize the request and then maps it to be available to as such for the
+    caller
+  """
+  def proc_headers_and_params(headers, params, filter_keys \\ []) do
+    headers = objectify_map Enum.into(headers, %{}) #Create a map of headers
+    if !Map.has_key?(headers, :authorization),
+      do: (raise ArgumentError, message: "missing: :authorization")
+    _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.{40}).type=(?<type>.)/
+    auth = Regex.named_captures(_regex, headers.authorization) |> objectify_map
+    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info ]
+    params = objectify_map(params)
+    params = params
+      |> (Map.put :_the_app_name,
+          (if Map.has_key?(headers,:"x-requested-with"),
+            do: to_string(headers[:"x-requested-with"]),
+            else: (if Map.has_key?(params, :_the_app_name),
+                    do: params._the_app_name, else: nil)))
+      |> (Map.put :_the_ip_port,
+          (if Map.has_key?(headers,:"x-forwarded-for"),
+            do: to_string(headers[:"x-forwarded-for"]),
+            else: (if Map.has_key?(params, :_the_ip_port),
+                    do: params._the_ip_port, else: nil)))
+      |> (Map.put :_xtra_info, (if Map.has_key?(params, :_xtra_info),
+                                do: params._xtra_info, else: nil))
+    params =  objectify_map(params, filter_keys)
+      |> (Map.put :_auth_token, auth.token)
+      |> (Map.put :_auth_type,  auth.type)
+      {headers, params}
+  end
+
   @doc """
   Pretty prints any error you pass on to this func.
 
@@ -34,6 +70,9 @@ defmodule CentralGPS.Repo.Utilities do
   def objectify_map(map, filter_keys \\ []) do
     try do
       if !(E.empty?filter_keys) do
+        filter_keys = E.map(filter_keys, fn (k -> (if !is_atom(k),
+                                                    do: S.to_atom(k),
+                                                    else: k)) end)
         (for k <- filter_keys, !Map.has_key?(map,k), do:
           (raise ArgumentError, message: "missing: #{k}"))
         map = Map.take map, filter_keys
