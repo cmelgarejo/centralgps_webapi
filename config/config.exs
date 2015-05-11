@@ -21,7 +21,7 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   config :logger, utc_log: true
 
   config :logger, :console,
-    format: "$time [$level] $metadata - $message\n",
+    format: "$date $time [$level] $metadata - $message\n",
     metadata: [:request_id]
 
   config :logger, :debug_log,
@@ -42,11 +42,11 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
 
   config :logger,
       backends: [:console,
-                 {LoggerFileBackend, :debug_log},
-                 {LoggerFileBackend, :info_log},
-                 {LoggerFileBackend, :warn_log},
-                 {LoggerFileBackend, :error_log}]
-
+      {LoggerFileBackend, :error_log},
+      {LoggerFileBackend, :warn_log},
+      {LoggerFileBackend, :info_log},
+      {LoggerFileBackend, :debug_log}]
+      
   # Import environment specific config. This must remain at the bottom
   # of this file so it overrides the configuration defined above.
   import_config "#{Mix.env}.exs"

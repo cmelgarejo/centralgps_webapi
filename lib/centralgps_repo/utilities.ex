@@ -11,15 +11,15 @@ defmodule CentralGPS.Repo.Utilities do
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def proc_headers_and_params(headers, params, filter_keys \\ []) do
-    headers = objectify_map Enum.into(headers, %{}) #Create a map of headers
+  def auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
+    headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, message: "missing: :authorization")
+      do: (raise ArgumentError, msg: "missing: :authorization")
     _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
     auth = Regex.named_captures(_regex, headers.authorization)
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
     auth = objectify_map(auth)
-    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info ]
+    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info, :offset, :limit ]
     params = objectify_map(params)
     params = params
       |> (Map.put :_the_app_name,
@@ -34,10 +34,16 @@ defmodule CentralGPS.Repo.Utilities do
                     do: params._the_ip_port, else: nil)))
       |> (Map.put :_xtra_info, (if Map.has_key?(params, :_xtra_info),
                                 do: params._xtra_info, else: nil))
+      |> (Map.update! :offset, fn(v)->(Integer.parse(v) |> elem 0) end)
+      |> (Map.update! :limit, fn(v)->(Integer.parse(v) |> elem 0) end)
     params =  objectify_map(params, filter_keys)
       |> (Map.put :_auth_token, auth.token)
       |> (Map.put :_auth_type,  auth.type)
-      {headers, params}
+    {offset, limit} = {0, 100}
+    if (Map.has_key? params, :offset), do: {offset, params} = Map.pop(params, :offset, 0)
+    if (Map.has_key? params, :limit),  do: {limit, params} = Map.pop(params, :limit, 100)
+    params = Map.put(params, :zzz_offset, offset) |> Map.put(:zzzz_limit, limit)
+    {headers, params}
   end
 
   @doc """
@@ -49,10 +55,10 @@ defmodule CentralGPS.Repo.Utilities do
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def checkpoint_proc_headers_and_params(headers, params, filter_keys \\ []) do
-    headers = objectify_map Enum.into(headers, %{}) #Create a map of headers
+  def checkpoint_auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
+    headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, message: "missing: :authorization")
+      do: (raise ArgumentError, msg: "missing: :authorization")
     _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
     auth = Regex.named_captures(_regex, headers.authorization)
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
@@ -61,6 +67,14 @@ defmodule CentralGPS.Repo.Utilities do
       |> objectify_map(filter_keys) # 2nd call to have atomized keys this round
       |> (Map.put :_auth_token, auth.token)
       |> (Map.drop [ :format ])
+    if (Map.has_key? params,(:offset)) do
+      {offset, params} = Map.pop(params, :offset, 0)
+      Map.put params, :zzz_offset, offset
+    end
+    if (Map.has_key? params,(:limit)) do
+      {limit, params} = Map.pop(params, :limit, 100)
+      Map.put params, :zzzz_limit, limit
+    end
     {headers, params}
   end
 
@@ -98,16 +112,16 @@ defmodule CentralGPS.Repo.Utilities do
       if !(E.empty?filter_keys) do
         filter_keys = E.map(filter_keys, fn (k -> (if !is_atom(k),
                                                     do: S.to_atom(k),
-                                                    else: k)) end)
+                                                  else: k)) end)
         (for k <- filter_keys, !Map.has_key?(map,k), do:
-          (raise ArgumentError, message: "missing: #{k}"))
+          (raise ArgumentError, msg: "missing: #{k}"))
         map = Map.take map, filter_keys
       end
       E.map(map,fn({k,v})->{(if !is_atom(k), do: S.to_atom(k), else: k),v}end)
       |> E.into %{}
     rescue
       e in _ ->
-        error_logger e, __ENV__, %{map: map, filter_keys: filter_keys}
+        error_logger e, __ENV__, %{filter_keys: filter_keys, map: map}
         raise e
     end
   end

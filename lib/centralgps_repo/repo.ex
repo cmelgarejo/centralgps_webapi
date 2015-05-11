@@ -16,14 +16,14 @@ defmodule CentralGPS.Repo do
   returns tuple: {:row_count, :list_of_objects }
   """
   def query(cmd, params, filter \\ []) do
-    #try do
+    try do
       table_to_map Ecto.Adapters.SQL.query(CentralGPS.Repo, cmd, params), filter
-    #rescue
-    #  e in _ ->
-    #    vars = %{cmd: cmd, params: params, filter: filter}
-    #    error_logger e, __ENV__, vars
-    #    raise e
-    #end
+    rescue
+      e in _ ->
+        vars = %{cmd: cmd, params: params, filter: filter}
+        error_logger e, __ENV__, vars
+        raise e
+    end
   end
 
 end
