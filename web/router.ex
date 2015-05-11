@@ -5,14 +5,14 @@ defmodule CentralGPSWebAPI.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api/security/login", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/security/login", CentralGPSWebAPI.Controllers do
     pipe_through :api
     post    "/:auth_type", Security.Login, :login
   end
 
   #A resource of security (an auth_token of a existing account) that has
   # permissions can do actions on accounts (client and entity, typed C/E)
-  scope "/api/security/", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/security/", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     put     "/accounts/activate/:account_type/:account_id", Security.Account, :activate
@@ -29,7 +29,7 @@ defmodule CentralGPSWebAPI.Router do
     delete  "/accounts/:account_type/:account_id/permissions/:permission_id",         Security.Account.Permission, :delete
   end
 
-  scope "/api/checkpoint/actions", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/checkpoint/actions", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",      Checkpoint.Action, :create
@@ -39,7 +39,7 @@ defmodule CentralGPSWebAPI.Router do
     get     "/",            Checkpoint.Action, :list
   end
 
-  scope "/api/checkpoint/reasons", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/checkpoint/reasons", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",      Checkpoint.Reason, :create
@@ -49,7 +49,7 @@ defmodule CentralGPSWebAPI.Router do
     get     "/",            Checkpoint.Reason, :list
   end
 
-  scope "/api/checkpoint/venues", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/checkpoint/venues", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",     Checkpoint.Venue, :create
@@ -59,7 +59,7 @@ defmodule CentralGPSWebAPI.Router do
     get     "/",           Checkpoint.Venue, :list
   end
 
-  scope "/api/checkpoint/venue_types", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/checkpoint/venue_types", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",          Checkpoint.VenueType, :create
@@ -69,7 +69,7 @@ defmodule CentralGPSWebAPI.Router do
     get     "/",                Checkpoint.VenueType, :list
   end
 
-  scope "/api/monitor", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     get "/assets", Client.Asset, :list
