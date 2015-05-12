@@ -1,4 +1,4 @@
-defmodule CentralGPS.Repo.Checkpoint.Commands do
+defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
 
   def cmd_fn_chkapi_device_register,
     do: "SELECT * FROM checkpoint.fn_chkapi_device_register ($1, $2, $3, $4, $5, $6::jsonb, $7, $8, $9::jsonb);"

@@ -13,9 +13,9 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
               else: (if !is_boolean(params.session_status), do: Map.put(params, :session_status, false), else: params))
               |> objectify_map(_k)
       {row_count, result} = params
-        |> (Map.update! :_login_user,    fn(v)->(base64_decode v) end)
-        |> (Map.update! :_password,      fn(v)->(base64_decode v) end)
-        |> (Map.update! :session_status, fn(v)->(if !is_boolean(v), do: false, else: v) end) #casting session_status to atom will ensure boolean conversion in pgsql
+        |> (Map.update :_login_user,    nil, fn(v)->(base64_decode v) end)
+        |> (Map.update :_password,      nil, fn(v)->(base64_decode v) end)
+        |> (Map.update :session_status, false, fn(v)->(if !is_boolean(v), do: false, else: v) end) #casting session_status to atom will ensure boolean conversion in pgsql
         |> (Map.put :the_app_name,
             (if Map.has_key?(headers,:"x-requested-with"),
               do: to_string(headers[:"x-requested-with"]),

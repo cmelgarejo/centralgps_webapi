@@ -1,35 +1,17 @@
-defmodule CentralGPSWebAPI.Controllers.Security.Account do
+defmodule CentralGPSWebAPI.Controllers.Checkpoint.Reason do
   use CentralGPSWebAPI.Web, :controller
-  import CentralGPS.Repo.Security.Functions
+  import CentralGPS.Repo.Checkpoint.Reason.Functions
   import CentralGPS.Repo.Utilities
   plug :action
 
-  def activate(conn, params) do
-    try do
-      _k = [ :account_id, :account_type, :set_active ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.values
-        |> fn_api_account_active
-        json (conn |> put_status 200), result
-    rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
-    end
-  end
-
   def create(conn, params) do
     try do
-      _k = [ :account_type, :client_id, :user__login_name, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
+      _k = [ :configuration_id, :description ]
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
-        |> (Map.update  :user_dob, nil,
-          &(if (elem Ecto.Date.cast(&1), 0) == :status,
-            do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
-            else: nil))
+        |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
-        |> fn_api_account_create
+        |> fn_api_reason_create
         {response_code, result} = (if result.status, do: {201, result},
                                    else: {200, result |> Map.take [:status, :msg]})
         json (conn |> put_status response_code), result
@@ -41,12 +23,12 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
 
   def read(conn, params) do
     try do
-      _k = [ :account_id, :account_type ]
+      _k = [ :reason_id ]
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> (Map.update :reason_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
-        |> fn_api_account_read
+        |> fn_api_reason_read
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -56,16 +38,12 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
 
   def update(conn, params) do
     try do
-      _k = [ :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
+      _k = [ :reason_id, :description ]
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update  :user_dob, nil,
-          &(if (elem Ecto.Date.cast(&1), 0) == :status,
-            do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
-            else: nil))
+        |> (Map.update :reason_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
-        |> fn_api_account_update
+        |> fn_api_reason_update
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -75,12 +53,12 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
 
   def delete(conn, params) do
     try do
-      _k = [ :account_id, :account_type ]
+      _k = [ :reason_id ]
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> (Map.update :reason_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
-        |> fn_api_account_delete
+        |> fn_api_reason_delete
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -93,7 +71,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params)
       {row_count, result} = params
         |> Map.values
-        |> fn_api_account_list
+        |> fn_api_reason_list
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}

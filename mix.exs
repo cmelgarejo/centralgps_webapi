@@ -3,7 +3,7 @@ defmodule CentralGPSWebAPI.Mixfile do
 
   def project do
     [app: :central_g_p_s_web_a_p_i,
-     version: "1.0.0",
+     version: "1.0.1",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
@@ -33,8 +33,10 @@ defmodule CentralGPSWebAPI.Mixfile do
     [{:exrm,                github: "bitwalker/exrm"},
      {:reprise,             github: "herenowcoder/reprise", only: :dev},
      {:logger_file_backend, github: "onkel-dirtus/logger_file_backend"},
-     {:phoenix,             "~> 0.12"},
-     {:phoenix_ecto,        "~> 0.3"},
+     {:phoenix,             "~> 0.13"},
+     {:phoenix_live_reload, "~> 0.4"},
+     {:phoenix_ecto,        "~> 0.4"},
+     {:phoenix_html,        "~> 1.0"},
      {:postgrex,            ">= 0.0.0"},
      {:phoenix_live_reload, "~> 0.3"},
      {:cowboy,              "~> 1.0"}]

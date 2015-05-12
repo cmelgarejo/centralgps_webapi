@@ -1,6 +1,6 @@
-defmodule CentralGPS.Repo.Checkpoint.Functions do
+defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
   import CentralGPS.Repo
-  import CentralGPS.Repo.Checkpoint.Commands
+  import CentralGPS.Repo.Checkpoint.Device.Commands
   require Logger
 
   def fn_chkapi_device_register(params, filter_keys \\ []) do

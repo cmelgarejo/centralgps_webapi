@@ -1,34 +1,33 @@
-     login_path  POST    /api/security/login/:my_account_type                                                                               CentralGPSWebAPI.Controllers.Security.Login.login/2
-   account_path  GET     /api/security/accounts                                                                                             CentralGPSWebAPI.Controllers.Security.Account.list/2
-   account_path  PUT     /api/:_auth_type/:_auth_token/security/accounts/activate/:account_type/:account_id                           CentralGPSWebAPI.Controllers.Security.Account.activate/2
-   account_path  POST    /api/:_auth_type/:_auth_token/security/accounts/create/:account_type                                         CentralGPSWebAPI.Controllers.Security.Account.create/2
-   account_path  GET     /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id                                    CentralGPSWebAPI.Controllers.Security.Account.read/2
-   account_path  PUT     /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id                                    CentralGPSWebAPI.Controllers.Security.Account.update/2
-   account_path  DELETE  /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id                                    CentralGPSWebAPI.Controllers.Security.Account.delete/2
-   account_path  GET     /api/:_auth_type/:_auth_token/security/accounts                                                              CentralGPSWebAPI.Controllers.Security.Account.list/2
-      role_path  POST    /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id/roles/create/:role_id              CentralGPSWebAPI.Controllers.Security.Account.Role.create/2
-      role_path  DELETE  /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id/roles/:role_id                     CentralGPSWebAPI.Controllers.Security.Account.Role.delete/2
-permission_path  POST    /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id/permissions/create/:permission_id  CentralGPSWebAPI.Controllers.Security.Account.Permission.create/2
-permission_path  DELETE  /api/:_auth_type/:_auth_token/security/accounts/:account_type/:account_id/permissions/:permission_id         CentralGPSWebAPI.Controllers.Security.Account.Permission.delete/2
-    action_path  POST    /api/:_auth_type/:_auth_token/checkpoint/actions/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Action.create/2
-    action_path  GET     /api/:_auth_type/:_auth_token/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.read/2
-    action_path  PUT     /api/:_auth_type/:_auth_token/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.update/2
-    action_path  DELETE  /api/:_auth_type/:_auth_token/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.delete/2
-    action_path  GET     /api/:_auth_type/:_auth_token/checkpoint/actions                                                             CentralGPSWebAPI.Controllers.Checkpoint.Action.list/2
-    reason_path  POST    /api/:_auth_type/:_auth_token/checkpoint/reasons/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Reason.create/2
-    reason_path  GET     /api/:_auth_type/:_auth_token/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.read/2
-    reason_path  PUT     /api/:_auth_type/:_auth_token/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.update/2
-    reason_path  DELETE  /api/:_auth_type/:_auth_token/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.delete/2
-    reason_path  GET     /api/:_auth_type/:_auth_token/checkpoint/reasons                                                             CentralGPSWebAPI.Controllers.Checkpoint.Reason.list/2
-     venue_path  POST    /api/:_auth_type/:_auth_token/checkpoint/venues/create                                                       CentralGPSWebAPI.Controllers.Checkpoint.Venue.create/2
-     venue_path  GET     /api/:_auth_type/:_auth_token/checkpoint/venues/:venue_id                                                    CentralGPSWebAPI.Controllers.Checkpoint.Venue.read/2
-     venue_path  PUT     /api/:_auth_type/:_auth_token/checkpoint/venues/:venue_id                                                    CentralGPSWebAPI.Controllers.Checkpoint.Venue.update/2
-     venue_path  DELETE  /api/:_auth_type/:_auth_token/checkpoint/venues/:venue_id                                                    CentralGPSWebAPI.Controllers.Checkpoint.Venue.delete/2
-     venue_path  GET     /api/:_auth_type/:_auth_token/checkpoint/venues                                                              CentralGPSWebAPI.Controllers.Checkpoint.Venue.list/2
-venue_type_path  POST    /api/:_auth_type/:_auth_token/checkpoint/venue_types/create                                                  CentralGPSWebAPI.Controllers.Checkpoint.VenueType.create/2
-venue_type_path  GET     /api/:_auth_type/:_auth_token/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.read/2
-venue_type_path  PUT     /api/:_auth_type/:_auth_token/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.update/2
-venue_type_path  DELETE  /api/:_auth_type/:_auth_token/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.delete/2
-venue_type_path  GET     /api/:_auth_type/:_auth_token/checkpoint/venue_types                                                         CentralGPSWebAPI.Controllers.Checkpoint.VenueType.list/2
-     asset_path  GET     /api/:_auth_type/:_auth_token/monitor/assets                                                                 CentralGPSWebAPI.Controllers.Client.Asset.list/2
+     login_path  POST    /api/v1/security/login/:auth_type                                                      CentralGPSWebAPI.Controllers.Security.Login.login/2
+   account_path  PUT     /api/v1/security/accounts/activate/:account_type/:account_id                           CentralGPSWebAPI.Controllers.Security.Account.activate/2
+   account_path  POST    /api/v1/security/accounts/create/:account_type                                         CentralGPSWebAPI.Controllers.Security.Account.create/2
+   account_path  GET     /api/v1/security/accounts/:account_type/:account_id                                    CentralGPSWebAPI.Controllers.Security.Account.read/2
+   account_path  PUT     /api/v1/security/accounts/:account_type/:account_id                                    CentralGPSWebAPI.Controllers.Security.Account.update/2
+   account_path  DELETE  /api/v1/security/accounts/:account_type/:account_id                                    CentralGPSWebAPI.Controllers.Security.Account.delete/2
+   account_path  GET     /api/v1/security/accounts                                                              CentralGPSWebAPI.Controllers.Security.Account.list/2
+      role_path  POST    /api/v1/security/accounts/:account_type/:account_id/roles/create/:role_id              CentralGPSWebAPI.Controllers.Security.Account.Role.create/2
+      role_path  DELETE  /api/v1/security/accounts/:account_type/:account_id/roles/:role_id                     CentralGPSWebAPI.Controllers.Security.Account.Role.delete/2
+permission_path  POST    /api/v1/security/accounts/:account_type/:account_id/permissions/create/:permission_id  CentralGPSWebAPI.Controllers.Security.Account.Permission.create/2
+permission_path  DELETE  /api/v1/security/accounts/:account_type/:account_id/permissions/:permission_id         CentralGPSWebAPI.Controllers.Security.Account.Permission.delete/2
+    action_path  POST    /api/v1/checkpoint/actions/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Action.create/2
+    action_path  GET     /api/v1/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.read/2
+    action_path  PUT     /api/v1/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.update/2
+    action_path  DELETE  /api/v1/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.delete/2
+    action_path  GET     /api/v1/checkpoint/actions                                                             CentralGPSWebAPI.Controllers.Checkpoint.Action.list/2
+    reason_path  POST    /api/v1/checkpoint/reasons/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Reason.create/2
+    reason_path  GET     /api/v1/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.read/2
+    reason_path  PUT     /api/v1/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.update/2
+    reason_path  DELETE  /api/v1/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.delete/2
+    reason_path  GET     /api/v1/checkpoint/reasons                                                             CentralGPSWebAPI.Controllers.Checkpoint.Reason.list/2
+     venue_path  POST    /api/v1/checkpoint/venues/create                                                       CentralGPSWebAPI.Controllers.Checkpoint.Venue.create/2
+     venue_path  GET     /api/v1/checkpoint/venues/:venue_id                                                    CentralGPSWebAPI.Controllers.Checkpoint.Venue.read/2
+     venue_path  PUT     /api/v1/checkpoint/venues/:venue_id                                                    CentralGPSWebAPI.Controllers.Checkpoint.Venue.update/2
+     venue_path  DELETE  /api/v1/checkpoint/venues/:venue_id                                                    CentralGPSWebAPI.Controllers.Checkpoint.Venue.delete/2
+     venue_path  GET     /api/v1/checkpoint/venues                                                              CentralGPSWebAPI.Controllers.Checkpoint.Venue.list/2
+venue_type_path  POST    /api/v1/checkpoint/venue_types/create                                                  CentralGPSWebAPI.Controllers.Checkpoint.VenueType.create/2
+venue_type_path  GET     /api/v1/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.read/2
+venue_type_path  PUT     /api/v1/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.update/2
+venue_type_path  DELETE  /api/v1/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.delete/2
+venue_type_path  GET     /api/v1/checkpoint/venue_types                                                         CentralGPSWebAPI.Controllers.Checkpoint.VenueType.list/2
+     asset_path  GET     /api/v1/monitor/assets                                                                 CentralGPSWebAPI.Controllers.Client.Asset.list/2
 

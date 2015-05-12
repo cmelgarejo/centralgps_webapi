@@ -9,7 +9,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
       _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
-        |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
+        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_permission_create
         {response_code, result} = (if result.status, do: {201, result},
@@ -26,7 +26,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
     _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
       {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = objectify_map(params, _k)
-        |> (Map.update! :account_id, fn(v)->(Integer.parse(v) |> elem 0) end)
+        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_permission_delete
         json (conn |> put_status 200), result

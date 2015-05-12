@@ -19,8 +19,13 @@ defmodule CentralGPS.Repo.Utilities do
     auth = Regex.named_captures(_regex, headers.authorization)
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
     auth = objectify_map(auth)
-    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info, :offset, :limit ]
     params = objectify_map(params)
+    {offset, limit} = {0, 100}
+    if (Map.has_key? params, :offset), do: {offset, params} = Map.pop(params, :offset, 0)
+    if (Map.has_key? params, :limit),  do: {limit, params} = Map.pop(params, :limit, 100)
+    params = Map.put(params, :zzz_offset, offset) |> Map.put(:zzzz_limit, limit)
+    |> (Map.update :zzz_offset, 0,   fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
+    |> (Map.update :zzzz_limit, 100, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
     params = params
       |> (Map.put :_the_app_name,
           (if Map.has_key?(headers,:"x-requested-with"),
@@ -34,15 +39,10 @@ defmodule CentralGPS.Repo.Utilities do
                     do: params._the_ip_port, else: nil)))
       |> (Map.put :_xtra_info, (if Map.has_key?(params, :_xtra_info),
                                 do: params._xtra_info, else: nil))
-      |> (Map.update! :offset, fn(v)->(Integer.parse(v) |> elem 0) end)
-      |> (Map.update! :limit, fn(v)->(Integer.parse(v) |> elem 0) end)
+    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info, :zzz_offset, :zzzz_limit ]
     params =  objectify_map(params, filter_keys)
       |> (Map.put :_auth_token, auth.token)
       |> (Map.put :_auth_type,  auth.type)
-    {offset, limit} = {0, 100}
-    if (Map.has_key? params, :offset), do: {offset, params} = Map.pop(params, :offset, 0)
-    if (Map.has_key? params, :limit),  do: {limit, params} = Map.pop(params, :limit, 100)
-    params = Map.put(params, :zzz_offset, offset) |> Map.put(:zzzz_limit, limit)
     {headers, params}
   end
 
