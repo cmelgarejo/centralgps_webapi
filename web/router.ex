@@ -72,7 +72,7 @@ defmodule CentralGPSWebAPI.Router do
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    get "/assets", Client.Asset, :client_asset_list
+    get "/client",  Client.Asset, :asset_list
 
   end
 end
