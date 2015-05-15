@@ -20,12 +20,11 @@ defmodule CentralGPSWebAPI.Mixfile do
   end
 
   def application do
-    apps = [:phoenix, :cowboy, :logger, :logger_file_backend, :postgrex, :ecto ]
+    apps = [:phoenix, :phoenix_html, :cowboy, :logger, :logger_file_backend, :postgrex, :ecto ]
     dev_apps = Mix.env == :dev && [ :reprise ] || []
     [ mod: {CentralGPSWebAPI, []}, applications: dev_apps ++ apps ]
   end
 
-  # Specifies which paths to compile per environment
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
   defp elixirc_paths(_),     do: ["lib", "web"]
 
@@ -33,12 +32,11 @@ defmodule CentralGPSWebAPI.Mixfile do
     [{:exrm,                github: "bitwalker/exrm"},
      {:reprise,             github: "herenowcoder/reprise", only: :dev},
      {:logger_file_backend, github: "onkel-dirtus/logger_file_backend"},
+     {:cowboy,              "~> 1.0"},
+     {:postgrex,            ">= 0.0.0"},
      {:phoenix,             "~> 0.13"},
-     {:phoenix_live_reload, "~> 0.4"},
      {:phoenix_ecto,        "~> 0.4"},
      {:phoenix_html,        "~> 1.0"},
-     {:postgrex,            ">= 0.0.0"},
-     {:phoenix_live_reload, "~> 0.3"},
-     {:cowboy,              "~> 1.0"}]
+     {:phoenix_live_reload, "~> 0.4", only: :dev}]
   end
 end

@@ -14,7 +14,7 @@ defmodule CentralGPS.Repo.Utilities do
   def auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
     headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, msg: "missing: :authorization")
+      do: (raise ArgumentError, message: "missing: :authorization")
     _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
     auth = Regex.named_captures(_regex, headers.authorization)
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
@@ -58,7 +58,7 @@ defmodule CentralGPS.Repo.Utilities do
   def checkpoint_auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
     headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, msg: "missing: :authorization")
+      do: (raise ArgumentError, message: "missing: :authorization")
     _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
     auth = Regex.named_captures(_regex, headers.authorization)
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
@@ -114,7 +114,7 @@ defmodule CentralGPS.Repo.Utilities do
                                                     do: S.to_atom(k),
                                                   else: k)) end)
         (for k <- filter_keys, !Map.has_key?(map,k), do:
-          (raise ArgumentError, msg: "missing: #{k}"))
+          (raise ArgumentError, message: "missing: #{k}"))
         map = Map.take map, filter_keys
       end
       E.map(map,fn({k,v})->{(if !is_atom(k), do: S.to_atom(k), else: k),v}end)
