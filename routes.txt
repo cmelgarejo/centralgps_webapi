@@ -29,5 +29,5 @@ venue_type_path  GET     /api/v1/checkpoint/venue_types/:venue_type_id          
 venue_type_path  PUT     /api/v1/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.update/2
 venue_type_path  DELETE  /api/v1/checkpoint/venue_types/:venue_type_id                                          CentralGPSWebAPI.Controllers.Checkpoint.VenueType.delete/2
 venue_type_path  GET     /api/v1/checkpoint/venue_types                                                         CentralGPSWebAPI.Controllers.Checkpoint.VenueType.list/2
-     asset_path  GET     /api/v1/monitor/assets                                                                 CentralGPSWebAPI.Controllers.Client.Asset.list/2
+     asset_path  GET     /api/v1/monitor/client                                                                 CentralGPSWebAPI.Controllers.Client.Asset.asset_list/2
 
