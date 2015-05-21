@@ -1,8 +1,8 @@
 defmodule CentralGPS.Repo.Security.Commands do
-  #DB Definition: security.fn_api_login (_login_user text, _password text, _auth_type char _session_status boolean _the_app_name text, _the_ip_port text, _xtra_info jsonb) RETURNS security.record_type_login
+  #DB Definition: security.fn_api_login (_login_user text, _password text, _auth_type char, _session_status boolean, _the_app_name text, _the_ip_port text, _xtra_info jsonb) RETURNS security.record_type_login
   #Input JSON: _k = [ :_login_user, :_password, :auth_type, :session_status ]
   def cmd_fn_api_login,
-    do: "SELECT status, msg, auth_token, language_code, timezone, profile_image, name, xtra_info::jsonb FROM security.fn_api_login ($1, $2, $3, $4::boolean, $5, $6, $7::jsonb);"
+    do: "SELECT status, msg, res FROM security.fn_api_login ($1, $2, $3, $4::boolean, $5, $6, $7::jsonb);"
 
   #DB Definition: security.fn_api_account_active (_auth_token text, _auth_type, _the_app_name text, _the_ip_port text, _xtra_info jsonb account_id bigint account_type text set_active boolean) RETURNS common.return_type_generic
   #Input JSON order: [ "_auth_token", "_auth_type", "_the_app_name", "_the_ip_port", "_xtra_info", "account_id", "account_type", "set_active" ]
