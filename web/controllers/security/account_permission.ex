@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
   import CentralGPS.Repo.Security.Functions
   plug :action
 
-  def create(conn, params) do
+  def create(conn, _params) do
     try do
       _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_permission_create
@@ -21,11 +21,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
     end
   end
 
-  def delete(conn, params) do
+  def delete(conn, _params) do
     try do
     _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = objectify_map(params, _k)
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = objectify_map(_params, _k)
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_permission_delete

@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
   import CentralGPS.Repo.Utilities
   plug :action
 
-  def create(conn, params) do
+  def create(conn, _params) do
     try do
       _k = [ :configuration_id, :description ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_action_create
@@ -21,11 +21,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
     end
   end
 
-  def read(conn, params) do
+  def read(conn, _params) do
     try do
       _k = [ :action_id ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :action_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_action_read
@@ -36,11 +36,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
     end
   end
 
-  def update(conn, params) do
+  def update(conn, _params) do
     try do
       _k = [ :action_id, :description ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :action_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_action_update
@@ -51,11 +51,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
     end
   end
 
-  def delete(conn, params) do
+  def delete(conn, _params) do
     try do
       _k = [ :action_id ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :action_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_action_delete
@@ -66,10 +66,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
     end
   end
 
-  def list(conn, params) do
+  def list(conn, _params) do
     try do
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
+      {row_count, result} = _params
         |> Map.values
         |> fn_api_action_list
         json (conn |> put_status 200), result

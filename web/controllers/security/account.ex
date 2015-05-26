@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   import CentralGPS.Repo.Utilities
   plug :action
 
-  def activate(conn, params) do
+  def activate(conn, _params) do
     try do
       _k = [ :account_id, :account_type, :set_active ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_active
@@ -19,11 +19,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
     end
   end
 
-  def create(conn, params) do
+  def create(conn, _params) do
     try do
       _k = [ :account_type, :client_id, :user__login_name, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update  :user_dob, nil,
           &(if (elem Ecto.Date.cast(&1), 0) == :status,
             do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
@@ -39,11 +39,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
     end
   end
 
-  def read(conn, params) do
+  def read(conn, _params) do
     try do
       _k = [ :account_id, :account_type ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_read
@@ -54,11 +54,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
     end
   end
 
-  def update(conn, params) do
+  def update(conn, _params) do
     try do
       _k = [ :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update  :user_dob, nil,
           &(if (elem Ecto.Date.cast(&1), 0) == :status,
@@ -73,11 +73,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
     end
   end
 
-  def delete(conn, params) do
+  def delete(conn, _params) do
     try do
       _k = [ :account_id, :account_type ]
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params, _k)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_delete
@@ -88,10 +88,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
     end
   end
 
-  def list(conn, params) do
+  def list(conn, _params) do
     try do
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
+      {row_count, result} = _params
         |> Map.values
         |> fn_api_account_list
         json (conn |> put_status 200), result

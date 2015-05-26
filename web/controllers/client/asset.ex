@@ -4,10 +4,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
   import CentralGPS.Repo.Utilities
   plug :action
 
-  def asset_list(conn, params) do
+  def asset_list(conn, _params) do
     try do
-      {headers, params} = auth_proc_headers_and_params(conn.req_headers, params)
-      {row_count, result} = params
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
+      {row_count, result} = _params
         |> Map.values
         |> fn_api_monitor_asset_list
       json (conn |> put_status 200), result
