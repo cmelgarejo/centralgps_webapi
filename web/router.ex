@@ -15,6 +15,8 @@ defmodule CentralGPSWebAPI.Router do
   scope "/api/v1/security/", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
+    post    "/logout", Security.Login, :logout
+
     put     "/accounts/activate/:account_type/:account_id", Security.Account, :activate
     post    "/accounts/create/:account_type",               Security.Account, :create
     get     "/accounts/:account_type/:account_id",          Security.Account, :read
