@@ -71,10 +71,15 @@ defmodule CentralGPSWebAPI.Router do
     get     "/",                Checkpoint.VenueType, :list
   end
 
+  scope "/api/v1/checkpoint/marks", CentralGPSWebAPI.Controllers do
+    pipe_through :api
+
+    get "/", Checkpoint.Mark, :list
+  end
+
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    get "/client",  Client.Asset, :asset_list
-
+    get "/client", Client.Asset, :asset_list
   end
 end
