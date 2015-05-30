@@ -74,7 +74,7 @@ defmodule CentralGPSWebAPI.Router do
   scope "/api/v1/checkpoint/marks", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    get "/:init_at/finish_at", Checkpoint.Mark, :mark_list
+    get "/", Checkpoint.Mark, :mark_list
   end
 
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
