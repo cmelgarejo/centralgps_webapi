@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Router do
   use Phoenix.Router
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug :accepts, ["json", "html"]
   end
 
   scope "/api/v1/security/login", CentralGPSWebAPI.Controllers do
