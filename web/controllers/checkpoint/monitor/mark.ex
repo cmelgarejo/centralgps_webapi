@@ -4,7 +4,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
   import CentralGPS.Repo.Utilities
   plug :action
 
-  def asset_list(conn, _params) do
+  def mark_list(conn, _params) do
     try do
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
       {row_count, result} = _params
