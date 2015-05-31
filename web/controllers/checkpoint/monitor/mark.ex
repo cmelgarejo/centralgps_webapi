@@ -6,9 +6,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
 
   def mark_list(conn, _params) do
     try do
-      _k = [ :init_at, :stop_at ]
+      _k = [ :asset_id, :init_at, :stop_at ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       {row_count, result} = _params
+        |> (Map.update :asset_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :init_at, nil,
           &(if (elem Ecto.DateTime.cast(&1), 0) == :ok,
             do: elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(&1),1)),1),
