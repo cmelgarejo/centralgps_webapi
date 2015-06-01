@@ -36,4 +36,19 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
     end
   end
 
+  def check(conn, _params) do
+    try do
+      _k = [ :_auth_token, :_auth_type, :code ]
+      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {row_count, result} = _params
+        |> Map.values
+        |> fn_api_account_permission_check
+        {response_code, result} = (if result.status, do: {200, result},
+                                else: {200, result |> Map.take [:status, :msg]})
+        json (conn |> put_status response_code), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+    end
+  end
 end
