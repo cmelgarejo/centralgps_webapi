@@ -55,9 +55,9 @@ defmodule CentralGPS.Repo.Security.Commands do
     do: "SELECT * FROM security.fn_api_account_permission_delete($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8);"
 
   #DB Definition: security.fn_api_account_permission_check (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _code) RETURNS common.return_type_generic
-  #Input JSON: [ "_auth_token", "_auth_type", "code" ]
+  #Input JSON: [ "_auth_token", "_auth_type", "feature_code", "permission_code" ]
   def cmd_fn_api_account_permission_check,
-    do: "SELECT * FROM security.fn_api_account_permission_check($1, $2, $3, $4, $5::jsonb, $6);"
+    do: "SELECT * FROM security.fn_api_account_permission_check($1, $2, $3, $4, $5::jsonb, $6, $7);"
 
   #DB Definition: security.fn_api_logout (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info jsonb) RETURNS common.return_type_json_res
   #Input JSON: [ "_auth_token", "_auth_type" ]
