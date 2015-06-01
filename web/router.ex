@@ -26,10 +26,13 @@ defmodule CentralGPSWebAPI.Router do
 
     post    "/accounts/:account_type/:account_id/roles/create/:role_id",  Security.Account.Role, :create
     delete  "/accounts/:account_type/:account_id/roles/:role_id",         Security.Account.Role, :delete
+    get     "/roles/:account_type", Security.Account.Role, :my_roles
 
     post    "/accounts/:account_type/:account_id/permissions/create/:permission_id",  Security.Account.Permission, :create
     delete  "/accounts/:account_type/:account_id/permissions/:permission_id",         Security.Account.Permission, :delete
     get     "/accounts/:account_type/:feature_code/:code", Security.Account.Permission, :check
+    get     "/permissions/:account_type", Security.Account.Permission, :my_permissions
+
   end
 
   scope "/api/v1/checkpoint/actions", CentralGPSWebAPI.Controllers do

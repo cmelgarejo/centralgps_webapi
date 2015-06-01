@@ -67,4 +67,14 @@ defmodule CentralGPS.Repo.Security.Functions do
     {row_count, result} = query(cmd_fn_api_account_permission_check, _params, filter_keys)
     {row_count, hd(result)}
   end
+
+  def fn_api_session_token_account_permission_list(_params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_api_session_token_account_permission_list, _params, filter_keys)
+    {row_count, hd(result)}
+  end
+
+  def fn_api_session_token_account_role_list(_params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_api_session_token_account_role_list, _params, filter_keys)
+    {row_count, hd(result)}
+  end
 end
