@@ -38,7 +38,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
 
   def check(conn, _params) do
     try do
-      _k = [ :_auth_token, :_auth_type, :code ]
+      _k = [ :_auth_token, :_auth_type, :feature_code, :code ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       {row_count, result} = _params
         |> Map.values
