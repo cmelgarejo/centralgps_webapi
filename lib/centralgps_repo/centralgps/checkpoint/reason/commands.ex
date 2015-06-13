@@ -21,6 +21,6 @@ defmodule CentralGPS.Repo.Checkpoint.Reason.Commands do
 
   #DB Definition: checkpoint.fn_api_reason_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit) RETURNS common.return_type_json_list
   def cmd_fn_api_reason_list,
-    do: "SELECT * FROM checkpoint.fn_api_reason_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint);"
+    do: "SELECT * FROM checkpoint.fn_api_reason_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text);"
 
 end
