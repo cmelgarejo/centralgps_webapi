@@ -24,7 +24,7 @@ defmodule CentralGPS.Repo.Utilities do
     if (Map.has_key? _params, :limit),  do: {limit, _params} = Map.pop(_params, :limit, 0)
     if (Map.has_key? _params, :offset), do: {offset, _params} = Map.pop(_params, :offset, 0)
     if (Map.has_key? _params, :search_column),  do: {search_column, _params} = Map.pop(_params, :search_column, nil)
-    if (Map.has_key? _params, :search_phrase),  do: {search_column, _params} = Map.pop(_params, :search_phrase, nil)
+    if (Map.has_key? _params, :search_phrase),  do: {search_phrase, _params} = Map.pop(_params, :search_phrase, nil)
     _params = Map.put(_params, :z_limit, limit) |> Map.put(:z_offset, offset)
       |> (Map.update :z_offset, 0,   fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
       |> (Map.update :z_limit, 0, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
