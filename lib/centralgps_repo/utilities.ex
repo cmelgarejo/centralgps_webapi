@@ -20,14 +20,14 @@ defmodule CentralGPS.Repo.Utilities do
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
     auth = objectify_map(auth)
     _params = objectify_map(_params)
-    {offset, limit, search_column, search_phrase} = {0, 1000, nil, nil}
-    if (Map.has_key? _params, :limit),  do: {limit, _params} = Map.pop(_params, :limit, 1000)
+    {offset, limit, search_column, search_phrase} = {0, 0, nil, nil}
+    if (Map.has_key? _params, :limit),  do: {limit, _params} = Map.pop(_params, :limit, 0)
     if (Map.has_key? _params, :offset), do: {offset, _params} = Map.pop(_params, :offset, 0)
     if (Map.has_key? _params, :search_column),  do: {search_column, _params} = Map.pop(_params, :search_column, nil)
     if (Map.has_key? _params, :search_phrase),  do: {search_column, _params} = Map.pop(_params, :search_phrase, nil)
     _params = Map.put(_params, :z_limit, limit) |> Map.put(:z_offset, offset)
       |> (Map.update :z_offset, 0,   fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
-      |> (Map.update :z_limit, 1000, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
+      |> (Map.update :z_limit, 0, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
       |> Map.put(:z_search_column, search_column) |> Map.put(:z_search_phrase, search_phrase)
     _params = _params
       |> (Map.put :_the_app_name,
