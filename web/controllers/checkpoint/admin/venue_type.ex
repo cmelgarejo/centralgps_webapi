@@ -68,7 +68,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
 
   def list(conn, _params) do
     try do
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
+      {headers, _params} = list_auth_proc_headers_and__params(conn.req_headers, _params)
       {row_count, result} = _params
         |> Map.values
         |> fn_api_venue_type_list

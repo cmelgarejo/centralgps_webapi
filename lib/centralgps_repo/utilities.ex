@@ -4,14 +4,14 @@ defmodule CentralGPS.Repo.Utilities do
   alias Tuple,  as: T
 
   @doc """
-  Processes and returns a tuple with 2 maps:
+  Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
   _params : All the parameters that have been passed on to the controller as JSON
     mapped and checked against the filter_keys parameter of this function.
   headers: First, checks if the "Authorization" header is set, so we can
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def auth_proc_headers_and__params(headers, _params, filter_keys \\ []) do
+  def list_auth_proc_headers_and__params(headers, _params, filter_keys \\ []) do
     headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
       do: (raise ArgumentError, message: "missing: :authorization")
@@ -44,6 +44,43 @@ defmodule CentralGPS.Repo.Utilities do
                                 do: _params._xtra_info, else: nil))
     filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info,
                     :_z_limit, :_z_offset, :_z_search_column, :_z_search_phrase ]
+    _params =  objectify_map(_params, filter_keys)
+      |> (Map.put :_auth_token, auth.token)
+      |> (Map.put :_auth_type,  auth.type)
+    {headers, _params}
+  end
+
+  @doc """
+  Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
+  _params : All the parameters that have been passed on to the controller as JSON
+    mapped and checked against the filter_keys parameter of this function.
+  headers: First, checks if the "Authorization" header is set, so we can
+    authorize the request and then maps it to be available to as such for the
+    caller
+  """
+  def auth_proc_headers_and__params(headers, _params, filter_keys \\ []) do
+    headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
+    if !Map.has_key?(headers, :authorization),
+      do: (raise ArgumentError, message: "missing: :authorization")
+    _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+    auth = Regex.named_captures(_regex, headers.authorization)
+    if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
+    auth = objectify_map(auth)
+    _params = objectify_map(_params)
+    _params = _params
+      |> (Map.put :_the_app_name,
+          (if Map.has_key?(headers,:"x-requested-with"),
+            do: to_string(headers[:"x-requested-with"]),
+            else: (if Map.has_key?(_params, :_the_app_name),
+                    do: _params._the_app_name, else: nil)))
+      |> (Map.put :_the_ip_port,
+          (if Map.has_key?(headers,:"x-forwarded-for"),
+            do: to_string(headers[:"x-forwarded-for"]),
+            else: (if Map.has_key?(_params, :_the_ip_port),
+                    do: _params._the_ip_port, else: nil)))
+      |> (Map.put :_xtra_info, (if Map.has_key?(_params, :_xtra_info),
+                                do: _params._xtra_info, else: nil))
+    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info ]
     _params =  objectify_map(_params, filter_keys)
       |> (Map.put :_auth_token, auth.token)
       |> (Map.put :_auth_type,  auth.type)
