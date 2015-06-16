@@ -64,12 +64,12 @@ defmodule CentralGPS.Repo.Security.Commands do
   def cmd_fn_api_logout,
     do: "SELECT * FROM security.fn_api_logout($1, $2, $3, $4, $5::jsonb);"
 
-  #DB Definition: security.fn_api_session_token_account_permission_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit) RETURNS common.return_type_json_list
+  #DB Definition: security.fn_api_session_token_account_permission_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit, search_column, search_phrase) RETURNS common.return_type_json_list
   #Input JSON: [ "_auth_token", "_auth_type" ]
   def cmd_fn_api_session_token_account_permission_list,
     do: "SELECT * FROM security.fn_api_session_token_account_permission_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text);"
 
-  #DB Definition: security.fn_api_session_token_account_role_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit) RETURNS common.return_type_json_list
+  #DB Definition: security.fn_api_session_token_account_role_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit, search_column, search_phrase) RETURNS common.return_type_json_list
   #Input JSON: [ "_auth_token", "_auth_type" ]
   def cmd_fn_api_session_token_account_role_list,
     do: "SELECT * FROM security.fn_api_session_token_account_role_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text);"

@@ -19,7 +19,7 @@ defmodule CentralGPS.Repo.Checkpoint.VenueType.Commands do
   def cmd_fn_api_venue_type_delete,
     do: "SELECT * FROM checkpoint.fn_api_venue_type_delete($1, $2, $3, $4, $5::jsonb, $6::bigint);"
 
-  #DB Definition: checkpoint.fn_api_venue_type_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit) RETURNS common.return_type_json_list
+  #DB Definition: checkpoint.fn_api_venue_type_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit, search_column, search_phrase) RETURNS common.return_type_json_list
   #Input JSON: [ "_auth_type" ]
   def cmd_fn_api_venue_type_list,
     do: "SELECT * FROM checkpoint.fn_api_venue_type_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text);"
