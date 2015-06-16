@@ -42,6 +42,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       {row_count, result} = _params
         |> (Map.update :action_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_action_update
         json (conn |> put_status 200), result
