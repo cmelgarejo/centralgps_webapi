@@ -148,7 +148,7 @@ defmodule CentralGPS.Repo.Utilities do
   the function will return [ArgumentError]
 
   """
-  def objectify_map(map, filter_keys \\ []) do
+  def objectify_map(map, filter_keys \\ []) when is_map(map) do
     try do
       if !(E.empty?filter_keys) do
         filter_keys = E.map(filter_keys, fn (k -> (if !is_atom(k),
