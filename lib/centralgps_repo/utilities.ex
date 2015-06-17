@@ -20,15 +20,19 @@ defmodule CentralGPS.Repo.Utilities do
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
     auth = objectify_map(auth)
     _params = objectify_map(_params)
-    {offset, limit, search_column, search_phrase} = {0, 0, nil, nil}
-    if (Map.has_key? _params, :limit),  do: {limit, _params} = Map.pop(_params, :limit, 0)
-    if (Map.has_key? _params, :offset), do: {offset, _params} = Map.pop(_params, :offset, 0)
+    { offset, limit, search_column, search_phrase, sort_column, sort_order } =
+      { 0, 0, nil, nil, nil, nil }
+    if (Map.has_key? _params, :limit),  do: {limit, _params} = Map.pop(_params, :limit, nil)
+    if (Map.has_key? _params, :offset), do: {offset, _params} = Map.pop(_params, :offset, nil)
     if (Map.has_key? _params, :search_column),  do: {search_column, _params} = Map.pop(_params, :search_column, nil)
     if (Map.has_key? _params, :search_phrase),  do: {search_phrase, _params} = Map.pop(_params, :search_phrase, nil)
+    if (Map.has_key? _params, :sort_column),  do: {sort_column, _params} = Map.pop(_params, :sort_column, nil)
+    if (Map.has_key? _params, :sort_order),  do: {sort_order, _params} = Map.pop(_params, :sort_order, nil)
     _params = Map.put(_params, :_z_limit, limit) |> Map.put(:_z_offset, offset)
-      |> (Map.update :_z_offset, 0,   fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
-      |> (Map.update :_z_limit, 0, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
+      |> (Map.update :_z_offset, nil,   fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
+      |> (Map.update :_z_limit, nil, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
       |> Map.put(:_z_search_column, search_column) |> Map.put(:_z_search_phrase, search_phrase)
+      |> Map.put(:_z_sort_column, sort_column) |> Map.put(:_z_sort_order, sort_order)
     _params = _params
       |> (Map.put :_the_app_name,
           (if Map.has_key?(headers,:"x-requested-with"),
@@ -43,7 +47,8 @@ defmodule CentralGPS.Repo.Utilities do
       |> (Map.put :_xtra_info, (if Map.has_key?(_params, :_xtra_info),
                                 do: _params._xtra_info, else: nil))
     filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info,
-                    :_z_limit, :_z_offset, :_z_search_column, :_z_search_phrase ]
+                    :_z_limit, :_z_offset, :_z_search_column, :_z_search_phrase,
+                    :_z_sort_column, :_z_sort_order ]
     _params =  objectify_map(_params, filter_keys)
       |> (Map.put :_auth_token, auth.token)
       |> (Map.put :_auth_type,  auth.type)
