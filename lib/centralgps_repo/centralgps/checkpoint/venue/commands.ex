@@ -22,6 +22,6 @@ defmodule CentralGPS.Repo.Checkpoint.Venue.Commands do
   #DB Definition: checkpoint.fn_api_venue_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit, search_column, search_phrase) RETURNS common.return_type_json_list
   #Input JSON: [ :_auth_type ]
   def cmd_fn_api_venue_list,
-    do: "SELECT * FROM checkpoint.fn_api_venue_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::, $9::, $10::, $11::text);"
+    do: "SELECT * FROM checkpoint.fn_api_venue_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10, $11);"
 
 end
