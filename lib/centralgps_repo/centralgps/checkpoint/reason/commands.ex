@@ -9,10 +9,10 @@ defmodule CentralGPS.Repo.Checkpoint.Reason.Commands do
   def cmd_fn_api_reason_read,
     do: "SELECT * FROM checkpoint.fn_api_reason_read($1, $2, $3, $4, $5::jsonb, $6::bigint);"
 
-  #DB Definition: checkpoint.fn_api_reason_create (_auth_token text, _auth_type, _the_app_name, _the_ip_port, _xtra_info, reason_configuration_id, reason_description, reason_id) RETURNS common.return_type_generic
-  #Input JSON: [ :reason_id ]
+  #DB Definition: checkpoint.fn_api_reason_update (_auth_token text, _auth_type, _the_app_name, _the_ip_port, _xtra_info, reason_id, reason_configuration_id, reason_description) RETURNS common.return_type_generic
+  #Input JSON: [ :reason_id, :configuration_id, :description ]
   def cmd_fn_api_reason_update,
-    do: "SELECT * FROM checkpoint.fn_api_reason_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8::bigint);"
+    do: "SELECT * FROM checkpoint.fn_api_reason_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8);"
 
   #DB Definition: checkpoint.fn_api_reason_delete (_auth_token text, _my_auth_type, _the_app_name text, _the_ip_port text, _xtra_info, reason_id) RETURNS common.return_type_generic
   #Input JSON: [ :reason_id, :reason_description ]

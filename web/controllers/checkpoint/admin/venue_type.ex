@@ -6,7 +6,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
 
   def create(conn, _params) do
     try do
-      _k = [ :venue_type_configuration_id, :venue_type_description, :venue_type_image ]
+      _k = [ :configuration_id, :description, :image ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       {row_count, result} = _params
         |> (Map.update :reason_configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
@@ -38,13 +38,13 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
 
   def update(conn, _params) do
     try do
-      _k = [ :venue_type_configuration_id, :venue_type_description, :venue_type_id, :venue_type_image ]
+      _k = [ :venue_type_id, :configuration_id, :description, :image ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
-        |> (Map.update :venue_type_configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+      _params = _params
+        |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :venue_type_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.values
-        |> fn_api_venue_type_update
+      {row_count, result} = fn_api_venue_type_update([_params.venue_type_id, _params.configuration_id,
+        _params.description, _params.image])
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
