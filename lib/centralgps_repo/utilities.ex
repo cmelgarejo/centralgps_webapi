@@ -163,8 +163,7 @@ defmodule CentralGPS.Repo.Utilities do
           (raise ArgumentError, message: "missing: #{k}"))
         map = Map.take map, filter_keys
       end
-      E.map(map,fn({k,v})->{(if !is_atom(k), do: S.to_atom(k), else: k),v}end)
-      |> E.into %{}
+      E.reduce map, %{}, fn({k,v}, m) -> Map.put m, (if !is_atom(k), do: S.to_atom(k), else: k), v end
     rescue
       e in _ ->
         error_logger e, __ENV__, %{filter_keys: filter_keys, map: map}
