@@ -43,7 +43,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
       _params = _params
         |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :venue_type_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-      {row_count, result} = fn_api_venue_type_update([_params.venue_type_id, _params.configuration_id,
+      {row_count, result} = fn_api_venue_type_update((Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id, _params.configuration_id,
         _params.description, _params.image])
         json (conn |> put_status 200), result
     rescue

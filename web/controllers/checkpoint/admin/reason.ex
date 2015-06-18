@@ -43,7 +43,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Reason do
       _params = _params
         |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :reason_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-      {row_count, result} = fn_api_reason_update([_params.reason_id, _params.configuration_id, _params.description])
+      {row_count, result} = fn_api_reason_update((Map.drop(_params, _k) |> Map.values) ++ [_params.reason_id, _params.configuration_id, _params.description])
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}

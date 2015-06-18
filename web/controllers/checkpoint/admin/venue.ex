@@ -15,7 +15,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> (Map.update :detection_radius, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :lat,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
         |> (Map.update :lon,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
-      {row_count, result} = fn_api_venue_create([_params.configuration_id,
+      {row_count, result} = fn_api_venue_create((Map.drop(_params, _k) |> Map.values) ++ [_params.configuration_id,
         _params.venue_type_id, _params.name, _params.code, _params.description,
         _params.image, _params.lat, _params.lon, _params.detection_radius,
         _params.xtra_info])
@@ -55,7 +55,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> (Map.update :detection_radius, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :lat,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
         |> (Map.update :lon,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
-      {row_count, result} = fn_api_venue_create([_params.venue_id, _params.configuration_id,
+      {row_count, result} = fn_api_venue_create((Map.drop(_params, _k) |> Map.values) ++ [_params.venue_id, _params.configuration_id,
         _params.venue_type_id, _params.name, _params.code, _params.description,
         _params.image, _params.lat, _params.lon, _params.detection_radius,
         _params.xtra_info])
