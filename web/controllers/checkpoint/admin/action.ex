@@ -43,7 +43,6 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
       _params = _params
         |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :action_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.values
       {row_count, result} = fn_api_action_update([_params.action_id, _params.configuration_id, _params.description])
         json (conn |> put_status 200), result
     rescue
