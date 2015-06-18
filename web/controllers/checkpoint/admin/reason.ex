@@ -6,10 +6,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Reason do
 
   def create(conn, _params) do
     try do
-      _k = [ :configuration_id, :description ]
+      _k = [ :reason_configuration_id, :reason_description ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> (Map.update :reason_configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_reason_create
         {response_code, result} = (if result.status, do: {201, result},
@@ -38,9 +38,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Reason do
 
   def update(conn, _params) do
     try do
-      _k = [ :reason_id, :description ]
+      _k = [ :reason_configuration_id, :reason_description, :reason_id ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       {row_count, result} = _params
+        |> (Map.update :reason_configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> (Map.update :reason_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_reason_update
