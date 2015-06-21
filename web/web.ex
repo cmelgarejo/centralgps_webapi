@@ -33,6 +33,7 @@ defmodule CentralGPSWebAPI.Web do
 
       # Import URL helpers from the router
       import CentralGPSWebAPI.Router.Helpers
+      alias CentralGPSWebApp.Endpoint
     end
   end
 
@@ -56,7 +57,7 @@ defmodule CentralGPSWebAPI.Web do
       use Phoenix.Router
     end
   end
-  
+
   def channel do
     quote do
       use Phoenix.Channel
