@@ -91,14 +91,20 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   defp save_image(filename, file, old_filename \\ "") do
     try do
       if !is_nil(filename) do
+        IO.puts "filename: #{inspect filename}"
+        IO.puts "old_filename: #{inspect old_filename}"
         if (old_filename != ""), do: File.rm Enum.join([ _local_image_path,  old_filename ], "/") #removes the old image
+        IO.puts "dest_dir(filename): #{inspect dest_dir(filename)}"
         if (File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
+        IO.puts "updated |> filename: #{inspect filename}"
         filename = Enum.join [ _local_image_path, dest_dir(filename), filename ], "/"
-        File.write filename, base64_decode(file)
+        File.write!filename, base64_decode(file)
       end
     rescue
       e in _ -> IO.puts "#{inspect e}"
+      :error
     end
+    :ok
   end
 
 end
