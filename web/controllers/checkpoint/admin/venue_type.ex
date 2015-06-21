@@ -87,16 +87,13 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   end
 
   defp _local_image_path, do: Enum.join([Endpoint.config(:root), "priv/static"], "/")
-  defp dest_dir(filename), do: String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/"
+  defp dest_dir(filename), do:
+    Enum.join _local_image_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/"), "/"
   defp save_image(filename, file, old_filename \\ "") do
     try do
       if !is_nil(filename) do
-        IO.puts "filename: #{inspect filename}"
-        IO.puts "old_filename: #{inspect old_filename}"
         if (old_filename != ""), do: File.rm Enum.join([ _local_image_path,  old_filename ], "/") #removes the old image
-        IO.puts "dest_dir(filename): #{inspect dest_dir(filename)}"
         if (File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
-        IO.puts "updated |> filename: #{inspect filename}"
         filename = Enum.join [ _local_image_path, dest_dir(filename), filename ], "/"
         File.write!filename, base64_decode(file)
       end
