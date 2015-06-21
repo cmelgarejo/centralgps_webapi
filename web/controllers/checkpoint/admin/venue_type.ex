@@ -97,7 +97,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
         filename = Enum.join [ _local_image_path, filename ], "/"
         IO.puts "dest_dir(filename): #{inspect dest_dir(filename)}"
         IO.puts "filename: #{filename}"
-        File.write!filename, file
+        File.write!filename, file, :binary
       end
     rescue
       e in _ -> IO.puts "#{inspect e}"
