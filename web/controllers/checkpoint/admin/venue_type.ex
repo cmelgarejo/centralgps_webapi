@@ -46,7 +46,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
         |> (Map.update :venue_type_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
       {row_count, result} = fn_api_venue_type_read (Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id]
       if result.status do
-        save_image(_params.image, _params.image_file, result.venue_type_image)
+        save_image(_params.image, _params.image_file, result.res["venue_type_image"])
         {row_count, result} = fn_api_venue_type_update((Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id, _params.configuration_id,
           _params.description, _params.image])
       end
