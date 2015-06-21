@@ -33,7 +33,7 @@ defmodule CentralGPSWebAPI.Web do
 
       # Import URL helpers from the router
       import CentralGPSWebAPI.Router.Helpers
-      alias CentralGPSWebApp.Endpoint
+      alias CentralGPSWebAPI.Endpoint
     end
   end
 
