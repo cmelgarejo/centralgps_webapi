@@ -95,9 +95,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
         if (old_filename != ""), do: File.rm Enum.join([ _local_image_path,  old_filename ], "/") #removes the old image
         if (!File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
         filename = Enum.join [ _local_image_path, filename ], "/"
-        IO.puts "dest_dir(filename): #{inspect dest_dir(filename)}"
-        IO.puts "filename: #{filename}"
-        File.write!filename, file, :binary
+        #IO.puts "dest_dir(filename): #{inspect dest_dir(filename)}"
+        #IO.puts "filename: #{filename}"
+        File.write!filename, Base.url_decode64!(file)
       end
     rescue
       e in _ -> IO.puts "#{inspect e}"
