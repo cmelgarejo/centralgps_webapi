@@ -47,7 +47,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
   def update(conn, _params) do
     try do
       _k = [ :venue_id, :configuration_id, :venue_type_id, :name, :code, :description, :image,
-        :lat, :lon, :detection_radius, :xtra_info ]
+        :lat, :lon, :detection_radius, :xtra_info, :image_file ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       _params = _params
         |> (Map.update :venue_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
