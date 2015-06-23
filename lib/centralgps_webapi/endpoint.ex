@@ -3,7 +3,7 @@ defmodule CentralGPSWebAPI.Endpoint do
 
   # Serve at "/" the given assets from "priv/static" directory
   plug Plug.Static,
-    at: "/api/v1", from: :central_g_p_s_web_a_p_i,
+    at: "/api/v1/", from: :central_g_p_s_web_a_p_i,
     only: ~w(css images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the

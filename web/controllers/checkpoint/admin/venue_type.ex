@@ -98,7 +98,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
         File.write!filename, Base.url_decode64!(file)
       end
     rescue
-      e in _ -> error_log e, __DIR__
+      e in _ -> error_logger e, __DIR__
       :error
     end
     :ok
