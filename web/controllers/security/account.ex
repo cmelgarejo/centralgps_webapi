@@ -60,7 +60,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
 
   def update(conn, _params) do
     try do
-      _k = [ :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info, , :image_file ]
+      _k = [ :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info , :image_file ]
       {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
       _params = _params
         |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
