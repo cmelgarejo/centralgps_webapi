@@ -2,6 +2,7 @@ defmodule CentralGPS.Repo.Utilities do
   alias Enum,   as: E
   alias String, as: S
   alias Tuple,  as: T
+  alias CentralGPSWebAPI.Endpoint
 
   @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
@@ -248,7 +249,7 @@ defmodule CentralGPS.Repo.Utilities do
         File.write!filename, Base.url_decode64!(file)
       end
     rescue
-      e in _ -> error_logger e, __DIR__
+      e in _ -> error_logger e, __ENV__, %{filename: filename, old_filename: old_filename, file: file}
       :error
     end
     :ok
