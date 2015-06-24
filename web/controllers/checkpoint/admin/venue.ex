@@ -21,7 +21,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         _params.xtra_info])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key? :image_file ), do: save_image(_params.image, _params.image_file)
+      if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image(_params.image, _params.image_file)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
