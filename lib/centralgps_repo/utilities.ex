@@ -159,7 +159,7 @@ defmodule CentralGPS.Repo.Utilities do
       if !(E.empty?filter_keys) do
         filter_keys = E.map(filter_keys, fn (k -> (if !is_atom(k),
                                                     do: S.to_atom(k),
-                                                  else: k)) end)
+                                                    else: k)) end)
         (for k <- filter_keys, !Map.has_key?(map,k), do:
           (raise ArgumentError, message: "missing: #{k}"))
         map = Map.take map, filter_keys
@@ -237,10 +237,33 @@ defmodule CentralGPS.Repo.Utilities do
     end
   end
 
+  @doc """
+  Returns a valid filename from a structure %Plug.Upload{}
+  """
+  def upload_file_name(plug) do
+    Regex.replace(~r/[&$+,\/:;=?@<>\[\]\{\}\|\\\^~%# ]/, plug.filename, "_")
+  end
+
+  @doc """
+  Returns a boolean indicating if the passed %Plug.Upload{} structure has a
+  valid mimetyped image in it.
+  """
+  def upload_is_image?(plug) do
+    content_type = plug.content_type
+    image_mimes = [ Plug.MIME.type("png"), Plug.MIME.type("jpg"),
+      Plug.MIME.type("gif") ]
+    Enum.find_index(image_mimes, fn(x) -> x == content_type end) != nil
+  end
+
   defp _local_image_path, do: Enum.join([Endpoint.config(:root), "priv/static"], "/")
   defp dest_dir(filename), do:
     Enum.join([_local_image_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
-  def save_image(filename, file, old_filename \\ "") do
+
+  @doc """
+  Gets a filename, a file (and an old_filename, if exists it will delete it)
+  and saves said image to the relative directory the image filename provides
+  """
+  def save_image_base64(filename, file, old_filename \\ "") do
     try do
       if !is_nil(filename) do
         if (old_filename != ""), do: File.rm Enum.join([ _local_image_path,  old_filename ], "/") #removes the old image
@@ -253,6 +276,16 @@ defmodule CentralGPS.Repo.Utilities do
       :error
     end
     :ok
+  end
+
+  @doc """
+  Gets a file via HTTP and saves it to the location of the filename
+  (concatenated with the _local_image_path)
+  """
+  def get_image(url, filename) do
+    %HTTPoison.Response{body: body} = HTTPoison.get!(url)
+    filename = Enum.join [ _local_image_path, filename ], "/"
+    File.write!filename, body
   end
 
 end

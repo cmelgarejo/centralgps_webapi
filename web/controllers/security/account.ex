@@ -35,7 +35,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
         |> fn_api_account_create
         {response_code, result} = (if result.status, do: {201, result},
                                    else: {200, result |> Map.take [:status, :msg]})
-        if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image(_params.user_profile_image, _params.image_file)
+        if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image_base64(_params.user_profile_image, _params.image_file)
         json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -74,7 +74,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       {row_count, result} = fn_api_account_read (Map.drop(_params, _k) |> Map.values) ++ [_params.account_id, _params.account_type] #get the record and check first
       if result.status do
         res = objectify_map result.res
-        save_image(_params.image, _params.image_file, res.profile_image)
+        save_image_base64(_params.image, _params.image_file, res.profile_image)
         {row_count, result} = Map.values(_params) |> fn_api_account_update
       end
       json (conn |> put_status 200), result

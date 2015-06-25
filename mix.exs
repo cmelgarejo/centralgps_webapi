@@ -20,7 +20,7 @@ defmodule CentralGPSWebAPI.Mixfile do
   end
 
   def application do
-    apps = [:phoenix, :phoenix_html, :cowboy, :logger, :logger_file_backend, :postgrex, :ecto ]
+    apps = [:phoenix, :phoenix_html, :cowboy, :logger, :logger_file_backend, :postgrex, :ecto, :httpoison ]
     dev_apps = Mix.env == :dev && [ :reprise ] || []
     [ mod: {CentralGPSWebAPI, []}, applications: dev_apps ++ apps ]
   end
@@ -29,14 +29,19 @@ defmodule CentralGPSWebAPI.Mixfile do
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [{:exrm,                github: "bitwalker/exrm"},
-     {:reprise,             github: "herenowcoder/reprise", only: :dev},
-     {:logger_file_backend, github: "onkel-dirtus/logger_file_backend"},
-     {:cowboy,              "~> 1.0"},
-     {:postgrex,            ">= 0.0.0"},
-     {:phoenix,             "~> 0.13"},
-     {:phoenix_ecto,        "~> 0.4"},
-     {:phoenix_html,        "~> 1.0"},
-     {:phoenix_live_reload, "~> 0.4", only: :dev}]
+    [ {:exrm,                 github: "bitwalker/exrm"},
+      {:httpoison,            github: "edgurgel/httpoison"},
+      {:logger_file_backend,  github: "onkel-dirtus/logger_file_backend"},
+      {:phoenix,              github: "phoenixframework/phoenix", override: true},
+      {:reprise,              github: "herenowcoder/reprise", only: :dev},
+      {:phoenix_live_reload,  github: "phoenixframework/phoenix_live_reload", only: :dev},
+      #{:phoenix_html,            github: "phoenixframework/phoenix_html"},
+      {:phoenix_html, "~> 1.0"},
+      #{:phoenix_ecto,            github: "phoenixframework/phoenix_ecto"},
+      {:phoenix_ecto,        "~> 0.4"},
+      #{:postgrex,                github: "ericmj/postgrex"},
+      {:postgrex, ">= 0.0.0"},
+      #{:cowboy, override: true,  github: "ninenines/cowboy"},
+      {:cowboy, "~> 1.0"} ]
   end
 end
