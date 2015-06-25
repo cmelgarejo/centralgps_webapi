@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Checkpoint.Mark.Functions
   import CentralGPS.Repo.Utilities
-  plug :action
+  
 
   def mark_list(conn, _params) do
     try do

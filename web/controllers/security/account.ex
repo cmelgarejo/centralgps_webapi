@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Security.Functions
   import CentralGPS.Repo.Utilities
-  plug :action
+  
 
   def activate(conn, _params) do
     try do

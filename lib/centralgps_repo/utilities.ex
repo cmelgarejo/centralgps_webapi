@@ -2,7 +2,7 @@ defmodule CentralGPS.Repo.Utilities do
   alias Enum,   as: E
   alias String, as: S
   alias Tuple,  as: T
-  alias CentralGPSWebAPI.Endpoint
+  alias CentralGPSWebApp.Endpoint
 
   @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
@@ -96,13 +96,13 @@ defmodule CentralGPS.Repo.Utilities do
   @doc """
   **CHECKPOINT METHODS ONLY**
   Processes and returns a tuple with 2 maps:
-  _params : All the parameters that have been passed on to the controller as JSON
+  params : All the parameters that have been passed on to the controller as JSON
     mapped and checked against the filter_keys parameter of this function.
   headers: First, checks if the "Authorization" header is set, so we can
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def checkpoint_auth_proc_headers_and__params(headers, _params, filter_keys \\ []) do
+  def checkpoint_auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
     headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
       do: (raise ArgumentError, message: "missing: :authorization")
@@ -110,19 +110,19 @@ defmodule CentralGPS.Repo.Utilities do
     auth = Regex.named_captures(_regex, headers.authorization)
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
     auth = objectify_map(auth)
-    _params =  objectify_map(_params)
+    params =  objectify_map(params)
       |> objectify_map(filter_keys) # 2nd call to have atomized keys this round
       |> (Map.put :_auth_token, auth.token)
       |> (Map.drop [ :format ])
-    if (Map.has_key? _params,(:offset)) do
-      {offset, _params} = Map.pop(_params, :offset, 0)
-      Map.put _params, :_z_offset, offset
+    if (Map.has_key? params,(:offset)) do
+      {offset, params} = Map.pop(params, :offset, 0)
+      Map.put params, :zzz_offset, offset
     end
-    if (Map.has_key? _params,(:limit)) do
-      {limit, _params} = Map.pop(_params, :limit, 100)
-      Map.put _params, :_z_limit, limit
+    if (Map.has_key? params,(:limit)) do
+      {limit, params} = Map.pop(params, :limit, 100)
+      Map.put params, :zzzz_limit, limit
     end
-    {headers, _params}
+    {headers, params}
   end
 
   @doc """
@@ -159,7 +159,7 @@ defmodule CentralGPS.Repo.Utilities do
       if !(E.empty?filter_keys) do
         filter_keys = E.map(filter_keys, fn (k -> (if !is_atom(k),
                                                     do: S.to_atom(k),
-                                                    else: k)) end)
+                                                  else: k)) end)
         (for k <- filter_keys, !Map.has_key?(map,k), do:
           (raise ArgumentError, message: "missing: #{k}"))
         map = Map.take map, filter_keys
@@ -255,9 +255,13 @@ defmodule CentralGPS.Repo.Utilities do
     Enum.find_index(image_mimes, fn(x) -> x == content_type end) != nil
   end
 
-  defp _local_image_path, do: Enum.join([Endpoint.config(:root), "priv/static"], "/")
+  @doc """
+  Returns the static path where every static served file should be served
+  """
+  def _priv_static_path, do: Enum.join([Endpoint.config(:root), "priv/static"], "/")
+
   defp dest_dir(filename), do:
-    Enum.join([_local_image_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
+    Enum.join([_priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
 
   @doc """
   Gets a filename, a file (and an old_filename, if exists it will delete it)
@@ -266,9 +270,9 @@ defmodule CentralGPS.Repo.Utilities do
   def save_image_base64(filename, file, old_filename \\ "") do
     try do
       if !is_nil(filename) do
-        if (old_filename != ""), do: File.rm Enum.join([ _local_image_path,  old_filename ], "/") #removes the old image
+        if (old_filename != ""), do: File.rm Enum.join([ _priv_static_path,  old_filename ], "/") #removes the old image
         if (!File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
-        filename = Enum.join [ _local_image_path, filename ], "/"
+        filename = Enum.join [ _priv_static_path, filename ], "/"
         File.write!filename, Base.url_decode64!(file)
       end
     rescue
@@ -280,11 +284,11 @@ defmodule CentralGPS.Repo.Utilities do
 
   @doc """
   Gets a file via HTTP and saves it to the location of the filename
-  (concatenated with the _local_image_path)
+  (concatenated with the _priv_static_path)
   """
   def get_image(url, filename) do
     %HTTPoison.Response{body: body} = HTTPoison.get!(url)
-    filename = Enum.join [ _local_image_path, filename ], "/"
+    filename = Enum.join [ _priv_static_path, filename ], "/"
     File.write!filename, body
   end
 

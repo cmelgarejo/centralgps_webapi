@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Client.Asset.Functions
   import CentralGPS.Repo.Utilities
-  plug :action
+  
 
   def asset_list(conn, _params) do
     try do

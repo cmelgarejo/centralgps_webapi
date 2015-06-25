@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Reason do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Checkpoint.Reason.Functions
   import CentralGPS.Repo.Utilities
-  plug :action
+  
 
   def create(conn, _params) do
     try do

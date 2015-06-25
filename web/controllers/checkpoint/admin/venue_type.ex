@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Checkpoint.VenueType.Functions
   import CentralGPS.Repo.Utilities
-  plug :action
+  
 
   def create(conn, _params) do
     try do

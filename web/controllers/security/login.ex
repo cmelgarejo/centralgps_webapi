@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Security.Functions
-  plug :action
+  
   def login(conn, _params) do
     try do
       _k = [ :_login_user, :_password, :auth_type, :session_status ]
