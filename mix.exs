@@ -38,10 +38,10 @@ defmodule CentralGPSWebAPI.Mixfile do
       #{:phoenix_html,            github: "phoenixframework/phoenix_html"},
       {:phoenix_html, "~> 1.0"},
       #{:phoenix_ecto,            github: "phoenixframework/phoenix_ecto"},
-      {:phoenix_ecto,        "~> 0.4"},
+      {:phoenix_ecto, "~> 0.4"},
       #{:postgrex,                github: "ericmj/postgrex"},
-      {:postgrex, ">= 0.0.0"},
+      {:postgrex,     ">= 0.0.0"},
       #{:cowboy, override: true,  github: "ninenines/cowboy"},
-      {:cowboy, "~> 1.0"} ]
+      {:cowboy,       "~> 1.0"} ]
   end
 end
