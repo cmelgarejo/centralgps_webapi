@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Security.Functions
-  
+
 
   def create(conn, _params) do
     try do
@@ -38,16 +38,4 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
     end
   end
 
-  def my_roles(conn, _params) do
-    try do
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
-      {row_count, result} = _params
-        |> Map.values
-        |> fn_api_session_token_account_role_list
-        json (conn |> put_status 200), result
-    rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
-    end
-  end
 end
