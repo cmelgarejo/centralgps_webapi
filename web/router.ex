@@ -84,5 +84,7 @@ defmodule CentralGPSWebAPI.Router do
     pipe_through :api
 
     get "/client", Client.Asset, :asset_list
+    get "/record", Client.Asset, :record_list
+
   end
 end
