@@ -7,10 +7,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
   def create(conn, _params) do
     try do
       _k = [ :account_id, :account_type, :role_id ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :role_id,    0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:role_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_role_create
         {response_code, result} = (if result.status, do: {201, result},
@@ -25,10 +25,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
   def delete(conn, _params) do
     try do
       _k = [ :account_id, :account_type, :role_id ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :role_id,    0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:role_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_role_delete
         json (conn |> put_status 200), result

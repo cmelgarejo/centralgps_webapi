@@ -2,14 +2,13 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Security.Functions
   import CentralGPS.Repo.Utilities
-  
 
   def activate(conn, _params) do
     try do
       _k = [ :account_id, :account_type, :set_active ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_active
         json (conn |> put_status 200), result
@@ -22,12 +21,12 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   def create(conn, _params) do
     try do
       _k = [ :account_type, :client_id, :user__login_name, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :client_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :user_language_template_id,    0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :user_timezone, 0, fn(v)->(if !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
-        |> (Map.update :user_dob, nil,
+        |> Map.update(:client_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:user_language_template_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:user_timezone, 0, fn(v)->(if !is_nil(v) && !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
+        |> Map.update(:user_dob, nil,
           &(if (elem Ecto.Date.cast(&1), 0) == :status,
             do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
             else: nil))
@@ -46,9 +45,9 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   def read(conn, _params) do
     try do
       _k = [ :account_id, :account_type ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_read
         json (conn |> put_status 200), result
@@ -61,13 +60,13 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   def update(conn, _params) do
     try do
       _k = [ :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info , :image_file ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :client_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :user_language_template_id,    0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :user_timezone, 0, fn(v)->(if !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
-        |> (Map.update  :user_dob, nil,
+        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:client_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:user_language_template_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:user_timezone, 0, fn(v)->(if !is_nil(v) && !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
+        |> Map.update( :user_dob, nil,
           &(if (elem Ecto.Date.cast(&1), 0) == :status,
             do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
             else: nil))
@@ -87,9 +86,9 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
   def delete(conn, _params) do
     try do
       _k = [ :account_id, :account_type ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :account_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_account_delete
         json (conn |> put_status 200), result
@@ -101,7 +100,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
 
   def list(conn, _params) do
     try do
-      {headers, _params} = list_auth_proc_headers_and__params(conn.req_headers, _params)
+      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
       {row_count, result} = _params
         |> Map.values
         |> fn_api_account_list

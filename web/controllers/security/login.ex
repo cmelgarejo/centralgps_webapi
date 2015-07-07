@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Security.Functions
-  
+
   def login(conn, _params) do
     try do
       _k = [ :_login_user, :_password, :auth_type, :session_status ]
@@ -13,9 +13,9 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
               else: (if !is_boolean(_params.session_status), do: Map.put(_params, :session_status, false), else: _params))
               |> objectify_map(_k)
       {row_count, result} = _params
-        |> (Map.update :_login_user,    nil, fn(v)->(base64_decode v) end)
-        |> (Map.update :_password,      nil, fn(v)->(base64_decode v) end)
-        |> (Map.update :session_status, false, fn(v)->(if !is_boolean(v), do: false, else: v) end) #casting session_status to atom will ensure boolean conversion in pgsql
+        |> Map.update(:_login_user,    nil, fn(v)->(base64_decode v) end)
+        |> Map.update(:_password,      nil, fn(v)->(base64_decode v) end)
+        |> Map.update(:session_status, false, fn(v)->(if !is_nil(v) && !is_boolean(v), do: false, else: v) end) #casting session_status to atom will ensure boolean conversion in pgsql
         |> (Map.put :the_app_name,
             (if Map.has_key?(headers,:"x-requested-with"),
               do: to_string(headers[:"x-requested-with"]),
@@ -41,7 +41,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
 
   def logout(conn, _params) do
     try do
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params)
       {row_count, result} = _params
         |> Map.values
         |> fn_api_logout

@@ -29,5 +29,5 @@ config :central_g_p_s_web_a_p_i, CentralGPS.Repo,
   username: "postgres",
   password: "!pgsql@94#",
   database: "centralgps",
-  hostname: "localhost",
+  hostname: "184.171.247.181",
   port: 6543

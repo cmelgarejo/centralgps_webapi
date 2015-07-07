@@ -8,13 +8,13 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
     try do
       _k = [ :configuration_id, :venue_type_id, :name, :code, :description, :image,
         :lat, :lon, :detection_radius, :xtra_info ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :venue_type_id,    0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :detection_radius, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :lat,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
-        |> (Map.update :lon,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
+        |> Map.update(:configuration_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:venue_type_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:detection_radius, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:lat,              0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
+        |> Map.update(:lon,              0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
       {row_count, result} = fn_api_venue_create((Map.drop(_params, _k) |> Map.values) ++ [_params.configuration_id,
         _params.venue_type_id, _params.name, _params.code, _params.description,
         _params.image, _params.lat, _params.lon, _params.detection_radius,
@@ -32,9 +32,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
   def read(conn, _params) do
     try do
       _k = [ :venue_id ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :venue_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:venue_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_venue_read
         json (conn |> put_status 200), result
@@ -48,14 +48,14 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
     try do
       _k = [ :venue_id, :configuration_id, :venue_type_id, :name, :code, :description, :image,
         :lat, :lon, :detection_radius, :xtra_info, :image_file ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> (Map.update :venue_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :configuration_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :venue_type_id,    0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :detection_radius, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> (Map.update :lat,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
-        |> (Map.update :lon,              0, fn(v)->(if !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
+        |> Map.update(:venue_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:configuration_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:venue_type_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:detection_radius, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:lat,              0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
+        |> Map.update(:lon,              0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0), else: v) end)
       {row_count, result} = fn_api_venue_read (Map.drop(_params, _k) |> Map.values) ++ [_params.venue_id] #get the record and check first
       if result.status do
         res = objectify_map result.res
@@ -76,9 +76,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
   def delete(conn, _params) do
     try do
       _k = [ :venue_id ]
-      {headers, _params} = auth_proc_headers_and__params(conn.req_headers, _params, _k)
+      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> (Map.update :venue_id, 0, fn(v)->(if !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:venue_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
         |> Map.values
         |> fn_api_venue_delete
         json (conn |> put_status 200), result
@@ -90,7 +90,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
 
   def list(conn, _params) do
     try do
-      {headers, _params} = list_auth_proc_headers_and__params(conn.req_headers, _params)
+      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
       {row_count, result} = _params
         |> Map.values
         |> fn_api_venue_list

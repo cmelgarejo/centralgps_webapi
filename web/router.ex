@@ -80,6 +80,26 @@ defmodule CentralGPSWebAPI.Router do
 
   end
 
+  scope "/api/v1/client/roadmap", CentralGPSWebAPI.Controllers do
+    pipe_through :api
+
+    post    "/create",       Client.Roadmap, :create
+    get     "/:roadmap_id",  Client.Roadmap, :read
+    put     "/:roadmap_id",  Client.Roadmap, :update
+    delete  "/:roadmap_id",  Client.Roadmap, :delete
+    get     "/",             Client.Roadmap, :list
+  end
+
+  scope "/api/v1/client/roadmap/:roadmap_id/point", CentralGPSWebAPI.Controllers do
+    pipe_through :api
+
+    post    "/create",             Client.RoadmapPoint, :create
+    get     "/:roadmap_point_id",  Client.RoadmapPoint, :read
+    put     "/:roadmap_point_id",  Client.RoadmapPoint, :update
+    delete  "/:roadmap_point_id",  Client.RoadmapPoint, :delete
+    get     "/",                   Client.RoadmapPoint, :list
+  end
+
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
     pipe_through :api
 

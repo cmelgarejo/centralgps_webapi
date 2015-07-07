@@ -12,7 +12,7 @@ defmodule CentralGPS.Repo.Utilities do
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def list_auth_proc_headers_and__params(headers, _params, filter_keys \\ []) do
+  def list_auth_proc_headers_and_params(headers, _params, filter_keys \\ []) do
     headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
       do: (raise ArgumentError, message: "missing: :authorization")
@@ -30,11 +30,10 @@ defmodule CentralGPS.Repo.Utilities do
     if (Map.has_key? _params, :sort_column),  do: {sort_column, _params} = Map.pop(_params, :sort_column, nil)
     if (Map.has_key? _params, :sort_order),  do: {sort_order, _params} = Map.pop(_params, :sort_order, nil)
     _params = Map.put(_params, :_z_limit, limit) |> Map.put(:_z_offset, offset)
-      |> (Map.update :_z_offset, nil,   fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
-      |> (Map.update :_z_limit, nil, fn(v)->(if !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
+      |> Map.update(:_z_offset, nil,   fn(v)->(if !is_nil(v) && !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
+      |> Map.update(:_z_limit, nil, fn(v)->(if !is_nil(v) && !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
       |> Map.put(:_z_search_column, search_column) |> Map.put(:_z_search_phrase, search_phrase)
       |> Map.put(:_z_sort_column, sort_column) |> Map.put(:_z_sort_order, sort_order)
-    _params = _params
       |> (Map.put :_the_app_name,
           (if Map.has_key?(headers,:"x-requested-with"),
             do: to_string(headers[:"x-requested-with"]),
@@ -64,7 +63,7 @@ defmodule CentralGPS.Repo.Utilities do
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def auth_proc_headers_and__params(headers, _params, filter_keys \\ []) do
+  def auth_proc_headers_and_params(headers, _params, filter_keys \\ []) do
     headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
     if !Map.has_key?(headers, :authorization),
       do: (raise ArgumentError, message: "missing: :authorization")
@@ -73,7 +72,6 @@ defmodule CentralGPS.Repo.Utilities do
     if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
     auth = objectify_map(auth)
     _params = objectify_map(_params)
-    _params = _params
       |> (Map.put :_the_app_name,
           (if Map.has_key?(headers,:"x-requested-with"),
             do: to_string(headers[:"x-requested-with"]),
@@ -103,26 +101,32 @@ defmodule CentralGPS.Repo.Utilities do
     caller
   """
   def checkpoint_auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
-    headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
-    if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, message: "missing: :authorization")
-    _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
-    auth = Regex.named_captures(_regex, headers.authorization)
-    if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
-    auth = objectify_map(auth)
-    params =  objectify_map(params)
-      |> objectify_map(filter_keys) # 2nd call to have atomized keys this round
-      |> (Map.put :_auth_token, auth.token)
-      |> (Map.drop [ :format ])
-    if (Map.has_key? params,(:offset)) do
-      {offset, params} = Map.pop(params, :offset, 0)
-      Map.put params, :zzz_offset, offset
+    try do
+      headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
+      if !Map.has_key?(headers, :authorization),
+        do: (raise ArgumentError, message: "missing: :authorization")
+      _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+      auth = Regex.named_captures(_regex, headers.authorization)
+      if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
+      auth = objectify_map(auth)
+      params =  objectify_map(params)
+        |> objectify_map(filter_keys) # 2nd call to have atomized keys this round
+        |> (Map.put :_auth_token, auth.token)
+        |> (Map.drop [ :format ])
+      if (Map.has_key? params,(:offset)) do
+        {offset, params} = Map.pop(params, :offset, 0)
+        Map.put params, :zzz_offset, offset
+      end
+      if (Map.has_key? params,(:limit)) do
+        {limit, params} = Map.pop(params, :limit, 100)
+        Map.put params, :zzzz_limit, limit
+      end
+      {headers, params}
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{filter_keys: filter_keys, params: params, headers: headers}
+        raise e
     end
-    if (Map.has_key? params,(:limit)) do
-      {limit, params} = Map.pop(params, :limit, 100)
-      Map.put params, :zzzz_limit, limit
-    end
-    {headers, params}
   end
 
   @doc """
