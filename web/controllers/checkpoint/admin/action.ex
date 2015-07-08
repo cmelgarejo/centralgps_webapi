@@ -9,7 +9,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
       _k = [ :configuration_id, :description ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:configuration_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_action_create
         {response_code, result} = (if result.status, do: {201, result},
@@ -26,7 +26,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
       _k = [ :action_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:action_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:action_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_action_read
         json (conn |> put_status 200), result
@@ -41,8 +41,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
       _k = [ :action_id, :configuration_id, :description ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> Map.update(:configuration_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:action_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:configuration_id, nil, &(parse_int(&1)))
+        |> Map.update(:action_id, nil, &(parse_int(&1)))
       {row_count, result} = fn_api_action_update((Map.drop(_params, _k) |> Map.values) ++ [_params.action_id, _params.configuration_id, _params.description])
         json (conn |> put_status 200), result
     rescue
@@ -56,7 +56,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Action do
       _k = [ :action_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:action_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:action_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_action_delete
         json (conn |> put_status 200), result

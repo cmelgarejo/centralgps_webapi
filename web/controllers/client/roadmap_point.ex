@@ -9,20 +9,14 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
         :mean_arrival_time, :mean_leave_time, :detection_radius, :active, :xtra_info ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> Map.update(:roadmap_id,       0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:lat,              0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0),   else: v) end)
-        |> Map.update(:lon,              0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0),   else: v) end)
-        |> Map.update(:point_order,      0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:mean_arrival_time, nil,
-          &(if (!is_nil(&1) && elem Ecto.Time.cast(&1), 0) == :ok,
-            do: elem(Ecto.Time.dump(elem(Ecto.Time.cast(&1),1)),1),
-            else: nil))
-        |> Map.update(:mean_leave_time, nil,
-          &(if (!is_nil(&1) && elem Ecto.Time.cast(&1), 0) == :ok,
-            do: elem(Ecto.Time.dump(elem(Ecto.Time.cast(&1),1)),1),
-            else: nil))
-        |> Map.update(:detection_radius, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:active, nil, &(if !is_nil(&1) && is_boolean(&1), do: &1))
+        |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
+        |> Map.update(:lat,               nil, &(parse_float(&1)))
+        |> Map.update(:lon,               nil, &(parse_float(&1)))
+        |> Map.update(:point_order,       nil, &(parse_int(&1)))
+        |> Map.update(:mean_arrival_time, nil, &(parse_time(&1)))
+        |> Map.update(:mean_leave_time,   nil, &(parse_time(&1)))
+        |> Map.update(:detection_radius,  nil, &(parse_int(&1)))
+        |> Map.update(:active,            nil, &(parse_boolean(&1)))
         |> Map.update(:xtra_info, nil, &(&1))
       {row_count, result} = fn_api_roadmap_point_create((Map.drop(_params, _k) |> Map.values) ++
         [ _params.roadmap_id, _params.name, _params.description, _params.lat, _params.lon,
@@ -42,8 +36,8 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
       _k = [ :roadmap_id, :roadmap_point_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:roadmap_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:roadmap_point_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:roadmap_id,       nil, &(parse_int(&1)))
+        |> Map.update(:roadmap_point_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_point_read
         json (conn |> put_status 200), result
@@ -59,21 +53,15 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
         :mean_arrival_time, :mean_leave_time, :detection_radius, :active, :xtra_info ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> Map.update(:roadmap_point_id,  0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:roadmap_id,        0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:lat,               0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0),   else: v) end)
-        |> Map.update(:lon,               0, fn(v)->(if !is_nil(v) && !is_float(v),   do: elem(Float.parse(v), 0),   else: v) end)
-        |> Map.update(:point_order,       0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:mean_arrival_time, nil,
-          &(if (!is_nil(&1) && elem Ecto.Time.cast(&1), 0) == :ok,
-            do: elem(Ecto.Time.dump(elem(Ecto.Time.cast(&1),1)),1),
-            else: nil))
-        |> Map.update(:mean_leave_time, nil,
-          &(if (!is_nil(&1) && elem Ecto.Time.cast(&1), 0) == :ok,
-            do: elem(Ecto.Time.dump(elem(Ecto.Time.cast(&1),1)),1),
-            else: nil))
-        |> Map.update(:detection_radius, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:active, nil, &(if !is_nil(&1) &&!is_boolean(&1), do: String.to_atom(&1)))
+        |> Map.update(:roadmap_point_id,  nil, &(parse_int(&1)))
+        |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
+        |> Map.update(:lat,               nil, &(parse_float(&1)))
+        |> Map.update(:lon,               nil, &(parse_float(&1)))
+        |> Map.update(:point_order,       nil, &(parse_int(&1)))
+        |> Map.update(:mean_arrival_time, nil, &(parse_time(&1)))
+        |> Map.update(:mean_leave_time,   nil, &(parse_time(&1)))
+        |> Map.update(:detection_radius,  nil, &(parse_int(&1)))
+        |> Map.update(:active,            nil, &(parse_boolean(&1)))
         |> Map.update(:xtra_info, nil, &(&1))
         {row_count, result} = fn_api_roadmap_point_create((Map.drop(_params, _k) |> Map.values) ++
           [ _params.roadmap_point_id, _params.roadmap_id, _params.name, _params.description,
@@ -91,8 +79,8 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
       _k = [ :roadmap_id, :roadmap_point_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:roadmap_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:roadmap_point_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:roadmap_id,       nil, &(parse_int(&1)))
+        |> Map.update(:roadmap_point_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_point_delete
         json (conn |> put_status 200), result
@@ -107,7 +95,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
       _k = [ :roadmap_id ]
       {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:roadmap_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_point_list
       json (conn |> put_status 200), result

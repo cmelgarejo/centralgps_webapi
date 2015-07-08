@@ -9,8 +9,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
       _k = [ :account_id, :account_type, :role_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:role_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, nil, &(parse_int(&1)))
+        |> Map.update(:role_id,    nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_role_create
         {response_code, result} = (if result.status, do: {201, result},
@@ -27,8 +27,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
       _k = [ :account_id, :account_type, :role_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:role_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, nil, &(parse_int(&1)))
+        |> Map.update(:role_id,    nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_role_delete
         json (conn |> put_status 200), result

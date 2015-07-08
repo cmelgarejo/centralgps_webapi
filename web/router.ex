@@ -107,4 +107,24 @@ defmodule CentralGPSWebAPI.Router do
     get "/client/record", Client.Asset, :record_list
 
   end
+
+  scope "/api/v1/checkpoint/device", CentralGPSWebAPI.Controllers do
+
+    pipe_through :api # Use the api stack
+
+    get  "/actions",                  Device.Actions,  :actions
+    get  "/actions/:_sync_token",     Device.Actions,  :actions_update
+    get  "/reasons",                  Device.Reasons,  :reasons
+    get  "/reasons/:_sync_token",     Device.Reasons,  :reasons_update
+    post "/venues/create",            Device.Venues,   :venues_create
+    get  "/venues/:_sync_token",      Device.Venues,   :venues_update
+    get  "/venues",                   Device.Venues,   :venues
+    get  "/venues/:_sync_token",      Device.Venues,   :venues_update
+    get  "/venues/near",              Device.Venues,   :venues_near
+    post "/position",                 Device.GPS,      :position
+    post "/register",                 Device.Register, :register
+    get  "/venue_types",              Device.Venues,   :venue_types
+    get  "/venue_types/:_sync_token", Device.Venues,   :venue_types_update
+
+  end
 end

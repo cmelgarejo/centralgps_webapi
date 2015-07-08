@@ -8,7 +8,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       _k = [ :account_id, :account_type, :set_active ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_active
         json (conn |> put_status 200), result
@@ -23,13 +23,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       _k = [ :account_type, :client_id, :user__login_name, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:client_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:user_language_template_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:user_timezone, 0, fn(v)->(if !is_nil(v) && !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
-        |> Map.update(:user_dob, nil,
-          &(if (elem Ecto.Date.cast(&1), 0) == :status,
-            do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
-            else: nil))
+        |> Map.update(:client_id, nil, &(parse_int(&1)))
+        |> Map.update(:user_language_template_id,    nil, &(parse_int(&1)))
+        |> Map.update(:user_timezone, nil, &(parse_float(&1)))
+        |> Map.update(:user_dob, nil, &(parse_datetime(&1)))
         |> Map.values
         |> fn_api_account_create
         {response_code, result} = (if result.status, do: {201, result},
@@ -47,7 +44,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       _k = [ :account_id, :account_type ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_read
         json (conn |> put_status 200), result
@@ -62,14 +59,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       _k = [ :account_id, :account_type, :user__login_password, :user_dob, :user_identity_document, :user_info_emails, :user_info_phones, :user_language_template_id, :user_name, :user_profile_image, :user_timezone, :user_xtra_info , :image_file ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
-        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:client_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:user_language_template_id,    0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
-        |> Map.update(:user_timezone, 0, fn(v)->(if !is_nil(v) && !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
-        |> Map.update( :user_dob, nil,
-          &(if (elem Ecto.Date.cast(&1), 0) == :status,
-            do: elem(Ecto.Date.dump(elem(Ecto.Date.cast(&1),1)),1),
-            else: nil))
+        |> Map.update(:account_id, nil, &(parse_int(&1)))
+        |> Map.update(:client_id, nil, &(parse_int(&1)))
+        |> Map.update(:user_language_template_id,    nil, &(parse_int(&1)))
+        |> Map.update(:user_timezone, nil, &(parse_float(&1)))
+        |> Map.update( :user_dob, nil, &(parse_datetime(&1)))
       {row_count, result} = fn_api_account_read (Map.drop(_params, _k) |> Map.values) ++ [_params.account_id, _params.account_type] #get the record and check first
       if result.status do
         res = objectify_map result.res
@@ -88,7 +82,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       _k = [ :account_id, :account_type ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
-        |> Map.update(:account_id, 0, fn(v)->(if !is_nil(v) && !is_integer(v), do: elem(Integer.parse(v), 0), else: v) end)
+        |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_delete
         json (conn |> put_status 200), result

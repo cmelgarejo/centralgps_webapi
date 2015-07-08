@@ -6,89 +6,101 @@ defmodule CentralGPS.Repo.Utilities do
 
   @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
-  _params : All the parameters that have been passed on to the controller as JSON
+  params : All the parameters that have been passed on to the controller as JSON
     mapped and checked against the filter_keys parameter of this function.
   headers: First, checks if the "Authorization" header is set, so we can
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def list_auth_proc_headers_and_params(headers, _params, filter_keys \\ []) do
-    headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
-    if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, message: "missing: :authorization")
-    _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
-    auth = Regex.named_captures(_regex, headers.authorization)
-    if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
-    auth = objectify_map(auth)
-    _params = objectify_map(_params)
-    { offset, limit, search_column, search_phrase, sort_column, sort_order } =
-      { 0, 0, nil, nil, nil, nil }
-    if (Map.has_key? _params, :limit),  do: {limit, _params} = Map.pop(_params, :limit, nil)
-    if (Map.has_key? _params, :offset), do: {offset, _params} = Map.pop(_params, :offset, nil)
-    if (Map.has_key? _params, :search_column),  do: {search_column, _params} = Map.pop(_params, :search_column, nil)
-    if (Map.has_key? _params, :search_phrase),  do: {search_phrase, _params} = Map.pop(_params, :search_phrase, nil)
-    if (Map.has_key? _params, :sort_column),  do: {sort_column, _params} = Map.pop(_params, :sort_column, nil)
-    if (Map.has_key? _params, :sort_order),  do: {sort_order, _params} = Map.pop(_params, :sort_order, nil)
-    _params = Map.put(_params, :_z_limit, limit) |> Map.put(:_z_offset, offset)
-      |> Map.update(:_z_offset, nil,   fn(v)->(if !is_nil(v) && !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
-      |> Map.update(:_z_limit, nil, fn(v)->(if !is_nil(v) && !is_integer(v), do: Integer.parse(v) |> elem(0), else: v) end)
-      |> Map.put(:_z_search_column, search_column) |> Map.put(:_z_search_phrase, search_phrase)
-      |> Map.put(:_z_sort_column, sort_column) |> Map.put(:_z_sort_order, sort_order)
-      |> (Map.put :_the_app_name,
-          (if Map.has_key?(headers,:"x-requested-with"),
-            do: to_string(headers[:"x-requested-with"]),
-            else: (if Map.has_key?(_params, :_the_app_name),
-                    do: _params._the_app_name, else: nil)))
-      |> (Map.put :_the_ip_port,
-          (if Map.has_key?(headers,:"x-forwarded-for"),
-            do: to_string(headers[:"x-forwarded-for"]),
-            else: (if Map.has_key?(_params, :_the_ip_port),
-                    do: _params._the_ip_port, else: nil)))
-      |> (Map.put :_xtra_info, (if Map.has_key?(_params, :_xtra_info),
-                                do: _params._xtra_info, else: nil))
-    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info,
-                    :_z_limit, :_z_offset, :_z_search_column, :_z_search_phrase,
-                    :_z_sort_column, :_z_sort_order ]
-    _params =  objectify_map(_params, filter_keys)
-      |> (Map.put :_auth_token, auth.token)
-      |> (Map.put :_auth_type,  auth.type)
-    {headers, _params}
+  def list_auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
+    try do
+      headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
+      if !Map.has_key?(headers, :authorization),
+        do: (raise ArgumentError, message: "missing: authorization token")
+      _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+      auth = Regex.named_captures(_regex, headers.authorization)
+      if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
+      auth = objectify_map(auth)
+      params = objectify_map(params)
+      { offset, limit, search_column, search_phrase, sort_column, sort_order } =
+        { 0, 0, nil, nil, nil, nil }
+      if (Map.has_key? params, :limit),  do: {limit, params} = Map.pop(params, :limit, nil)
+      if (Map.has_key? params, :offset), do: {offset, params} = Map.pop(params, :offset, nil)
+      if (Map.has_key? params, :search_column),  do: {search_column, params} = Map.pop(params, :search_column, nil)
+      if (Map.has_key? params, :search_phrase),  do: {search_phrase, params} = Map.pop(params, :search_phrase, nil)
+      if (Map.has_key? params, :sort_column),  do: {sort_column, params} = Map.pop(params, :sort_column, nil)
+      if (Map.has_key? params, :sort_order),  do: {sort_order, params} = Map.pop(params, :sort_order, nil)
+      params = Map.put(params, :_z_limit, limit) |> Map.put(:_z_offset, offset)
+        |> Map.update(:_z_offset, nil, &(parse_int(&1)))
+        |> Map.update(:_z_limit, nil,  &(parse_int(&1)))
+        |> Map.put(:_z_search_column, search_column) |> Map.put(:_z_search_phrase, search_phrase)
+        |> Map.put(:_z_sort_column, sort_column) |> Map.put(:_z_sort_order, sort_order)
+        |> (Map.put :_the_app_name,
+            (if Map.has_key?(headers,:"x-requested-with"),
+              do: to_string(headers[:"x-requested-with"]),
+              else: (if Map.has_key?(params, :_the_app_name),
+                      do: params._the_app_name, else: nil)))
+        |> (Map.put :_the_ip_port,
+            (if Map.has_key?(headers,:"x-forwarded-for"),
+              do: to_string(headers[:"x-forwarded-for"]),
+              else: (if Map.has_key?(params, :_the_ip_port),
+                      do: params._the_ip_port, else: nil)))
+        |> (Map.put :_xtra_info, (if Map.has_key?(params, :_xtra_info),
+                                  do: params._xtra_info, else: nil))
+      filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info,
+                      :_z_limit, :_z_offset, :_z_search_column, :_z_search_phrase,
+                      :_z_sort_column, :_z_sort_order ]
+      params =  objectify_map(params, filter_keys)
+        |> (Map.put :_auth_token, auth.token)
+        |> (Map.put :_auth_type,  auth.type)
+      {headers, params}
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{filter_keys: filter_keys, params: params, headers: headers}
+        raise e
+    end
   end
 
   @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
-  _params : All the parameters that have been passed on to the controller as JSON
+  params : All the parameters that have been passed on to the controller as JSON
     mapped and checked against the filter_keys parameter of this function.
   headers: First, checks if the "Authorization" header is set, so we can
     authorize the request and then maps it to be available to as such for the
     caller
   """
-  def auth_proc_headers_and_params(headers, _params, filter_keys \\ []) do
-    headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
-    if !Map.has_key?(headers, :authorization),
-      do: (raise ArgumentError, message: "missing: :authorization")
-    _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
-    auth = Regex.named_captures(_regex, headers.authorization)
-    if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
-    auth = objectify_map(auth)
-    _params = objectify_map(_params)
-      |> (Map.put :_the_app_name,
-          (if Map.has_key?(headers,:"x-requested-with"),
-            do: to_string(headers[:"x-requested-with"]),
-            else: (if Map.has_key?(_params, :_the_app_name),
-                    do: _params._the_app_name, else: nil)))
-      |> (Map.put :_the_ip_port,
-          (if Map.has_key?(headers,:"x-forwarded-for"),
-            do: to_string(headers[:"x-forwarded-for"]),
-            else: (if Map.has_key?(_params, :_the_ip_port),
-                    do: _params._the_ip_port, else: nil)))
-      |> (Map.put :_xtra_info, (if Map.has_key?(_params, :_xtra_info),
-                                do: _params._xtra_info, else: nil))
-    filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info ]
-    _params =  objectify_map(_params, filter_keys)
-      |> (Map.put :_auth_token, auth.token)
-      |> (Map.put :_auth_type,  auth.type)
-    {headers, _params}
+  def auth_proc_headers_and_params(headers, params, filter_keys \\ []) do
+    try do
+      headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
+      if !Map.has_key?(headers, :authorization),
+        do: (raise ArgumentError, message: "missing: authorization token")
+      _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+      auth = Regex.named_captures(_regex, headers.authorization)
+      if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
+      auth = objectify_map(auth)
+      params = objectify_map(params)
+        |> (Map.put :_the_app_name,
+            (if Map.has_key?(headers,:"x-requested-with"),
+              do: to_string(headers[:"x-requested-with"]),
+              else: (if Map.has_key?(params, :_the_app_name),
+                      do: params._the_app_name, else: nil)))
+        |> (Map.put :_the_ip_port,
+            (if Map.has_key?(headers,:"x-forwarded-for"),
+              do: to_string(headers[:"x-forwarded-for"]),
+              else: (if Map.has_key?(params, :_the_ip_port),
+                      do: params._the_ip_port, else: nil)))
+        |> (Map.put :_xtra_info, (if Map.has_key?(params, :_xtra_info),
+                                  do: params._xtra_info, else: nil))
+      filter_keys = filter_keys ++ [ :_the_app_name, :_the_ip_port, :_xtra_info ]
+      params =  objectify_map(params, filter_keys)
+        |> (Map.put :_auth_token, auth.token)
+        |> (Map.put :_auth_type,  auth.type)
+      {headers, params}
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{filter_keys: filter_keys, params: params, headers: headers}
+        raise e
+    end
   end
 
   @doc """
@@ -104,7 +116,7 @@ defmodule CentralGPS.Repo.Utilities do
     try do
       headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
       if !Map.has_key?(headers, :authorization),
-        do: (raise ArgumentError, message: "missing: :authorization")
+        do: (raise ArgumentError, message: "missing: authorization token")
       _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
       auth = Regex.named_captures(_regex, headers.authorization)
       if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
@@ -115,11 +127,11 @@ defmodule CentralGPS.Repo.Utilities do
         |> (Map.drop [ :format ])
       if (Map.has_key? params,(:offset)) do
         {offset, params} = Map.pop(params, :offset, 0)
-        Map.put params, :zzz_offset, offset
+        Map.put params, :_z_offset, offset
       end
       if (Map.has_key? params,(:limit)) do
         {limit, params} = Map.pop(params, :limit, 100)
-        Map.put params, :zzzz_limit, limit
+        Map.put params, :_z_limit, limit
       end
       {headers, params}
     rescue
@@ -294,6 +306,141 @@ defmodule CentralGPS.Repo.Utilities do
     %HTTPoison.Response{body: body} = HTTPoison.get!(url)
     filename = Enum.join [ _priv_static_path, filename ], "/"
     File.write!filename, body
+  end
+
+  @doc """
+    Accepted inputs: integer, string that is valid, and contains a integer.
+    Returns NIL on very very bad input.
+  """
+  def parse_boolean(value) do
+    try do
+      if String.valid?(value) && is_boolean(String.to_atom(value)) do
+        String.to_atom(value)
+      else
+        if !is_boolean(value), do: nil, else: value
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{value: value}
+        nil
+    end
+  end
+
+  @doc """
+    Accepted inputs: integer, string that is valid, and contains a integer.
+    Returns NIL on very very bad input.
+  """
+  def parse_integer_list(list) do
+    try do
+      if !is_nil(list) && is_list(list) do
+        Enum.filter(list, &(is_integer(&1)))
+      else
+        nil
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{list: list}
+        nil
+    end
+  end
+
+  @doc """
+    Accepted inputs: integer, string that is valid, and contains a integer.
+    Returns NIL on very very bad input.
+  """
+  def parse_int(value) do
+    try do
+      if String.valid?(value) && Integer.parse(value) != :error do
+        elem(Integer.parse(value), 0)
+      else
+        if !is_integer(value) do
+          if is_float(value),
+            do: elem(Integer.parse(Float.to_string(value, [decimals: 0])), 0)
+        else
+          value
+        end
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{value: value}
+        nil
+    end
+  end
+
+  @doc """
+    Accepted inputs: float, string that is valid, and contains a float.
+    Returns NIL on very very bad input.
+  """
+  def parse_float(value) do
+    try do
+      if String.valid?(value) && Float.parse(value) != :error do
+        elem(Float.parse(value), 0)
+      else
+        if !is_float(value) do
+          if is_integer(value), do: value + 0.0
+        else
+          value
+        end
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{value: value}
+        nil
+    end
+  end
+
+  @doc """
+    Accepted inputs: string that is valid, and contains a date representation.
+    Returns NIL on very very bad input.
+  """
+  def parse_date(value) do
+    try do
+      if String.valid?(value) && (elem Ecto.Date.cast(value), 0) == :ok do
+        elem(Ecto.Date.dump(elem(Ecto.Date.cast(value),1)),1)
+      else
+        nil
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{value: value}
+        nil
+    end
+  end
+
+  @doc """
+    Accepted inputs: string that is valid, and contains a time representation.
+    Returns NIL on very very bad input.
+  """
+  def parse_time(value) do
+    try do
+      if String.valid?(value) && (elem Ecto.Time.cast(value), 0) == :ok do
+        elem(Ecto.Time.dump(elem(Ecto.Time.cast(value),1)),1)
+      else
+        nil
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{value: value}
+        nil
+    end
+  end
+
+  @doc """
+    Accepted inputs: string that is valid, and contains a datetime representation.
+    Returns NIL on very very bad input.
+  """
+  def parse_datetime(value) do
+    try do
+      if String.valid?(value) && (elem Ecto.DateTime.cast(value), 0) == :ok do
+        elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(value),1)),1)
+      else
+        nil
+      end
+    rescue
+      e in _ ->
+        error_logger e, __ENV__, %{value: value}
+        nil
+    end
   end
 
 end
