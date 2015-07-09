@@ -26,7 +26,7 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
 # disk for the key and cert.
 
 # Do not print debug messages in production
-config :logger, level: :info
+#config :logger, level: :info
 
 # ## Using releases
 #

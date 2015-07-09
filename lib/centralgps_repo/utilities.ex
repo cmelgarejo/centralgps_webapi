@@ -55,6 +55,8 @@ defmodule CentralGPS.Repo.Utilities do
         |> (Map.put :_auth_type,  auth.type)
       {headers, params}
     rescue
+      e in ArgumentError ->
+        raise e
       e in _ ->
         error_logger e, __ENV__, %{filter_keys: filter_keys, params: params, headers: headers}
         raise e
@@ -97,6 +99,8 @@ defmodule CentralGPS.Repo.Utilities do
         |> (Map.put :_auth_type,  auth.type)
       {headers, params}
     rescue
+      e in ArgumentError ->
+        raise e
       e in _ ->
         error_logger e, __ENV__, %{filter_keys: filter_keys, params: params, headers: headers}
         raise e
@@ -135,6 +139,8 @@ defmodule CentralGPS.Repo.Utilities do
       end
       {headers, params}
     rescue
+      e in ArgumentError ->
+        raise e
       e in _ ->
         error_logger e, __ENV__, %{filter_keys: filter_keys, params: params, headers: headers}
         raise e

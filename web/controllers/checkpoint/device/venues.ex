@@ -97,7 +97,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
       {row_count, result} = fn_chkapi_venue_create((Map.drop(_params, _k) |> Map.values) ++ [_params.configuration_id,
         _params.venue_type_id, _params.name, _params.code, _params.description,
         _params.image, _params.lat, _params.lon, _params.detection_radius,
-        _params.active, _params.xtra_info])
+        _params.active])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image_base64(_params.image, _params.image_file)
