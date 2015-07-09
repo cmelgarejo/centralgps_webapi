@@ -2,7 +2,7 @@ defmodule CentralGPS.Repo.Utilities do
   alias Enum,   as: E
   alias String, as: S
   alias Tuple,  as: T
-  alias CentralGPSWebApp.Endpoint
+  alias CentralGPSWebAPI.Endpoint
 
   @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
@@ -280,10 +280,10 @@ defmodule CentralGPS.Repo.Utilities do
   @doc """
   Returns the static path where every static served file should be served
   """
-  def _priv_static_path, do: Enum.join([Endpoint.config(:root), "priv/static"], "/")
+  def priv_static_path, do: Enum.join([CentralGPSWebAPI.Endpoint.config(:root), "priv/static"], "/")
 
   defp dest_dir(filename), do:
-    Enum.join([_priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
+    Enum.join([priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
 
   @doc """
   Gets a filename, a file (and an old_filename, if exists it will delete it)
@@ -292,9 +292,9 @@ defmodule CentralGPS.Repo.Utilities do
   def save_image_base64(filename, file, old_filename \\ "") do
     try do
       if !is_nil(filename) do
-        if (old_filename != ""), do: File.rm Enum.join([ _priv_static_path,  old_filename ], "/") #removes the old image
+        if (old_filename != ""), do: File.rm Enum.join([ priv_static_path,  old_filename ], "/") #removes the old image
         if (!File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
-        filename = Enum.join [ _priv_static_path, filename ], "/"
+        filename = Enum.join [ priv_static_path, filename ], "/"
         File.write!filename, Base.url_decode64!(file)
       end
     rescue
@@ -306,11 +306,11 @@ defmodule CentralGPS.Repo.Utilities do
 
   @doc """
   Gets a file via HTTP and saves it to the location of the filename
-  (concatenated with the _priv_static_path)
+  (concatenated with the priv_static_path)
   """
   def get_image(url, filename) do
     %HTTPoison.Response{body: body} = HTTPoison.get!(url)
-    filename = Enum.join [ _priv_static_path, filename ], "/"
+    filename = Enum.join [ priv_static_path, filename ], "/"
     File.write!filename, body
   end
 
