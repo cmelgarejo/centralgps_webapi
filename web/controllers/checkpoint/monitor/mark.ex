@@ -10,8 +10,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
       {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {row_count, result} = _params
         |> Map.update(:asset_id, nil, &(parse_int(&1)))
-        |> Map.update(:init_at,  nil, &(parse_int(&1)))
-        |> Map.update(:stop_at,  nil, &(parse_int(&1)))
+        |> Map.update(:init_at,  nil, &(parse_datetime(&1)))
+        |> Map.update(:stop_at,  nil, &(parse_datetime(&1)))
         |> Map.values
         |> fn_api_monitor_mark_list
       json (conn |> put_status 200), result
