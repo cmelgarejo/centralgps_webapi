@@ -22,6 +22,6 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_position_register($1::text,$2::text,$3::double precision,$4::bigint,$5::text,$6::double precision,$7::double precision,$8::text,$9::double precision,$10::double precision,$11::boolean,$12::timestamp without time zone,$13::bigint, $14::double precision, $15, $16::bigint, $17::jsonb);"
 
   def cmd_fn_chkapi_venue_create,
-    do: "SELECT * FROM checkpoint.fn_api_venue_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10, $11, $12::double precision, $13::double precision, $14::integer, TRUE);"
+    do: "SELECT * FROM checkpoint.fn_api_venue_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10, $11, $12::double precision, $13::double precision, $14::integer, $15::boolean);"
 
 end
