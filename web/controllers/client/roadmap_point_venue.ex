@@ -1,6 +1,6 @@
-defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPointVenue do
+defmodule CentralGPSWebAPI.Controllers.Checkpoint.RoadmapPointVenue do
   use CentralGPSWebAPI.Web, :controller
-  import CentralGPS.Repo.Client.RoadmapPointVenue.Functions
+  import CentralGPS.Repo.Checkpoint.RoadmapPointVenue.Functions
   import CentralGPS.Repo.Utilities
 
   def create(conn, _params) do

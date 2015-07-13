@@ -29,7 +29,7 @@ defmodule CentralGPSWebAPI.Router do
 
   end
 
-  scope "/api/v1/client/roadmap", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/client/roadmaps", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",       Client.Roadmap, :create
@@ -39,7 +39,7 @@ defmodule CentralGPSWebAPI.Router do
     get     "/",             Client.Roadmap, :list
   end
 
-  scope "/api/v1/client/roadmap/:roadmap_id/point", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/client/roadmaps/:roadmap_id/points", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",             Client.RoadmapPoint, :create
@@ -47,10 +47,6 @@ defmodule CentralGPSWebAPI.Router do
     put     "/:roadmap_point_id",  Client.RoadmapPoint, :update
     delete  "/:roadmap_point_id",  Client.RoadmapPoint, :delete
     get     "/",                   Client.RoadmapPoint, :list
-    if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
-      post    "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :create
-      delete  "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :delete
-    end
   end
 
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
@@ -65,19 +61,19 @@ defmodule CentralGPSWebAPI.Router do
     pipe_through :api
     if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
       #Device
-      get  "/device/actions",                  Device.Actions,  :actions
-      get  "/device/actions/:_sync_token",     Device.Actions,  :actions_update
-      get  "/device/reasons",                  Device.Reasons,  :reasons
-      get  "/device/reasons/:_sync_token",     Device.Reasons,  :reasons_update
-      post "/device/venues/create",            Device.Venues,   :venues_create
-      get  "/device/venues/:_sync_token",      Device.Venues,   :venues_update
-      get  "/device/venues",                   Device.Venues,   :venues
-      get  "/device/venues/:_sync_token",      Device.Venues,   :venues_update
-      get  "/device/venues/near",              Device.Venues,   :venues_near
-      post "/device/position",                 Device.GPS,      :position
-      post "/device/register",                 Device.Register, :register
-      get  "/device/venue_types",              Device.Venues,   :venue_types
-      get  "/device/venue_types/:_sync_token", Device.Venues,   :venue_types_update
+      get     "/device/actions",                  Device.Actions,  :actions
+      get     "/device/actions/:_sync_token",     Device.Actions,  :actions_update
+      get     "/device/reasons",                  Device.Reasons,  :reasons
+      get     "/device/reasons/:_sync_token",     Device.Reasons,  :reasons_update
+      post    "/device/venues/create",            Device.Venues,   :venues_create
+      get     "/device/venues/:_sync_token",      Device.Venues,   :venues_update
+      get     "/device/venues",                   Device.Venues,   :venues
+      get     "/device/venues/:_sync_token",      Device.Venues,   :venues_update
+      get     "/device/venues/near",              Device.Venues,   :venues_near
+      post    "/device/position",                 Device.GPS,      :position
+      post    "/device/register",                 Device.Register, :register
+      get     "/device/venue_types",              Device.Venues,   :venue_types
+      get     "/device/venue_types/:_sync_token", Device.Venues,   :venue_types_update
       #Actions
       post    "/actions/create",      Checkpoint.Action, :create
       get     "/actions/:action_id",  Checkpoint.Action, :read
@@ -103,7 +99,10 @@ defmodule CentralGPSWebAPI.Router do
       delete  "/venue_types/:venue_type_id",  Checkpoint.VenueType, :delete
       get     "/venue_types/",                Checkpoint.VenueType, :list
       #Marks
-      get "marks/", Checkpoint.Mark, :mark_list
+      get     "marks/", Checkpoint.Mark, :mark_list
+      #Roadmap point <-> venue association
+      post    "/roadmap_point_venue", Checkpoint.RoadmapPointVenue, :create
+      delete  "/roadmap_point_venue", Checkpoint.RoadmapPointVenue, :delete
     end
   end
 end

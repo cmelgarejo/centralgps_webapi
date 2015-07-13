@@ -1,6 +1,6 @@
-defmodule CentralGPS.Repo.Client.RoadmapPointVenue.Functions do
+defmodule CentralGPS.Repo.Checkpoint.RoadmapPointVenue.Functions do
   import CentralGPS.Repo
-    import CentralGPS.Repo.Client.RoadmapPointVenue.Commands
+    import CentralGPS.Repo.Checkpoint.RoadmapPointVenue.Commands
   require Logger
 
   def fn_api_roadmap_point_venue_create(_params, filter_keys \\ []) do
