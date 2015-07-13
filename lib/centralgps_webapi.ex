@@ -27,4 +27,9 @@ defmodule CentralGPSWebAPI do
     CentralGPSWebAPI.Endpoint.config_change(changed, removed)
     :ok
   end
+
+  def app_config(name) do
+    Application.get_env(:app_config, name)
+  end
+  
 end

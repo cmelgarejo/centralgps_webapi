@@ -18,6 +18,8 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   #pubsub: [name: CentralGPSWebAPI.PubSub,
   #         adapter: Phoenix.PubSub.PG2]
 
+  config :app_config, checkpoint_enabled: true
+
   # Configures Elixir's Logger
   config :logger, utc_log: true
 

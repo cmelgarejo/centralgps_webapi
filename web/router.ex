@@ -5,16 +5,12 @@ defmodule CentralGPSWebAPI.Router do
     plug :accepts, ["json", "html"]
   end
 
-  scope "/api/v1/security/login", CentralGPSWebAPI.Controllers do
-    pipe_through :api
-    post    "/:auth_type", Security.Login, :login
-  end
-
   #A resource of security (an auth_token of a existing account) that has
   # permissions can do actions on accounts (client and entity, typed C/E)
   scope "/api/v1/security/", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
+    post    "/login/:auth_type", Security.Login, :login
     post    "/logout/:account_type", Security.Login, :logout
 
     put     "/accounts/activate/:account_type/:account_id", Security.Account, :activate
@@ -30,53 +26,6 @@ defmodule CentralGPSWebAPI.Router do
     post    "/accounts/:account_type/:account_id/permissions/create/:permission_id",  Security.Account.Permission, :create
     delete  "/accounts/:account_type/:account_id/permissions/:permission_id",         Security.Account.Permission, :delete
     get     "/accounts/:account_type/:feature_code/:code", Security.Account.Permission, :check
-
-  end
-
-  scope "/api/v1/checkpoint/actions", CentralGPSWebAPI.Controllers do
-    pipe_through :api
-
-    post    "/create",      Checkpoint.Action, :create
-    get     "/:action_id",  Checkpoint.Action, :read
-    put     "/:action_id",  Checkpoint.Action, :update
-    delete  "/:action_id",  Checkpoint.Action, :delete
-    get     "/",            Checkpoint.Action, :list
-  end
-
-  scope "/api/v1/checkpoint/reasons", CentralGPSWebAPI.Controllers do
-    pipe_through :api
-
-    post    "/create",      Checkpoint.Reason, :create
-    get     "/:reason_id",  Checkpoint.Reason, :read
-    put     "/:reason_id",  Checkpoint.Reason, :update
-    delete  "/:reason_id",  Checkpoint.Reason, :delete
-    get     "/",            Checkpoint.Reason, :list
-  end
-
-  scope "/api/v1/checkpoint/venues", CentralGPSWebAPI.Controllers do
-    pipe_through :api
-
-    post    "/create",     Checkpoint.Venue, :create
-    get     "/:venue_id",  Checkpoint.Venue, :read
-    put     "/:venue_id",  Checkpoint.Venue, :update
-    delete  "/:venue_id",  Checkpoint.Venue, :delete
-    get     "/",           Checkpoint.Venue, :list
-  end
-
-  scope "/api/v1/checkpoint/venue_types", CentralGPSWebAPI.Controllers do
-    pipe_through :api
-
-    post    "/create",          Checkpoint.VenueType, :create
-    get     "/:venue_type_id",  Checkpoint.VenueType, :read
-    put     "/:venue_type_id",  Checkpoint.VenueType, :update
-    delete  "/:venue_type_id",  Checkpoint.VenueType, :delete
-    get     "/",                Checkpoint.VenueType, :list
-  end
-
-  scope "/api/v1/checkpoint/marks", CentralGPSWebAPI.Controllers do
-    pipe_through :api
-
-    get "/", Checkpoint.Mark, :mark_list
 
   end
 
@@ -108,23 +57,52 @@ defmodule CentralGPSWebAPI.Router do
 
   end
 
-  scope "/api/v1/checkpoint/device", CentralGPSWebAPI.Controllers do
-
-    pipe_through :api # Use the api stack
-
-    get  "/actions",                  Device.Actions,  :actions
-    get  "/actions/:_sync_token",     Device.Actions,  :actions_update
-    get  "/reasons",                  Device.Reasons,  :reasons
-    get  "/reasons/:_sync_token",     Device.Reasons,  :reasons_update
-    post "/venues/create",            Device.Venues,   :venues_create
-    get  "/venues/:_sync_token",      Device.Venues,   :venues_update
-    get  "/venues",                   Device.Venues,   :venues
-    get  "/venues/:_sync_token",      Device.Venues,   :venues_update
-    get  "/venues/near",              Device.Venues,   :venues_near
-    post "/position",                 Device.GPS,      :position
-    post "/register",                 Device.Register, :register
-    get  "/venue_types",              Device.Venues,   :venue_types
-    get  "/venue_types/:_sync_token", Device.Venues,   :venue_types_update
-
+  scope "/api/v1/checkpoint", CentralGPSWebAPI.Controllers do
+    pipe_through :api
+    if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
+      #Device
+      get  "/device/actions",                  Device.Actions,  :actions
+      get  "/device/actions/:_sync_token",     Device.Actions,  :actions_update
+      get  "/device/reasons",                  Device.Reasons,  :reasons
+      get  "/device/reasons/:_sync_token",     Device.Reasons,  :reasons_update
+      post "/device/venues/create",            Device.Venues,   :venues_create
+      get  "/device/venues/:_sync_token",      Device.Venues,   :venues_update
+      get  "/device/venues",                   Device.Venues,   :venues
+      get  "/device/venues/:_sync_token",      Device.Venues,   :venues_update
+      get  "/device/venues/near",              Device.Venues,   :venues_near
+      post "/device/position",                 Device.GPS,      :position
+      post "/device/register",                 Device.Register, :register
+      get  "/device/venue_types",              Device.Venues,   :venue_types
+      get  "/device/venue_types/:_sync_token", Device.Venues,   :venue_types_update
+      #Actions
+      post    "/actions/create",      Checkpoint.Action, :create
+      get     "/actions/:action_id",  Checkpoint.Action, :read
+      put     "/actions/:action_id",  Checkpoint.Action, :update
+      delete  "/actions/:action_id",  Checkpoint.Action, :delete
+      get     "/actions/",            Checkpoint.Action, :list
+      #Reasons
+      post    "/reasons/create",      Checkpoint.Reason, :create
+      get     "/reasons/:reason_id",  Checkpoint.Reason, :read
+      put     "/reasons/:reason_id",  Checkpoint.Reason, :update
+      delete  "/reasons/:reason_id",  Checkpoint.Reason, :delete
+      get     "/reasons/",            Checkpoint.Reason, :list
+      #Venues
+      post    "/venues/create",     Checkpoint.Venue, :create
+      get     "/venues/:venue_id",  Checkpoint.Venue, :read
+      put     "/venues/:venue_id",  Checkpoint.Venue, :update
+      delete  "/venues/:venue_id",  Checkpoint.Venue, :delete
+      get     "/venues/",           Checkpoint.Venue, :list
+      #Venue types
+      post    "/venue_types/create",          Checkpoint.VenueType, :create
+      get     "/venue_types/:venue_type_id",  Checkpoint.VenueType, :read
+      put     "/venue_types/:venue_type_id",  Checkpoint.VenueType, :update
+      delete  "/venue_types/:venue_type_id",  Checkpoint.VenueType, :delete
+      get     "/venue_types/",                Checkpoint.VenueType, :list
+      #Marks
+      get "marks/", Checkpoint.Mark, :mark_list
+      #Roadmap Point <-> Venue
+      post    "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :create
+      delete  "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :delete
+    end
   end
 end
