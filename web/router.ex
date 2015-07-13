@@ -47,6 +47,10 @@ defmodule CentralGPSWebAPI.Router do
     put     "/:roadmap_point_id",  Client.RoadmapPoint, :update
     delete  "/:roadmap_point_id",  Client.RoadmapPoint, :delete
     get     "/",                   Client.RoadmapPoint, :list
+    if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
+      post    "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :create
+      delete  "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :delete
+    end
   end
 
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
@@ -100,9 +104,6 @@ defmodule CentralGPSWebAPI.Router do
       get     "/venue_types/",                Checkpoint.VenueType, :list
       #Marks
       get "marks/", Checkpoint.Mark, :mark_list
-      #Roadmap Point <-> Venue
-      post    "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :create
-      delete  "/:roadmap_point_id/venue", Client.RoadmapPointVenue, :delete
     end
   end
 end
