@@ -35,12 +35,13 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
     try do
       _k = [ :roadmap_id, :roadmap_point_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      _params = _params
         |> Map.update(:roadmap_id,       nil, &(parse_int(&1)))
         |> Map.update(:roadmap_point_id, nil, &(parse_int(&1)))
-        |> Map.values
-        |> fn_api_roadmap_point_read
-        json (conn |> put_status 200), result
+      {row_count, result} =
+        fn_api_roadmap_point_read (Map.drop(_params, _k) |> Map.values) ++
+          [ _params.roadmap_point_id, _params.roadmap_id ]
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -63,7 +64,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
         |> Map.update(:detection_radius,  nil, &(parse_int(&1)))
         |> Map.update(:active,            nil, &(parse_boolean(&1)))
         |> Map.update(:xtra_info, nil, &(&1))
-        {row_count, result} = fn_api_roadmap_point_create((Map.drop(_params, _k) |> Map.values) ++
+        {row_count, result} = fn_api_roadmap_point_update((Map.drop(_params, _k) |> Map.values) ++
           [ _params.roadmap_point_id, _params.roadmap_id, _params.name, _params.description,
             _params.lat, _params.lon, _params.point_order, _params.mean_arrival_time, _params.mean_leave_time,
             _params.detection_radius, _params.active, _params.xtra_info ])
@@ -78,11 +79,12 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
     try do
       _k = [ :roadmap_id, :roadmap_point_id ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      _params = _params
         |> Map.update(:roadmap_id,       nil, &(parse_int(&1)))
         |> Map.update(:roadmap_point_id, nil, &(parse_int(&1)))
-        |> Map.values
-        |> fn_api_roadmap_point_delete
+      {row_count, result} =
+        fn_api_roadmap_point_delete (Map.drop(_params, _k) |> Map.values) ++
+          [ _params.roadmap_point_id, _params.roadmap_id ]
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
