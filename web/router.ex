@@ -102,7 +102,7 @@ defmodule CentralGPSWebAPI.Router do
       get     "marks/", Checkpoint.Mark, :mark_list
       #Roadmap point <-> venue association
       post    "/roadmap_point_venue", Checkpoint.RoadmapPointVenue, :create
-      delete  "/roadmap_point_venue", Checkpoint.RoadmapPointVenue, :delete
+      delete  "/roadmap_point_venue/:roadmap_point_id", Checkpoint.RoadmapPointVenue, :delete
     end
   end
 end
