@@ -84,7 +84,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
 
   def venues_create(conn, _params) do
     try do
-      _k = [ :configuration_id, :venue_type_id, :name, :code, :description, :image,
+      _k = [ :configuration_id, :venue_type_id, :name, :code, :description, :image, :image_file,
         :lat, :lon, :detection_radius ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
@@ -99,7 +99,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
         false])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image_base64(_params.image, _params.image_file)
+      if (response_code == 201 && Map.has_key?(_params, :image_file)), do: save_image_base64(_params.image, _params.image_file)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
