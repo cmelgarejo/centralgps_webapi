@@ -6,7 +6,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
   def create(conn, _params) do
     try do
       _k = [ :configuration_id, :venue_type_id, :active, :name, :code,
-        :description, :image, :lat, :lon, :detection_radius, :xtra_info ]
+        :description, :image, :image_file, :lat, :lon, :detection_radius, :xtra_info ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
