@@ -29,6 +29,16 @@ defmodule CentralGPSWebAPI.Router do
 
   end
 
+  scope "/api/v1/client/asset", CentralGPSWebAPI.Controllers do
+    pipe_through :api
+
+    post    "/:asset_id/roadmap/create",      Client.AssetRoadmap, :create
+    get     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :read
+    put     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :update
+    delete  "/:asset_id/:roadmap_id",         Client.AssetRoadmap, :delete
+    get     "/:asset_id/roadmap",             Client.AssetRoadmap, :list
+  end
+
   scope "/api/v1/client/roadmaps", CentralGPSWebAPI.Controllers do
     pipe_through :api
 

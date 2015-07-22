@@ -12,7 +12,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
                 do: Map.put(_params, :session_status, true),
               else: (if !is_boolean(_params.session_status), do: Map.put(_params, :session_status, false), else: _params))
               |> objectify_map(_k)
-      {row_count, result} = _params
+      {_, result} = _params
         |> Map.update(:_login_user,    nil,   fn(v)->(base64_decode v) end)
         |> Map.update(:_password,      nil,   fn(v)->(base64_decode v) end)
         |> Map.update(:session_status, false, fn(v)->(if !is_nil(v) && !is_boolean(v), do: false, else: v) end) #casting session_status to atom will ensure boolean conversion in pgsql
