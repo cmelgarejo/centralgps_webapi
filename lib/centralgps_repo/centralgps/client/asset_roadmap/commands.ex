@@ -27,6 +27,6 @@ defmodule CentralGPS.Repo.Client.AssetRoadmap.Commands do
   #DB Definition:
   #Input JSON:
   def cmd_fn_api_asset_roadmap_all_list,
-    do: "SELECT * FROM client.fn_api_asset_roadmap_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text, $10::text, $11::text);"
+    do: "SELECT * FROM client.fn_api_asset_roadmap_list_all($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text, $10::text, $11::text);"
 
 end
