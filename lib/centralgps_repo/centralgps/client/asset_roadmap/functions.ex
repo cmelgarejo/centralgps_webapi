@@ -28,4 +28,9 @@ defmodule CentralGPS.Repo.Client.AssetRoadmap.Functions do
     {row_count, hd(result)}
   end
 
+  def fn_api_asset_roadmap_all_list(_params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_api_asset_roadmap_all_list, _params, filter_keys)
+    {row_count, hd(result)}
+  end
+
 end

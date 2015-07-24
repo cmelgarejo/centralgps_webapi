@@ -75,10 +75,24 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
 
   def list(conn, _params) do
     try do
+      _k = [ :asset_id ]
+      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {row_count, result} =
+        fn_api_asset_roadmap_list (Map.drop(_params, _k) |> Map.values) ++
+          [ _params.asset_id ]
+      json (conn |> put_status 200), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+    end
+  end
+
+  def all_list(conn, _params) do
+    try do
       {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
       {row_count, result} = _params
         |> Map.values
-        |> fn_api_asset_roadmap_list
+        |> fn_api_asset_roadmap_all_list
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
