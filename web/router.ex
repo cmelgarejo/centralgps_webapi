@@ -35,7 +35,7 @@ defmodule CentralGPSWebAPI.Router do
     post    "/:asset_id/roadmap/create",      Client.AssetRoadmap, :create
     get     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :read
     put     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :update
-    delete  "/:asset_id/:roadmap_id",         Client.AssetRoadmap, :delete
+    delete  "/:asset_id/roadmap/:roadmap_id",         Client.AssetRoadmap, :delete
     get     "/:asset_id/roadmap",             Client.AssetRoadmap, :list
   end
 

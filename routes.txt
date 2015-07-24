@@ -11,6 +11,11 @@
          permission_path  POST    /api/v1/security/accounts/:account_type/:account_id/permissions/create/:permission_id  CentralGPSWebAPI.Controllers.Security.Account.Permission.create/2
          permission_path  DELETE  /api/v1/security/accounts/:account_type/:account_id/permissions/:permission_id         CentralGPSWebAPI.Controllers.Security.Account.Permission.delete/2
          permission_path  GET     /api/v1/security/accounts/:account_type/:feature_code/:code                            CentralGPSWebAPI.Controllers.Security.Account.Permission.check/2
+      asset_roadmap_path  POST    /api/v1/client/asset/:asset_id/roadmap/create                                          CentralGPSWebAPI.Controllers.Client.AssetRoadmap.create/2
+      asset_roadmap_path  GET     /api/v1/client/asset/:asset_id/roadmap/:roadmap_id                                     CentralGPSWebAPI.Controllers.Client.AssetRoadmap.read/2
+      asset_roadmap_path  PUT     /api/v1/client/asset/:asset_id/roadmap/:roadmap_id                                     CentralGPSWebAPI.Controllers.Client.AssetRoadmap.update/2
+      asset_roadmap_path  DELETE  /api/v1/client/asset/:asset_id/:roadmap_id                                             CentralGPSWebAPI.Controllers.Client.AssetRoadmap.delete/2
+      asset_roadmap_path  GET     /api/v1/client/asset/:asset_id/roadmap                                                 CentralGPSWebAPI.Controllers.Client.AssetRoadmap.list/2
             roadmap_path  POST    /api/v1/client/roadmaps/create                                                         CentralGPSWebAPI.Controllers.Client.Roadmap.create/2
             roadmap_path  GET     /api/v1/client/roadmaps/:roadmap_id                                                    CentralGPSWebAPI.Controllers.Client.Roadmap.read/2
             roadmap_path  PUT     /api/v1/client/roadmaps/:roadmap_id                                                    CentralGPSWebAPI.Controllers.Client.Roadmap.update/2
