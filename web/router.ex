@@ -63,8 +63,9 @@ defmodule CentralGPSWebAPI.Router do
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    get "/client",        Client.Asset, :asset_list
-    get "/client/record", Client.Asset, :record_list
+    get "/client",         Client.Asset, :asset_list
+    get "/client/record",  Client.Asset, :record_list
+    get "/client/roadmap", Client.Asset, :roadmap_list
 
   end
 
