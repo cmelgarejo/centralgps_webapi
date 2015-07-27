@@ -43,7 +43,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
         |> Map.update(:init_at, nil, &(parse_datetime(&1)))
         |> Map.update(:stop_at, nil, &(parse_datetime(&1)))
       {row_count, result} = fn_api_monitor_asset_roadmap_list((Map.drop(_params, _k) |> Map.values) ++
-        [ _params.asset_id, _params.roadmap_id, _params.init_at, _params.start_at ])
+        [ _params.asset_id, _params.roadmap_id, _params.init_at, _params.stop_at ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
