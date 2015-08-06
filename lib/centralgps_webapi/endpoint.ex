@@ -26,8 +26,7 @@ defmodule CentralGPSWebAPI.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_centralgps_webapi_key",
-    signing_salt: "cdVIIJPy",
-    encryption_salt: "PjnVSCH8"
+    signing_salt: "cdVIIJPy"
 
-  plug :router, CentralGPSWebAPI.Router
+  plug CentralGPSWebAPI.Router
 end
