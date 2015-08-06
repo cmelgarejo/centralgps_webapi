@@ -1,7 +1,6 @@
 defmodule CentralGPS.Repo.Utilities do
   alias Enum,   as: E
   alias String, as: S
-  alias Tuple,  as: T
 
   @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
@@ -240,13 +239,13 @@ defmodule CentralGPS.Repo.Utilities do
     try do
       if table.num_rows > 0 do
         result = (for r <- table.rows, do:
-              E.zip((table.columns |> E.map &(S.to_atom &1)),T.to_list(r))
+              E.zip((table.columns |> E.map &(S.to_atom &1)), r)
            |> E.into(%{}))
         {row_count, result} =
         {
           table.num_rows,
-          result = (if (!E.empty?filter), do:
-                      (for m <- result, do: Map.take(m, filter)), else: result)
+          (if (!E.empty?filter), do:
+            (for m <- result, do: Map.take(m, filter)), else: result)
         }
       else
         { 0, [] }
