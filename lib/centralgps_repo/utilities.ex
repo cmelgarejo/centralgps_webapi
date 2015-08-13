@@ -3,6 +3,11 @@ defmodule CentralGPS.Repo.Utilities do
   alias String, as: S
 
   @doc """
+  Returns the static path where every static served file should be served
+  """
+  def priv_static_path, do: Enum.join([CentralGPSWebAPI.Endpoint.config(:root), "priv/static"], "/")
+
+  @doc """
   Processes and returns a tuple with 2 maps, FOR LIST FUNCTIONS ON DB:
   params : All the parameters that have been passed on to the controller as JSON
     mapped and checked against the filter_keys parameter of this function.
@@ -155,10 +160,12 @@ defmodule CentralGPS.Repo.Utilities do
   def error_logger(ex, _env, vars \\ []) do
     require Logger
     env = Macro.Env.stacktrace(_env) |> hd
-    Logger.error "[#{env |> elem 0}.#{env |> elem 1}]: #{inspect ex}
+    message = "[#{env |> elem 0}.#{env |> elem 1}]: #{inspect ex}
     file: #{env |> elem(3) |> hd |> elem (1)}
     line: #{env |> elem(3) |> tl |> hd |> elem(1)}
     vars: #{inspect vars}"
+    Logger.error message
+    message #let's return the message to debug
   end
 
   @doc """
@@ -239,14 +246,10 @@ defmodule CentralGPS.Repo.Utilities do
     try do
       if table.num_rows > 0 do
         result = (for r <- table.rows, do:
-              E.zip((table.columns |> E.map &(S.to_atom &1)), r)
-           |> E.into(%{}))
-        {row_count, result} =
-        {
-          table.num_rows,
-          (if (!E.empty?filter), do:
-            (for m <- result, do: Map.take(m, filter)), else: result)
-        }
+          E.zip((table.columns |> E.map &(S.to_atom &1)), r) |> E.into(%{}))
+       { table.num_rows,
+         (if (!E.empty?filter), do:
+           (for m <- result, do: Map.take(m, filter)), else: result) }
       else
         { 0, [] }
       end
@@ -274,11 +277,6 @@ defmodule CentralGPS.Repo.Utilities do
       Plug.MIME.type("gif") ]
     Enum.find_index(image_mimes, fn(x) -> x == content_type end) != nil
   end
-
-  @doc """
-  Returns the static path where every static served file should be served
-  """
-  def priv_static_path, do: Enum.join([CentralGPSWebAPI.Endpoint.config(:root), "priv/static"], "/")
 
   defp dest_dir(filename), do:
     Enum.join([priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
@@ -318,7 +316,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_boolean(value) do
     try do
-      if String.valid?(value) && is_boolean(String.to_atom(value)) do
+      if String.valid?(value) && String.first(value) && is_boolean(String.to_atom(value)) do
         String.to_atom(value)
       else
         if !is_boolean(value), do: nil, else: value
@@ -354,7 +352,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_int(value) do
     try do
-      if String.valid?(value) && Integer.parse(value) != :error do
+      if String.valid?(value) && String.first(value) && Integer.parse(value) != :error do
         elem(Integer.parse(value), 0)
       else
         if !is_integer(value) do
@@ -377,7 +375,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_float(value) do
     try do
-      if String.valid?(value) && Float.parse(value) != :error do
+      if String.valid?(value) && String.first(value) && Float.parse(value) != :error do
         elem(Float.parse(value), 0)
       else
         if !is_float(value) do
@@ -399,7 +397,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_date(value) do
     try do
-      if String.valid?(value) && (elem Ecto.Date.cast(value), 0) == :ok do
+      if String.valid?(value) && String.first(value) && (elem Ecto.Date.cast(value), 0) == :ok do
         elem(Ecto.Date.dump(elem(Ecto.Date.cast(value),1)),1)
       else
         nil
@@ -417,7 +415,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_time(value) do
     try do
-      if String.valid?(value) && (elem Ecto.Time.cast(value), 0) == :ok do
+      if String.valid?(value) && String.first(value) && (elem Ecto.Time.cast(value), 0) == :ok do
         elem(Ecto.Time.dump(elem(Ecto.Time.cast(value),1)),1)
       else
         nil
@@ -435,7 +433,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_datetime(value) do
     try do
-      if String.valid?(value) && (elem Ecto.DateTime.cast(value), 0) == :ok do
+      if String.valid?(value) && String.first(value) && (elem Ecto.DateTime.cast(value), 0) == :ok do
         elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(value),1)),1)
       else
         nil
@@ -447,4 +445,13 @@ defmodule CentralGPS.Repo.Utilities do
     end
   end
 
+  @doc """
+  Removes a list of elements from another list, given they exist on said list.
+  """
+  def remove_list(l, ltr) do
+    if (!Enum.empty?ltr), do:
+      remove_list(List.delete(l, hd(ltr)), List.delete(ltr, hd(ltr))),
+    else:
+      l
+  end
 end
