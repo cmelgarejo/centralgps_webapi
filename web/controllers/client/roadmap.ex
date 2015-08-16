@@ -51,6 +51,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
         :start_time, :end_time, :public, :active, :xtra_info ]
       {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
+      |> Map.update(:roadmap_id,    nil, &(parse_int(&1)))
       |> Map.update(:days_of_week,  nil, &(parse_integer_list(&1)))
       |> Map.update(:one_time_date, nil, &(parse_date(&1)))
       |> Map.update(:repetition,    nil, &(parse_int(&1)))
