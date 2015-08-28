@@ -244,14 +244,19 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def table_to_map(table, filter \\ []) do
     try do
-      if table.num_rows > 0 do
-        result = (for r <- table.rows, do:
-          E.zip((table.columns |> E.map &(S.to_atom &1)), r) |> E.into(%{}))
-       { table.num_rows,
-         (if (!E.empty?filter), do:
-           (for m <- result, do: Map.take(m, filter)), else: result) }
+      if elem(table, 0) == :ok do
+        table = elem table, 1
+        if table.num_rows > 0 do
+          result = (for r <- table.rows, do:
+            E.zip((table.columns |> E.map &(S.to_atom &1)), r) |> E.into(%{}))
+         { table.num_rows,
+           (if (!E.empty?filter), do:
+             (for m <- result, do: Map.take(m, filter)), else: result) }
+        else
+          { 0, [] }
+        end
       else
-        { 0, [] }
+        error_logger "SQL Query failed", __ENV__, %{table: table}
       end
     rescue
       e in _ ->
