@@ -6,7 +6,7 @@ defmodule CentralGPSWebAPI.Router do
   end
 
   #A resource of security (an auth_token of a existing account) that has
-  # permissions can do actions on accounts (client and entity, typed C/E)
+  # permissions can do activities on accounts (client and entity, typed C/E)
   scope "/api/v1/security/", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
@@ -73,8 +73,8 @@ defmodule CentralGPSWebAPI.Router do
     pipe_through :api
     if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
       #Device
-      get     "/device/actions",                  Device.Actions,  :actions
-      get     "/device/actions/:_sync_token",     Device.Actions,  :actions_update
+      get     "/device/activities",                  Device.Activities,  :activities
+      get     "/device/activities/:_sync_token",     Device.Activities,  :activities_update
       get     "/device/reasons",                  Device.Reasons,  :reasons
       get     "/device/reasons/:_sync_token",     Device.Reasons,  :reasons_update
       post    "/device/venues/create",            Device.Venues,   :venues_create
@@ -86,12 +86,12 @@ defmodule CentralGPSWebAPI.Router do
       post    "/device/register",                 Device.Register, :register
       get     "/device/venue_types",              Device.Venues,   :venue_types
       get     "/device/venue_types/:_sync_token", Device.Venues,   :venue_types_update
-      #Actions
-      post    "/actions/create",      Checkpoint.Action, :create
-      get     "/actions/:action_id",  Checkpoint.Action, :read
-      put     "/actions/:action_id",  Checkpoint.Action, :update
-      delete  "/actions/:action_id",  Checkpoint.Action, :delete
-      get     "/actions/",            Checkpoint.Action, :list
+      #Activities
+      post    "/activities/create",      Checkpoint.Activity, :create
+      get     "/activities/:activity_id",  Checkpoint.Activity, :read
+      put     "/activities/:activity_id",  Checkpoint.Activity, :update
+      delete  "/activities/:activity_id",  Checkpoint.Activity, :delete
+      get     "/activities/",            Checkpoint.Activity, :list
       #Reasons
       post    "/reasons/create",      Checkpoint.Reason, :create
       get     "/reasons/:reason_id",  Checkpoint.Reason, :read

@@ -10,7 +10,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Register do
       _ip_h = :"x-forwarded-for"
       _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
       params = objectify_map(params)
-      {row_count, result} = objectify_map(params, _k)
+      {_, result} = objectify_map(params, _k)
         |> (Map.update :_login_user, nil, fn(v)->(base64_decode v) end)
         |> (Map.update :_password,   nil, fn(v)->(base64_decode v) end)
         |> Map.values

@@ -5,8 +5,8 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
 
   def asset_list(conn, _params) do
     try do
-      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
-      {row_count, result} = _params
+      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
+      {_, result} = _params
         |> Map.values
         |> fn_api_monitor_asset_list
       json (conn |> put_status 200), result
@@ -19,8 +19,8 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
   def record_list(conn, _params) do
     try do
       _k = [ :asset_id, :init_at, :stop_at ]
-      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.update(:asset_id, nil, &(parse_int(&1)))
         |> Map.update(:init_at, nil, &(parse_datetime(&1)))
         |> Map.update(:stop_at, nil, &(parse_datetime(&1)))
@@ -36,13 +36,13 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
   def roadmap_list(conn, _params) do
     try do
       _k = [ :asset_id, :roadmap_id, :init_at, :stop_at ]
-      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
         |> Map.update(:asset_id, nil, &(parse_int(&1)))
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
         |> Map.update(:init_at, nil, &(parse_datetime(&1)))
         |> Map.update(:stop_at, nil, &(parse_datetime(&1)))
-      {row_count, result} = fn_api_monitor_asset_roadmap_list((Map.drop(_params, _k) |> Map.values) ++
+      {_, result} = fn_api_monitor_asset_roadmap_list((Map.drop(_params, _k) |> Map.values) ++
         [ _params.asset_id, _params.roadmap_id, _params.init_at, _params.stop_at ])
       json (conn |> put_status 200), result
     rescue

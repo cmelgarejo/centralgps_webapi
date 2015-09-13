@@ -3,8 +3,8 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
   def cmd_fn_chkapi_device_register,
     do: "SELECT * FROM checkpoint.fn_chkapi_device_register($1, $2, $3, $4, $5, $6::jsonb, $7, $8, $9::jsonb);"
 
-  def cmd_fn_chkapi_action_list,
-    do: "SELECT * FROM checkpoint.fn_chkapi_action_list($1::text, $2::text, $3::char);"
+  def cmd_fn_chkapi_activity_list,
+    do: "SELECT * FROM checkpoint.fn_chkapi_activity_list($1::text, $2::text, $3::char);"
 
   def cmd_fn_chkapi_reason_list,
     do: "SELECT * FROM checkpoint.fn_chkapi_reason_list($1::text, $2::text, $3::char);"

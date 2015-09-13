@@ -6,10 +6,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Reasons do
 
   def reasons(conn, params) do
     try do
-      {headers, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params)
       {row_count, result} = params
       |> Map.values #trim just the value we want from the request (auth_token)
-      |> Enum.concat([ nil, "A"]) #The action to sync is ALL, and no sync_token
+      |> Enum.concat([ nil, "A"]) #The activity to sync is ALL, and no sync_token
       |> fn_chkapi_reason_list
       if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
       json conn, result
@@ -22,10 +22,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Reasons do
   def reasons_update(conn, params) do
     try do
       _k = [ :_sync_token ]
-      {headers, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
       {row_count, result} = params
       |> Map.values #get: auth and sync tokens
-      |> Enum.concat(["U"]) #and UPDATE action
+      |> Enum.concat(["U"]) #and UPDATE activity
       |> fn_chkapi_reason_list
       if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
       json conn, result

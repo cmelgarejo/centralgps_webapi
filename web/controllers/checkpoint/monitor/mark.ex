@@ -7,8 +7,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
   def mark_list(conn, _params) do
     try do
       _k = [ :asset_id, :init_at, :stop_at ]
-      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.update(:asset_id, nil, &(parse_int(&1)))
         |> Map.update(:init_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:stop_at,  nil, &(parse_datetime(&1)))

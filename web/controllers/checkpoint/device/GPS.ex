@@ -5,13 +5,13 @@ defmodule CentralGPSWebAPI.Controllers.Device.GPS do
 
   def position(conn, params) do
     try do
-      _k = [ :accuracy, :action_id, :address, :altitude,
+      _k = [ :accuracy, :activity_id, :address, :altitude,
         :bearing, :comment, :lat, :lon, :mark, :position_at,
         :reason_id, :speed, :status, :venue_id, :xtra_info ]
       {_h, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
       _ip_h = :"x-forwarded-for"
       _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
-      {row_count, result} = params
+      {_, result} = params
         |> (Map.update :position_at, nil,
           &(if (elem Ecto.DateTime.cast(&1), 0) == :ok,
             do: elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(&1),1)),1),

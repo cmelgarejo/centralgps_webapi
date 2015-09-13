@@ -41,8 +41,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
 
   def logout(conn, _params) do
     try do
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params)
-      {row_count, result} = _params
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params)
+      {_, result} = _params
         |> Map.values
         |> fn_api_logout
       json (conn |> put_status 200), result

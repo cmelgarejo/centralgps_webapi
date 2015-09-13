@@ -28,8 +28,8 @@
       roadmap_point_path  GET     /api/v1/client/roadmaps/:roadmap_id/points                                             CentralGPSWebAPI.Controllers.Client.RoadmapPoint.list/2
               asset_path  GET     /api/v1/monitor/client                                                                 CentralGPSWebAPI.Controllers.Client.Asset.asset_list/2
               asset_path  GET     /api/v1/monitor/client/record                                                          CentralGPSWebAPI.Controllers.Client.Asset.record_list/2
-            actions_path  GET     /api/v1/checkpoint/device/actions                                                      CentralGPSWebAPI.Controllers.Device.Actions.actions/2
-            actions_path  GET     /api/v1/checkpoint/device/actions/:_sync_token                                         CentralGPSWebAPI.Controllers.Device.Actions.actions_update/2
+            activities_path  GET     /api/v1/checkpoint/device/activities                                                      CentralGPSWebAPI.Controllers.Device.Activities.activities/2
+            activities_path  GET     /api/v1/checkpoint/device/activities/:_sync_token                                         CentralGPSWebAPI.Controllers.Device.Activities.activities_update/2
             reasons_path  GET     /api/v1/checkpoint/device/reasons                                                      CentralGPSWebAPI.Controllers.Device.Reasons.reasons/2
             reasons_path  GET     /api/v1/checkpoint/device/reasons/:_sync_token                                         CentralGPSWebAPI.Controllers.Device.Reasons.reasons_update/2
              venues_path  POST    /api/v1/checkpoint/device/venues/create                                                CentralGPSWebAPI.Controllers.Device.Venues.venues_create/2
@@ -41,11 +41,11 @@
            register_path  POST    /api/v1/checkpoint/device/register                                                     CentralGPSWebAPI.Controllers.Device.Register.register/2
              venues_path  GET     /api/v1/checkpoint/device/venue_types                                                  CentralGPSWebAPI.Controllers.Device.Venues.venue_types/2
              venues_path  GET     /api/v1/checkpoint/device/venue_types/:_sync_token                                     CentralGPSWebAPI.Controllers.Device.Venues.venue_types_update/2
-             action_path  POST    /api/v1/checkpoint/actions/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Action.create/2
-             action_path  GET     /api/v1/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.read/2
-             action_path  PUT     /api/v1/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.update/2
-             action_path  DELETE  /api/v1/checkpoint/actions/:action_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Action.delete/2
-             action_path  GET     /api/v1/checkpoint/actions                                                             CentralGPSWebAPI.Controllers.Checkpoint.Action.list/2
+             activity_path  POST    /api/v1/checkpoint/activities/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Activity.create/2
+             activity_path  GET     /api/v1/checkpoint/activities/:activity_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Activity.read/2
+             activity_path  PUT     /api/v1/checkpoint/activities/:activity_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Activity.update/2
+             activity_path  DELETE  /api/v1/checkpoint/activities/:activity_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Activity.delete/2
+             activity_path  GET     /api/v1/checkpoint/activities                                                             CentralGPSWebAPI.Controllers.Checkpoint.Activity.list/2
              reason_path  POST    /api/v1/checkpoint/reasons/create                                                      CentralGPSWebAPI.Controllers.Checkpoint.Reason.create/2
              reason_path  GET     /api/v1/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.read/2
              reason_path  PUT     /api/v1/checkpoint/reasons/:reason_id                                                  CentralGPSWebAPI.Controllers.Checkpoint.Reason.update/2

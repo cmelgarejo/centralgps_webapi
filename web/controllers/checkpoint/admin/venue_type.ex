@@ -7,8 +7,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   def create(conn, _params) do
     try do
       _k = [ :configuration_id, :description, :image, :image_file ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.update(:reason_configuration_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_create
@@ -25,8 +25,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   def read(conn, _params) do
     try do
       _k = [ :venue_type_id ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_read
@@ -40,15 +40,15 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   def update(conn, _params) do
     try do
       _k = [ :venue_type_id, :configuration_id, :description, :image, :image_file ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
-      {row_count, result} = fn_api_venue_type_read (Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id]
+      {_, result} = fn_api_venue_type_read (Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id]
       if result.status do
         res = objectify_map result.res
         save_image_base64(_params.image, _params.image_file, res.venue_type_image)
-        {row_count, result} = fn_api_venue_type_update((Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id, _params.configuration_id,
+        {_, result} = fn_api_venue_type_update((Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id, _params.configuration_id,
           _params.description, _params.image])
       end
       json (conn |> put_status 200), result
@@ -61,8 +61,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   def delete(conn, _params) do
     try do
       _k = [ :venue_type_id ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_delete
@@ -75,8 +75,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
 
   def list(conn, _params) do
     try do
-      {headers, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
-      {row_count, result} = _params
+      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
+      {_, result} = _params
         |> Map.values
         |> fn_api_venue_type_list
         json (conn |> put_status 200), result

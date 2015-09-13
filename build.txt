@@ -1,0 +1,38 @@
+Compiled lib/centralgps_repo/centralgps/checkpoint/activity/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/mark/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/device/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/reason/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/venue/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/venue_type/commands.ex
+Compiled lib/centralgps_repo/centralgps/client/asset/commands.ex
+Compiled lib/centralgps_repo/centralgps/client/asset_roadmap/commands.ex
+Compiled lib/centralgps_repo/centralgps/client/roadmap/commands.ex
+Compiled lib/centralgps_repo/centralgps/client/roadmap_point/commands.ex
+Compiled lib/centralgps_repo/centralgps/client/roadmap_point_venue/commands.ex
+Compiled lib/centralgps_repo/centralgps/security/commands.ex
+Compiled lib/centralgps_repo/extensions/postgrex_json.ex
+Compiled lib/centralgps_webapi.ex
+Compiled web/web.ex
+Compiled lib/centralgps_repo/utilities.ex
+Compiled lib/centralgps_repo/repo.ex
+Compiled lib/centralgps_repo/centralgps/client/roadmap_point_venue/functions.ex
+Compiled lib/centralgps_repo/centralgps/client/roadmap_point/functions.ex
+Compiled lib/centralgps_repo/centralgps/client/roadmap/functions.ex
+Compiled lib/centralgps_repo/centralgps/security/functions.ex
+Compiled lib/centralgps_repo/centralgps/client/asset_roadmap/functions.ex
+Compiled lib/centralgps_repo/centralgps/client/asset/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/venue_type/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/venue/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/reason/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/mark/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/activity/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/device/functions.ex
+Compiled web/controllers/checkpoint/admin/reason.ex
+Compiled web/controllers/checkpoint/admin/activity.ex
+Compiled web/controllers/checkpoint/admin/venue.ex
+
+== Compilation error on file web/controllers/checkpoint/device/activities.ex ==
+** (CompileError) web/controllers/checkpoint/device/activities.ex:13: function row_count/0 undefined
+    (stdlib) lists.erl:1337: :lists.foreach/2
+    (stdlib) erl_eval.erl:669: :erl_eval.do_apply/6
+

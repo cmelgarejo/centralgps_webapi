@@ -9,6 +9,7 @@ use Mix.Config
 # Configures the endpoint
 config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   url: [host: "api.centralgps.net"],
+  # Uncomment on prod server & delete the next line of the same config
   #root: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.0.1",
   root: Path.expand("..", __DIR__),
   secret_key_base: "aLIFKvszPTOoXoAYQ3RL9qdUfmhEyEesWFMi5OwQd80sME26l3tyrZzb9digCZXj",

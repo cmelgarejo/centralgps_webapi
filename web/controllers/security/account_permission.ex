@@ -7,8 +7,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
   def create(conn, _params) do
     try do
       _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_permission_create
@@ -24,8 +24,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
   def delete(conn, _params) do
     try do
     _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = objectify_map(_params, _k)
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = objectify_map(_params, _k)
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_permission_delete
@@ -39,8 +39,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
   def check(conn, _params) do
     try do
       _k = [ :_auth_token, :_auth_type, :feature_code, :permission_code ]
-      {headers, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {row_count, result} = _params
+      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      {_, result} = _params
         |> Map.values
         |> fn_api_account_permission_check
         {response_code, result} = (if result.status, do: {200, result},
