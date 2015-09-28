@@ -3,7 +3,6 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
   import CentralGPS.Repo.Checkpoint.Activity.Functions
   import CentralGPS.Repo.Utilities
 
-
   def create(conn, _params) do
     try do
       _k = [ :configuration_id, :description ]
@@ -38,7 +37,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
 
   def update(conn, _params) do
     try do
-      _k = [ :activity_id, :configuration_id, :description ]
+      _k = [ :configuration_id, :description, :activity_id ]
       {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       _params = _params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))

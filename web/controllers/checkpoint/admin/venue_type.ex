@@ -9,7 +9,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
       _k = [ :configuration_id, :description, :image, :image_file ]
       {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
       {_, result} = _params
-        |> Map.update(:reason_configuration_id, nil, &(parse_int(&1)))
+        |> Map.update(:activity_configuration_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_create
         {response_code, result} = (if result.status, do: {201, result},

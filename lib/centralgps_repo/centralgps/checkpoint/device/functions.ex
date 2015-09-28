@@ -8,13 +8,13 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
     {row_count, hd(result)}
   end
 
-  def fn_chkapi_activity_list(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_activity_list, params, filter_keys)
+  def fn_chkapi_form_list(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_form_list, params, filter_keys)
     {row_count, hd(result)}
   end
 
-  def fn_chkapi_reason_list(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_reason_list, params, filter_keys)
+  def fn_chkapi_activity_list(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_activity_list, params, filter_keys)
     {row_count, hd(result)}
   end
 
@@ -33,8 +33,8 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
     {row_count, hd(result)}
   end
 
-  def fn_chkapi_register_position(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_register_position, params, filter_keys)
+  def fn_chkapi_record(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_record, params, filter_keys)
     {row_count, hd(result)}
   end
 

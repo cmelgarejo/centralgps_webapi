@@ -1,7 +1,7 @@
-Compiled lib/centralgps_repo/centralgps/checkpoint/activity/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/form/commands.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/mark/commands.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/device/commands.ex
-Compiled lib/centralgps_repo/centralgps/checkpoint/reason/commands.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/activity/commands.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/venue/commands.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/venue_type/commands.ex
 Compiled lib/centralgps_repo/centralgps/client/asset/commands.ex
@@ -23,12 +23,12 @@ Compiled lib/centralgps_repo/centralgps/client/asset_roadmap/functions.ex
 Compiled lib/centralgps_repo/centralgps/client/asset/functions.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/venue_type/functions.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/venue/functions.ex
-Compiled lib/centralgps_repo/centralgps/checkpoint/reason/functions.ex
-Compiled lib/centralgps_repo/centralgps/checkpoint/mark/functions.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/activity/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/mark/functions.ex
+Compiled lib/centralgps_repo/centralgps/checkpoint/form/functions.ex
 Compiled lib/centralgps_repo/centralgps/checkpoint/device/functions.ex
-Compiled web/controllers/checkpoint/admin/reason.ex
 Compiled web/controllers/checkpoint/admin/activity.ex
+Compiled web/controllers/checkpoint/admin/form.ex
 Compiled web/controllers/checkpoint/admin/venue.ex
 
 == Compilation error on file web/controllers/checkpoint/device/activities.ex ==

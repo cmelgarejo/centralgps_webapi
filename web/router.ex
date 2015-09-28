@@ -73,31 +73,31 @@ defmodule CentralGPSWebAPI.Router do
     pipe_through :api
     if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
       #Device
-      get     "/device/activities",                  Device.Activities,  :activities
-      get     "/device/activities/:_sync_token",     Device.Activities,  :activities_update
-      get     "/device/reasons",                  Device.Reasons,  :reasons
-      get     "/device/reasons/:_sync_token",     Device.Reasons,  :reasons_update
-      post    "/device/venues/create",            Device.Venues,   :venues_create
-      get     "/device/venues/:_sync_token",      Device.Venues,   :venues_update
-      get     "/device/venues",                   Device.Venues,   :venues
-      get     "/device/venues/:_sync_token",      Device.Venues,   :venues_update
-      get     "/device/venues/near",              Device.Venues,   :venues_near
-      post    "/device/position",                 Device.GPS,      :position
-      post    "/device/register",                 Device.Register, :register
-      get     "/device/venue_types",              Device.Venues,   :venue_types
-      get     "/device/venue_types/:_sync_token", Device.Venues,   :venue_types_update
+      get     "/device/forms",                    Device.Forms,       :forms
+      get     "/device/forms/:_sync_token",       Device.Forms,       :forms_update
+      get     "/device/activities",               Device.Activities,  :activities
+      get     "/device/activities/:_sync_token",  Device.Activities,  :activities_update
+      post    "/device/venues/create",            Device.Venues,      :venues_create
+      get     "/device/venues/:_sync_token",      Device.Venues,      :venues_update
+      get     "/device/venues",                   Device.Venues,      :venues
+      get     "/device/venues/:_sync_token",      Device.Venues,      :venues_update
+      get     "/device/venues/near",              Device.Venues,      :venues_near
+      post    "/device/position",                 Device.Records,     :record
+      post    "/device/register",                 Device.Register,    :register
+      get     "/device/venue_types",              Device.Venues,      :venue_types
+      get     "/device/venue_types/:_sync_token", Device.Venues,      :venue_types_update
+      #Form
+      post    "/form/create",      Checkpoint.Form, :create
+      get     "/form/:form_id",    Checkpoint.Form, :read
+      put     "/form/:form_id",    Checkpoint.Form, :update
+      delete  "/form/:form_id",    Checkpoint.Form, :delete
+      get     "/form/",            Checkpoint.Form, :list
       #Activities
-      post    "/activities/create",      Checkpoint.Activity, :create
-      get     "/activities/:activity_id",  Checkpoint.Activity, :read
-      put     "/activities/:activity_id",  Checkpoint.Activity, :update
-      delete  "/activities/:activity_id",  Checkpoint.Activity, :delete
-      get     "/activities/",            Checkpoint.Activity, :list
-      #Reasons
-      post    "/reasons/create",      Checkpoint.Reason, :create
-      get     "/reasons/:reason_id",  Checkpoint.Reason, :read
-      put     "/reasons/:reason_id",  Checkpoint.Reason, :update
-      delete  "/reasons/:reason_id",  Checkpoint.Reason, :delete
-      get     "/reasons/",            Checkpoint.Reason, :list
+      post    "/activity/create",        Checkpoint.Activity, :create
+      get     "/activity/:activity_id",  Checkpoint.Activity, :read
+      put     "/activity/:activity_id",  Checkpoint.Activity, :update
+      delete  "/activity/:activity_id",  Checkpoint.Activity, :delete
+      get     "/activity/",              Checkpoint.Activity, :list
       #Venues
       post    "/venues/create",     Checkpoint.Venue, :create
       get     "/venues/:venue_id",  Checkpoint.Venue, :read

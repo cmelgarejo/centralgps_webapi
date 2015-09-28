@@ -1,13 +1,13 @@
-defmodule CentralGPSWebAPI.Controllers.Device.GPS do
+defmodule CentralGPSWebAPI.Controllers.Device.Records do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Checkpoint.Device.Functions
 
-  def position(conn, params) do
+  def record(conn, params) do
     try do
-      _k = [ :accuracy, :activity_id, :address, :altitude,
+      _k = [ :accuracy, :form_id, :address, :altitude,
         :bearing, :comment, :lat, :lon, :mark, :position_at,
-        :reason_id, :speed, :status, :venue_id, :xtra_info ]
+        :activity_id, :speed, :status, :xtra_info ]
       {_h, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
       _ip_h = :"x-forwarded-for"
       _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
@@ -20,7 +20,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.GPS do
         |> (Map.update :lon, 0, fn(v)->(if !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
         |> (Map.put :_ip_port, _ip)
         |> Map.values #|> Enum.concat([nil]) #add xtra_info
-        |> fn_chkapi_register_position
+        |> fn_chkapi_record
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
     rescue
