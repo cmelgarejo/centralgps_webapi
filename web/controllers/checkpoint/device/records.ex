@@ -1,4 +1,4 @@
-defmodule CentralGPSWebAPI.Controllers.Device.Records do
+defmodule CentralGPSWebAPI.Controllers.Device.Record do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Checkpoint.Device.Functions
@@ -12,12 +12,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.Records do
       _ip_h = :"x-forwarded-for"
       _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
       {_, result} = params
-        |> (Map.update :position_at, nil,
-          &(if (elem Ecto.DateTime.cast(&1), 0) == :ok,
-            do: elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(&1),1)),1),
-            else: nil))
-        |> (Map.update :lat, 0, fn(v)->(if !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
-        |> (Map.update :lon, 0, fn(v)->(if !is_float(v), do: elem(Float.parse(v), 0), else: v) end)
+        |>  Map.update(:position_at,  nil, &(parse_datetime(&1)))
+        |>  Map.update(:lat,          nil, &(parse_float(&1)))
+        |>  Map.update(:lon,          nil, &(parse_float(&1)))
+        |>  Map.update(:accuracy,     nil, &(parse_datetime(&1)))
+        |>  Map.update(:altitude,     nil, &(parse_datetime(&1)))
         |> (Map.put :_ip_port, _ip)
         |> Map.values #|> Enum.concat([nil]) #add xtra_info
         |> fn_chkapi_record

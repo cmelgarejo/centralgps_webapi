@@ -73,19 +73,35 @@ defmodule CentralGPSWebAPI.Router do
     pipe_through :api
     if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
       #Device
-      get     "/device/forms",                    Device.Forms,       :forms
-      get     "/device/forms/:_sync_token",       Device.Forms,       :forms_update
-      get     "/device/activities",               Device.Activities,  :activities
-      get     "/device/activities/:_sync_token",  Device.Activities,  :activities_update
-      post    "/device/venues/create",            Device.Venues,      :venues_create
-      get     "/device/venues/:_sync_token",      Device.Venues,      :venues_update
-      get     "/device/venues",                   Device.Venues,      :venues
-      get     "/device/venues/:_sync_token",      Device.Venues,      :venues_update
-      get     "/device/venues/near",              Device.Venues,      :venues_near
-      post    "/device/position",                 Device.Records,     :record
-      post    "/device/register",                 Device.Register,    :register
-      get     "/device/venue_types",              Device.Venues,      :venue_types
-      get     "/device/venue_types/:_sync_token", Device.Venues,      :venue_types_update
+      post    "/device/register",            Device.Register, :register
+      post    "/device/record",              Device.Record,   :record
+      post    "/device/venues/create",       Device.Venues,   :venue_create
+      post    "/device/mark",                Device.Marks,    :register_mark
+      post    "/device/mark_activity",       Device.Marks,    :register_mark_activity
+      post    "/device/mark_activity_item",  Device.Marks,    :register_mark_activity_item
+      post    "/device/mark_activity_image", Device.Marks,    :register_mark_activity_image
+      put     "/device/mark",                Device.Marks,    :update_mark
+      put     "/device/mark_activity",       Device.Marks,    :update_mark_activity
+      put     "/device/mark_activity_item",  Device.Marks,    :update_mark_activity_item
+      put     "/device/mark_activity_image", Device.Marks,    :update_mark_activity_image
+      #Lists
+      get     "/device/forms",                       Device.Forms,          :forms
+      get     "/device/forms/:_sync_token",          Device.Forms,          :forms_update
+      get     "/device/activities",                  Device.Activities,     :activities
+      get     "/device/activities/:_sync_token",     Device.Activities,     :activities_update
+      get     "/device/items",                       Device.Items,          :items
+      get     "/device/items/:_sync_token",          Device.Items,          :items_update
+      get     "/device/measure_unit",                Device.MeasureUnit,    :measure_units
+      get     "/device/measure_unit/:_sync_token",   Device.MeasureUnit,    :measure_units_update
+      get     "/device/client",                      Device.Clients,        :clients
+      get     "/device/client/:_sync_token",         Device.Clients,        :clients_update
+      get     "/device/client_contact",              Device.ClientContacts, :client_contacts
+      get     "/device/client_contact/:_sync_token", Device.ClientContacts, :client_contacts_update
+      get     "/device/venue_types",                 Device.Venues,         :venue_types
+      get     "/device/venue_types/:_sync_token",    Device.Venues,         :venue_types_update
+      get     "/device/venues",                      Device.Venues,         :venues
+      get     "/device/venues/:_sync_token",         Device.Venues,         :venues_update
+      get     "/device/venues/near",                 Device.Venues,         :venues_near
       #Form
       post    "/form/create",      Checkpoint.Form, :create
       get     "/form/:form_id",    Checkpoint.Form, :read

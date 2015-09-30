@@ -82,7 +82,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
     end
   end
 
-  def venues_create(conn, _params) do
+  def venue_create(conn, _params) do
     try do
       _k = [ :configuration_id, :venue_type_id, :name, :code, :description, :image, :image_file,
         :lat, :lon, :detection_radius ]
