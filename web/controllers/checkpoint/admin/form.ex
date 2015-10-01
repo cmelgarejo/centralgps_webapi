@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Form do
   import CentralGPS.Repo.Utilities
 
 
-  def create(conn, _params) do
+  def create(conn, params) do
     try do
-      _k = [ :configuration_id, :description ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :configuration_id, :description ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_form_create
@@ -21,11 +21,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Form do
     end
   end
 
-  def read(conn, _params) do
+  def read(conn, params) do
     try do
-      _k = [ :form_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :form_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:form_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_form_read
@@ -36,14 +36,14 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Form do
     end
   end
 
-  def update(conn, _params) do
+  def update(conn, params) do
     try do
-      _k = [ :form_id, :configuration_id, :description ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      keys = [ :form_id, :configuration_id, :description ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:form_id, nil, &(parse_int(&1)))
-      {_, result} = fn_api_form_update((Map.drop(_params, _k) |> Map.values) ++ [_params.form_id, _params.configuration_id, _params.description])
+      {_, result} = fn_api_form_update((Map.drop(params, keys) |> Map.values) ++ [params.form_id, params.configuration_id, params.description])
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -51,11 +51,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Form do
     end
   end
 
-  def delete(conn, _params) do
+  def delete(conn, params) do
     try do
-      _k = [ :form_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :form_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:form_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_form_delete
@@ -66,10 +66,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Form do
     end
   end
 
-  def list(conn, _params) do
+  def list(conn, params) do
     try do
-      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
-      {_, result} = _params
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params)
+      {_, result} = params
         |> Map.values
         |> fn_api_form_list
         json (conn |> put_status 200), result

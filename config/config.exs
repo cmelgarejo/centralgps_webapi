@@ -15,11 +15,10 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   secret_key_base: "aLIFKvszPTOoXoAYQ3RL9qdUfmhEyEesWFMi5OwQd80sME26l3tyrZzb9digCZXj",
   debug_errors: false,
   code_reloader: false,
-  server: true
+  server: true,
+  checkpoint_enabled: true
   #pubsub: [name: CentralGPSWebAPI.PubSub,
   #         adapter: Phoenix.PubSub.PG2]
-
-  config :app_config, checkpoint_enabled: true
 
   # Configures Elixir's Logger
   config :logger, utc_log: true

@@ -3,12 +3,12 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
   import CentralGPS.Repo.Client.Roadmap.Functions
   import CentralGPS.Repo.Utilities
 
-  def create(conn, _params) do
+  def create(conn, params) do
     try do
-      _k = [ :name, :description, :days_of_week, :one_time_date, :repetition,
+      keys = [ :name, :description, :days_of_week, :one_time_date, :repetition,
        :start_time, :end_time, :public, :active, :xtra_info ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:days_of_week,  nil, &(parse_integer_list(&1)))
         |> Map.update(:one_time_date, nil, &(parse_date(&1)))
         |> Map.update(:repetition,    nil, &(parse_int(&1)))
@@ -17,10 +17,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
         |> Map.update(:public,        nil, &(parse_boolean(&1)))
         |> Map.update(:active,        nil, &(parse_boolean(&1)))
         |> Map.update(:xtra_info, nil, &(&1))
-      {_, result} = fn_api_roadmap_create((Map.drop(_params, _k) |> Map.values) ++
-        [ _params.name, _params.description, _params.days_of_week, _params.repetition,
-          _params.one_time_date, _params.start_time, _params.end_time, _params.public,
-          _params.active, _params.xtra_info ])
+      {_, result} = fn_api_roadmap_create((Map.drop(params, keys) |> Map.values) ++
+        [ params.name, params.description, params.days_of_week, params.repetition,
+          params.one_time_date, params.start_time, params.end_time, params.public,
+          params.active, params.xtra_info ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       json (conn |> put_status response_code), result
@@ -30,11 +30,11 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
     end
   end
 
-  def read(conn, _params) do
+  def read(conn, params) do
     try do
-      _k = [ :roadmap_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :roadmap_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_read
@@ -45,12 +45,12 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
     end
   end
 
-  def update(conn, _params) do
+  def update(conn, params) do
     try do
-      _k = [ :roadmap_id, :name, :description, :days_of_week, :one_time_date, :repetition,
+      keys = [ :roadmap_id, :name, :description, :days_of_week, :one_time_date, :repetition,
         :start_time, :end_time, :public, :active, :xtra_info ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
       |> Map.update(:roadmap_id,    nil, &(parse_int(&1)))
       |> Map.update(:days_of_week,  nil, &(parse_integer_list(&1)))
       |> Map.update(:one_time_date, nil, &(parse_date(&1)))
@@ -59,10 +59,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
       |> Map.update(:end_time,      nil, &(parse_time(&1)))
       |> Map.update(:public,        nil, &(parse_boolean(&1)))
       |> Map.update(:active,        nil, &(parse_boolean(&1)))
-        {_, result} = fn_api_roadmap_update((Map.drop(_params, _k) |> Map.values) ++
-          [ _params.roadmap_id, _params.name, _params.description, _params.days_of_week,
-            _params.repetition, _params.one_time_date, _params.start_time, _params.end_time,
-            _params.public, _params.active, _params.xtra_info ])
+        {_, result} = fn_api_roadmap_update((Map.drop(params, keys) |> Map.values) ++
+          [ params.roadmap_id, params.name, params.description, params.days_of_week,
+            params.repetition, params.one_time_date, params.start_time, params.end_time,
+            params.public, params.active, params.xtra_info ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -70,11 +70,11 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
     end
   end
 
-  def delete(conn, _params) do
+  def delete(conn, params) do
     try do
-      _k = [ :roadmap_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :roadmap_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_delete
@@ -85,10 +85,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
     end
   end
 
-  def list(conn, _params) do
+  def list(conn, params) do
     try do
-      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
-      {_, result} = _params
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params)
+      {_, result} = params
         |> Map.values
         |> fn_api_roadmap_list
         json (conn |> put_status 200), result

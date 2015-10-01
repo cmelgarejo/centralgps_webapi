@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
   import CentralGPS.Repo.Security.Functions
 
 
-  def create(conn, _params) do
+  def create(conn, params) do
     try do
-      _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_permission_create
@@ -21,11 +21,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
     end
   end
 
-  def delete(conn, _params) do
+  def delete(conn, params) do
     try do
-    _k = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = objectify_map(_params, _k)
+    keys = [ :_auth_token, :_auth_type, :account_id, :account_type, :code ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = objectify_map(params, keys)
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_permission_delete
@@ -36,11 +36,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
     end
   end
 
-  def check(conn, _params) do
+  def check(conn, params) do
     try do
-      _k = [ :_auth_token, :_auth_type, :feature_code, :permission_code ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :_auth_token, :_auth_type, :feature_code, :permission_code ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.values
         |> fn_api_account_permission_check
         {response_code, result} = (if result.status, do: {200, result},

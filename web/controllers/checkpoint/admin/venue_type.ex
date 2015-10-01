@@ -4,17 +4,17 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   import CentralGPS.Repo.Utilities
 
 
-  def create(conn, _params) do
+  def create(conn, params) do
     try do
-      _k = [ :configuration_id, :description, :image, :image_file ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :configuration_id, :description, :image, :image_file ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:activity_configuration_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_create
         {response_code, result} = (if result.status, do: {201, result},
                                    else: {200, result |> Map.take [:status, :msg]})
-        if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image_base64(_params.image, _params.image_file)
+        if (response_code == 201 && Map.has_key?(result, :image_file)), do: save_image_base64(params.image, params.image_file)
         json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -22,11 +22,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
     end
   end
 
-  def read(conn, _params) do
+  def read(conn, params) do
     try do
-      _k = [ :venue_type_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :venue_type_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_read
@@ -37,19 +37,19 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
     end
   end
 
-  def update(conn, _params) do
+  def update(conn, params) do
     try do
-      _k = [ :venue_type_id, :configuration_id, :description, :image, :image_file ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      keys = [ :venue_type_id, :configuration_id, :description, :image, :image_file ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
-      {_, result} = fn_api_venue_type_read (Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id]
+      {_, result} = fn_api_venue_type_read (Map.drop(params, keys) |> Map.values) ++ [params.venue_type_id]
       if result.status do
         res = objectify_map result.res
-        save_image_base64(_params.image, _params.image_file, res.venue_type_image)
-        {_, result} = fn_api_venue_type_update((Map.drop(_params, _k) |> Map.values) ++ [_params.venue_type_id, _params.configuration_id,
-          _params.description, _params.image])
+        save_image_base64(params.image, params.image_file, res.venue_type_image)
+        {_, result} = fn_api_venue_type_update((Map.drop(params, keys) |> Map.values) ++ [params.venue_type_id, params.configuration_id,
+          params.description, params.image])
       end
       json (conn |> put_status 200), result
     rescue
@@ -58,11 +58,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
     end
   end
 
-  def delete(conn, _params) do
+  def delete(conn, params) do
     try do
-      _k = [ :venue_type_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :venue_type_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_type_delete
@@ -73,10 +73,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
     end
   end
 
-  def list(conn, _params) do
+  def list(conn, params) do
     try do
-      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
-      {_, result} = _params
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params)
+      {_, result} = params
         |> Map.values
         |> fn_api_venue_type_list
         json (conn |> put_status 200), result

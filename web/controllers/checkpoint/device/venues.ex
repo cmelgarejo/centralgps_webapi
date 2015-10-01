@@ -20,8 +20,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
 
   def venue_types_update(conn, params) do
     try do
-      _k = [ :_sync_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
+      keys = [ :sync_token ]
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {row_count, result} = params
       |> Map.values #get: auth and sync tokens
       |> Enum.concat(["U"]) #and UPDATE form
@@ -51,8 +51,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
 
   def venues_update(conn, params) do
     try do
-      _k = [ :_sync_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
+      keys = [ :sync_token ]
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {row_count, result} = params
       |> Map.values #get: auth and sync tokens
       |> Enum.concat(["U"]) #and UPDATE form
@@ -67,8 +67,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
 
   def venues_near(conn, params) do
     try do
-      _k = [ :_sync_token, :lat, :lon ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
+      keys = [ :sync_token, :lat, :lon ]
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {row_count, result} = params
       |> (Map.update :lat, Decimal.new(0), fn(v)->(Decimal.new v) end) #decimal
       |> (Map.update :lon, Decimal.new(0), fn(v)->(Decimal.new v) end) #decimal
@@ -82,24 +82,24 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
     end
   end
 
-  def venue_create(conn, _params) do
+  def venue_create(conn, params) do
     try do
-      _k = [ :configuration_id, :venue_type_id, :name, :code, :description, :image, :image_file,
+      keys = [ :configuration_id, :venue_type_id, :name, :code, :description, :image, :image_file,
         :lat, :lon, :detection_radius ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:configuration_id, nil,   &(parse_int(&1)))
         |> Map.update(:venue_type_id,    nil,   &(parse_int(&1)))
         |> Map.update(:detection_radius, nil,   &(parse_int(&1)))
         |> Map.update(:lat,              nil,   &(parse_float(&1)))
         |> Map.update(:lon,              nil,   &(parse_float(&1)))
-      {_, result} = fn_chkapi_venue_create((Map.drop(_params, _k) |> Map.values) ++ [_params.configuration_id,
-        _params.venue_type_id, _params.name, _params.code, _params.description,
-        _params.image, _params.lat, _params.lon, _params.detection_radius,
+      {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++ [params.configuration_id,
+        params.venue_type_id, params.name, params.code, params.description,
+        params.image, params.lat, params.lon, params.detection_radius,
         false])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(_params, :image_file)), do: save_image_base64(_params.image, _params.image_file)
+      if (response_code == 201 && Map.has_key?(params, :image_file)), do: save_image_base64(params.image, params.image_file)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}

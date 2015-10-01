@@ -20,8 +20,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Items do
 
   def items_update(conn, params) do
     try do
-      _k = [ :_sync_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
+      keys = [ :sync_token ]
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {row_count, result} = params
       |> Map.values #get: auth and sync tokens
       |> Enum.concat(["U"]) #and UPDATE form

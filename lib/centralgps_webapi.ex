@@ -28,8 +28,8 @@ defmodule CentralGPSWebAPI do
     :ok
   end
 
-  def app_config(name) do
-    Application.get_env(:app_config, name)
+  def api_config(name) do
+    Application.get_env(:central_g_p_s_web_a_p_i, name)
   end
-  
+
 end

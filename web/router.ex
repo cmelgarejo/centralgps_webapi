@@ -71,7 +71,7 @@ defmodule CentralGPSWebAPI.Router do
 
   scope "/api/v1/checkpoint", CentralGPSWebAPI.Controllers do
     pipe_through :api
-    if CentralGPSWebAPI.app_config(:checkpoint_enabled) do
+    #if CentralGPSWebAPI.api_config(:checkpoint_enabled) do
       #Device
       post    "/device/register",            Device.Register, :register
       post    "/device/record",              Device.Record,   :record
@@ -86,34 +86,66 @@ defmodule CentralGPSWebAPI.Router do
       put     "/device/mark_activity_image", Device.Marks,    :update_mark_activity_image
       #Lists
       get     "/device/forms",                       Device.Forms,          :forms
-      get     "/device/forms/:_sync_token",          Device.Forms,          :forms_update
+      get     "/device/forms/:sync_token",           Device.Forms,          :forms_update
+      get     "/device/form_templates",              Device.FormTemplates,  :form_templates
+      get     "/device/form_templates/:sync_token",  Device.FormTemplates,  :form_templates_update
       get     "/device/activities",                  Device.Activities,     :activities
-      get     "/device/activities/:_sync_token",     Device.Activities,     :activities_update
+      get     "/device/activities/:sync_token",      Device.Activities,     :activities_update
       get     "/device/items",                       Device.Items,          :items
-      get     "/device/items/:_sync_token",          Device.Items,          :items_update
-      get     "/device/measure_unit",                Device.MeasureUnit,    :measure_units
-      get     "/device/measure_unit/:_sync_token",   Device.MeasureUnit,    :measure_units_update
-      get     "/device/client",                      Device.Clients,        :clients
-      get     "/device/client/:_sync_token",         Device.Clients,        :clients_update
-      get     "/device/client_contact",              Device.ClientContacts, :client_contacts
-      get     "/device/client_contact/:_sync_token", Device.ClientContacts, :client_contacts_update
+      get     "/device/items/:sync_token",           Device.Items,          :items_update
+      get     "/device/measure_units",               Device.MeasureUnits,   :measure_units
+      get     "/device/measure_units/:sync_token",   Device.MeasureUnits,   :measure_units_update
+      get     "/device/clients",                      Device.Clients,        :clients
+      get     "/device/clients/:sync_token",          Device.Clients,        :clients_update
+      get     "/device/client_contacts",              Device.ClientContacts, :client_contacts
+      get     "/device/client_contacts/:sync_token",  Device.ClientContacts, :client_contacts_update
       get     "/device/venue_types",                 Device.Venues,         :venue_types
-      get     "/device/venue_types/:_sync_token",    Device.Venues,         :venue_types_update
+      get     "/device/venue_types/:sync_token",     Device.Venues,         :venue_types_update
       get     "/device/venues",                      Device.Venues,         :venues
-      get     "/device/venues/:_sync_token",         Device.Venues,         :venues_update
+      get     "/device/venues/:sync_token",          Device.Venues,         :venues_update
       get     "/device/venues/near",                 Device.Venues,         :venues_near
+      #Client
+      post    "/client/create",      Checkpoint.Client, :create
+      get     "/client/:form_id",    Checkpoint.Client, :read
+      put     "/client/:form_id",    Checkpoint.Client, :update
+      delete  "/client/:form_id",    Checkpoint.Client, :delete
+      get     "/client/",            Checkpoint.Client, :list
+      #Client Contact
+      post    "/client_contac/create",      Checkpoint.ClientContact, :create
+      get     "/client_contac/:form_id",    Checkpoint.ClientContact, :read
+      put     "/client_contac/:form_id",    Checkpoint.ClientContact, :update
+      delete  "/client_contac/:form_id",    Checkpoint.ClientContact, :delete
+      get     "/client_contac/",            Checkpoint.ClientContact, :list
       #Form
       post    "/form/create",      Checkpoint.Form, :create
       get     "/form/:form_id",    Checkpoint.Form, :read
       put     "/form/:form_id",    Checkpoint.Form, :update
       delete  "/form/:form_id",    Checkpoint.Form, :delete
       get     "/form/",            Checkpoint.Form, :list
+      #Form Templates
+      post    "/form_template/create",      Checkpoint.FormTemplate, :create
+      get     "/form_template/:form_id",    Checkpoint.FormTemplate, :read
+      put     "/form_template/:form_id",    Checkpoint.FormTemplate, :update
+      delete  "/form_template/:form_id",    Checkpoint.FormTemplate, :delete
+      get     "/form_template/",            Checkpoint.FormTemplate, :list
       #Activities
       post    "/activity/create",        Checkpoint.Activity, :create
       get     "/activity/:activity_id",  Checkpoint.Activity, :read
       put     "/activity/:activity_id",  Checkpoint.Activity, :update
       delete  "/activity/:activity_id",  Checkpoint.Activity, :delete
       get     "/activity/",              Checkpoint.Activity, :list
+      #Items
+      post    "/item/create",      Checkpoint.Item, :create
+      get     "/item/:form_id",    Checkpoint.Item, :read
+      put     "/item/:form_id",    Checkpoint.Item, :update
+      delete  "/item/:form_id",    Checkpoint.Item, :delete
+      get     "/item/",            Checkpoint.Item, :list
+      #Form
+      post    "/measure_unit/create",      Checkpoint.MeasureUnit, :create
+      get     "/measure_unit/:form_id",    Checkpoint.MeasureUnit, :read
+      put     "/measure_unit/:form_id",    Checkpoint.MeasureUnit, :update
+      delete  "/measure_unit/:form_id",    Checkpoint.MeasureUnit, :delete
+      get     "/measure_unit/",            Checkpoint.MeasureUnit, :list
       #Venues
       post    "/venues/create",     Checkpoint.Venue, :create
       get     "/venues/:venue_id",  Checkpoint.Venue, :read
@@ -131,6 +163,6 @@ defmodule CentralGPSWebAPI.Router do
       #Roadmap point <-> venue association
       post    "/roadmap_point_venue", Checkpoint.RoadmapPointVenue, :create
       delete  "/roadmap_point_venue/:roadmap_point_id", Checkpoint.RoadmapPointVenue, :delete
-    end
+    #end
   end
 end

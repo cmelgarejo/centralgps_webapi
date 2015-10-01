@@ -3,31 +3,31 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Security.Functions
 
-  def login(conn, _params) do
+  def login(conn, params) do
     try do
-      _k = [ :_login_user, :_password, :auth_type, :session_status ]
+      keys = [ :_login_user, :_password, :auth_type, :session_status ]
       headers = Enum.into(conn.req_headers, %{}) |> objectify_map #Create a map of headers
-      _params = objectify_map(_params)
-      _params = (if !Map.has_key?(_params, :session_status),
-                do: Map.put(_params, :session_status, true),
-              else: (if !is_boolean(_params.session_status), do: Map.put(_params, :session_status, false), else: _params))
-              |> objectify_map(_k)
-      {_, result} = _params
+      params = objectify_map(params)
+      params = (if !Map.has_key?(params, :session_status),
+                do: Map.put(params, :session_status, true),
+              else: (if !is_boolean(params.session_status), do: Map.put(params, :session_status, false), else: params))
+              |> objectify_map(keys)
+      {_, result} = params
         |> Map.update(:_login_user,    nil,   fn(v)->(base64_decode v) end)
         |> Map.update(:_password,      nil,   fn(v)->(base64_decode v) end)
         |> Map.update(:session_status, false, fn(v)->(if !is_nil(v) && !is_boolean(v), do: false, else: v) end) #casting session_status to atom will ensure boolean conversion in pgsql
         |> (Map.put :the_app_name,
             (if Map.has_key?(headers,:"x-requested-with"),
               do: to_string(headers[:"x-requested-with"]),
-              else: (if Map.has_key?(_params, :the_app_name),
-                      do: _params._the_app_name, else: nil)))
+              else: (if Map.has_key?(params, :the_app_name),
+                      do: params._the_app_name, else: nil)))
         |> (Map.put :the_ip_port,
             (if Map.has_key?(headers,:"x-forwarded-for"),
               do: to_string(headers[:"x-forwarded-for"]),
-              else: (if Map.has_key?(_params, :the_ip_port),
-                      do: _params._the_ip_port, else: nil)))
-        |> (Map.put :xtra_info, (if Map.has_key?(_params, :xtra_info),
-                                  do: _params._xtra_info, else: nil))
+              else: (if Map.has_key?(params, :the_ip_port),
+                      do: params._the_ip_port, else: nil)))
+        |> (Map.put :xtra_info, (if Map.has_key?(params, :xtra_info),
+                                  do: params._xtra_info, else: nil))
         |> Map.values
         |> fn_api_login
         {response_code, result} = (if result.status, do: {201, result},
@@ -39,10 +39,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Login do
     end
   end
 
-  def logout(conn, _params) do
+  def logout(conn, params) do
     try do
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params)
-      {_, result} = _params
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params)
+      {_, result} = params
         |> Map.values
         |> fn_api_logout
       json (conn |> put_status 200), result

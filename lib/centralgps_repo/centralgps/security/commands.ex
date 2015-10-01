@@ -1,6 +1,6 @@
 defmodule CentralGPS.Repo.Security.Commands do
   #DB Definition: security.fn_api_login (_login_user, _password, _auth_type char, _session_status boolean, _the_app_name, _the_ip_port, _xtra_info) RETURNS security.record_type_login
-  #Input JSON: _k = [ :_login_user, :_password, :auth_type, :session_status ]
+  #Input JSON: keys = [ :_login_user, :_password, :auth_type, :session_status ]
   def cmd_fn_api_login,
     do: "SELECT status, msg, res FROM security.fn_api_login ($1, $2, $3, $4::boolean, $5, $6, $7::jsonb);"
 

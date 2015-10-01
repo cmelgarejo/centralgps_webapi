@@ -5,11 +5,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
 
   def register_mark(conn, params) do
     try do
-      _k = [ :token, :form_id, :venue_id, :lat, :lon, :accuracy, :altitude,
+      keys = [ :token, :form_id, :venue_id, :lat, :lon, :accuracy, :altitude,
         :notes, :address, :executed_at, :finished_at, :position_at]
-      {_h, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
-      _ip_h = :"x-forwarded-for"
-      _ip = if Map.has_key?(_h,_ip_h), do: to_string(_h[_ip_h]), else: nil
+      {headers, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
+      ip_header = :"x-forwarded-for"
+      ip = if Map.has_key?(headers,ip_header), do: to_string(headers[ip_header]), else: nil
       {_, result} = params
         |>  Map.update(:executed_at,  nil, &(parse_datetime(&1)))
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
@@ -18,7 +18,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:lon,          nil, &(parse_float(&1)))
         |>  Map.update(:accuracy,     nil, &(parse_datetime(&1)))
         |>  Map.update(:altitude,     nil, &(parse_datetime(&1)))
-        |> (Map.put :_ip_port, _ip)
+        |> (Map.put :_ip_port, ip)
         |> fn_chkapi_record
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result

@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
   import CentralGPS.Repo.Security.Functions
 
 
-  def create(conn, _params) do
+  def create(conn, params) do
     try do
-      _k = [ :account_id, :account_type, :role_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :account_id, :account_type, :role_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.update(:role_id,    nil, &(parse_int(&1)))
         |> Map.values
@@ -22,11 +22,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
     end
   end
 
-  def delete(conn, _params) do
+  def delete(conn, params) do
     try do
-      _k = [ :account_id, :account_type, :role_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :account_id, :account_type, :role_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.update(:role_id,    nil, &(parse_int(&1)))
         |> Map.values

@@ -3,16 +3,16 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
   import CentralGPS.Repo.Client.AssetRoadmap.Functions
   import CentralGPS.Repo.Utilities
 
-  def create(conn, _params) do
+  def create(conn, params) do
     try do
-      _k = [ :asset_id, :roadmap_id, :emails, :phones, :alert ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      keys = [ :asset_id, :roadmap_id, :emails, :phones, :alert ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
         |> Map.update(:asset_id,          nil, &(parse_float(&1)))
         |> Map.update(:alert,             nil, &(parse_boolean(&1)))
-      {_, result} = fn_api_asset_roadmap_create((Map.drop(_params, _k) |> Map.values) ++
-        [ _params.asset_id, _params.roadmap_id, _params.emails, _params.phones, _params.alert ])
+      {_, result} = fn_api_asset_roadmap_create((Map.drop(params, keys) |> Map.values) ++
+        [ params.asset_id, params.roadmap_id, params.emails, params.phones, params.alert ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       json (conn |> put_status response_code), result
@@ -22,16 +22,16 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
     end
   end
 
-  def read(conn, _params) do
+  def read(conn, params) do
     try do
-      _k = [ :asset_id, :roadmap_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      keys = [ :asset_id, :roadmap_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:asset_id,   nil, &(parse_int(&1)))
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
       {_, result} =
-        fn_api_asset_roadmap_read (Map.drop(_params, _k) |> Map.values) ++
-          [ _params.asset_id, _params.roadmap_id ]
+        fn_api_asset_roadmap_read (Map.drop(params, keys) |> Map.values) ++
+          [ params.asset_id, params.roadmap_id ]
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -39,16 +39,16 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
     end
   end
 
-  def update(conn, _params) do
+  def update(conn, params) do
     try do
-      _k = [ :asset_id, :roadmap_id, :emails, :phones, :alert ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      keys = [ :asset_id, :roadmap_id, :emails, :phones, :alert ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
         |> Map.update(:asset_id,          nil, &(parse_float(&1)))
         |> Map.update(:alert,             nil, &(parse_boolean(&1)))
-      {_, result} = fn_api_asset_roadmap_update((Map.drop(_params, _k) |> Map.values) ++
-        [ _params.asset_id, _params.roadmap_id, _params.emails, _params.phones, _params.alert ])
+      {_, result} = fn_api_asset_roadmap_update((Map.drop(params, keys) |> Map.values) ++
+        [ params.asset_id, params.roadmap_id, params.emails, params.phones, params.alert ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -56,16 +56,16 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
     end
   end
 
-  def delete(conn, _params) do
+  def delete(conn, params) do
     try do
-      _k = [ :asset_id, :roadmap_id ]
-      {_, _params} = auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      _params = _params
+      keys = [ :asset_id, :roadmap_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:asset_id,   nil, &(parse_int(&1)))
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
       {_, result} =
-        fn_api_asset_roadmap_delete (Map.drop(_params, _k) |> Map.values) ++
-          [ _params.asset_id, _params.roadmap_id ]
+        fn_api_asset_roadmap_delete (Map.drop(params, keys) |> Map.values) ++
+          [ params.asset_id, params.roadmap_id ]
         json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -73,13 +73,13 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
     end
   end
 
-  def list(conn, _params) do
+  def list(conn, params) do
     try do
-      _k = [ :asset_id ]
-      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
+      keys = [ :asset_id ]
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} =
-        fn_api_asset_roadmap_list (Map.drop(_params, _k) |> Map.values) ++
-          [ parse_int(_params.asset_id) ]
+        fn_api_asset_roadmap_list (Map.drop(params, keys) |> Map.values) ++
+          [ parse_int(params.asset_id) ]
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -87,10 +87,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
     end
   end
 
-  def all_list(conn, _params) do
+  def all_list(conn, params) do
     try do
-      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params)
-      {_, result} = _params
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params)
+      {_, result} = params
         |> Map.values
         |> fn_api_asset_roadmap_all_list
       json (conn |> put_status 200), result

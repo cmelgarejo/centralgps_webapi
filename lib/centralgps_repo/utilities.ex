@@ -20,8 +20,8 @@ defmodule CentralGPS.Repo.Utilities do
       headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
       if !Map.has_key?(headers, :authorization),
         do: (raise ArgumentError, message: "missing: authorization token")
-      _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
-      auth = Regex.named_captures(_regex, headers.authorization)
+      regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+      auth = Regex.named_captures(regex, headers.authorization)
       if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
       auth = objectify_map(auth)
       params = objectify_map(params)
@@ -79,8 +79,8 @@ defmodule CentralGPS.Repo.Utilities do
       headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
       if !Map.has_key?(headers, :authorization),
         do: (raise ArgumentError, message: "missing: authorization token")
-      _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
-      auth = Regex.named_captures(_regex, headers.authorization)
+      regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+      auth = Regex.named_captures(regex, headers.authorization)
       if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
       auth = objectify_map(auth)
       params = objectify_map(params)
@@ -124,8 +124,8 @@ defmodule CentralGPS.Repo.Utilities do
       headers = Enum.into(headers, %{}) |> objectify_map #Create a map of headers
       if !Map.has_key?(headers, :authorization),
         do: (raise ArgumentError, message: "missing: authorization token")
-      _regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
-      auth = Regex.named_captures(_regex, headers.authorization)
+      regex = ~r/^(?<tag>CentralGPS)\stoken=(?<token>.*).type=(?<type>.*)/
+      auth = Regex.named_captures(regex, headers.authorization)
       if auth == nil, do: auth = %{tag: nil, token: nil, type: nil}
       auth = objectify_map(auth)
       params =  objectify_map(params)
@@ -154,12 +154,12 @@ defmodule CentralGPS.Repo.Utilities do
   Pretty prints any error you pass on to this func.
 
   ex  : exception object
-  _env: __ENV__ object of the function
+  env: __ENV__ object of the function
   vars: a map with all the vars you want to control. i.e: %{var1: var1}
   """
-  def error_logger(ex, _env, vars \\ []) do
+  def error_logger(ex, env, vars \\ []) do
     require Logger
-    env = Macro.Env.stacktrace(_env) |> hd
+    env = Macro.Env.stacktrace(env) |> hd
     message = "[#{env |> elem 0}.#{env |> elem 1}]: #{inspect ex}
     file: #{env |> elem(3) |> hd |> elem (1)}
     line: #{env |> elem(3) |> tl |> hd |> elem(1)}
@@ -184,7 +184,7 @@ defmodule CentralGPS.Repo.Utilities do
   def objectify_map(map, filter_keys \\ []) when is_map(map) do
     try do
       if !(E.empty?filter_keys) do
-        filter_keys = E.map(filter_keys, fn (k -> (if !is_atom(k),
+        filter_keys = E.map(filter_keys, fn (k) -> ((if !is_atom(k),
                                                     do: S.to_atom(k),
                                                   else: k)) end)
         (for k <- filter_keys, !Map.has_key?(map,k), do:

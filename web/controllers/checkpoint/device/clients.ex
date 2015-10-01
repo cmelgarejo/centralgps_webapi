@@ -20,8 +20,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Clients do
 
   def clients_update(conn, params) do
     try do
-      _k = [ :_sync_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, _k)
+      keys = [ :sync_token ]
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {row_count, result} = params
       |> Map.values #get: auth and sync tokens
       |> Enum.concat(["U"]) #and UPDATE form
@@ -33,5 +33,4 @@ defmodule CentralGPSWebAPI.Controllers.Device.Clients do
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
     end
   end
-
 end

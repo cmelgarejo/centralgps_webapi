@@ -90,9 +90,9 @@
       datatype: :integer,
       default: 6543
     ],
-    "app_config.checkpoint_enabled": [
-      doc: "Provide documentation for app_config.checkpoint_enabled here.",
-      to: "app_config.checkpoint_enabled",
+    "api_config.checkpoint_enabled": [
+      doc: "Provide documentation for api_config.checkpoint_enabled here.",
+      to: "api_config.checkpoint_enabled",
       datatype: :atom,
       default: true
     ],

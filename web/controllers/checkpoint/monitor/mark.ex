@@ -4,11 +4,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
   import CentralGPS.Repo.Utilities
 
 
-  def mark_list(conn, _params) do
+  def mark_list(conn, params) do
     try do
-      _k = [ :asset_id, :init_at, :stop_at ]
-      {_, _params} = list_auth_proc_headers_and_params(conn.req_headers, _params, _k)
-      {_, result} = _params
+      keys = [ :asset_id, :init_at, :stop_at ]
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = params
         |> Map.update(:asset_id, nil, &(parse_int(&1)))
         |> Map.update(:init_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:stop_at,  nil, &(parse_datetime(&1)))

@@ -3,7 +3,7 @@ defmodule CentralGPSWebAPI.Mixfile do
 
   def project do
     [app: :central_g_p_s_web_a_p_i,
-     version: "1.0.1",
+     version: "1.2.0",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
@@ -29,7 +29,8 @@ defmodule CentralGPSWebAPI.Mixfile do
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [ {:exrm,                 github: "bitwalker/exrm"},
+    [
+      {:exrm,                 github: "bitwalker/exrm"},
       {:httpoison,            github: "edgurgel/httpoison"},
       {:logger_file_backend,  github: "onkel-dirtus/logger_file_backend"},
       {:phoenix,              github: "phoenixframework/phoenix", override: true},
@@ -37,11 +38,12 @@ defmodule CentralGPSWebAPI.Mixfile do
       {:phoenix_live_reload,  github: "phoenixframework/phoenix_live_reload", only: :dev},
       {:phoenix_html,         github: "phoenixframework/phoenix_html", override: true},
       #{:phoenix_html, "~> 1.4"},
-      #{:phoenix_ecto,            github: "phoenixframework/phoenix_ecto"},
-      {:phoenix_ecto, "~> 0.8"},
-      #{:postgrex,                github: "ericmj/postgrex"},
-      {:postgrex,     ">= 0.0.0"},
-      #{:cowboy, override: true,  github: "ninenines/cowboy"},
-      {:cowboy,       "~> 1.0"} ]
+      {:phoenix_ecto,            github: "phoenixframework/phoenix_ecto"},
+      #{:phoenix_ecto, "~> 0.8"},
+      {:postgrex,                github: "ericmj/postgrex", override: true},
+      #{:postgrex,     ">= 0.0.0"},
+      #{:cowboy, override: true,  github: "ninenines/cowboy"}
+      {:cowboy,       "~> 1.0"}
+    ]
   end
 end
