@@ -10,7 +10,7 @@
       doc: "Provide documentation for central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.root here.",
       to: "central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.root",
       datatype: :binary,
-      default: "c:/CM/Projects/CentralGPS/server/api/centralgps_webapi"
+      default: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.2.0"
     ],
     "central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.secret_key_base": [
       doc: "Provide documentation for central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.secret_key_base here.",
@@ -28,7 +28,7 @@
       doc: "Provide documentation for central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.code_reloader here.",
       to: "central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.code_reloader",
       datatype: :atom,
-      default: true
+      default: false
     ],
     "central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.server": [
       doc: "Provide documentation for central_g_p_s_web_a_p_i.Elixir.CentralGPSWebAPI.Endpoint.server here.",
