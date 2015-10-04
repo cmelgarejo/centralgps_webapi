@@ -8,14 +8,13 @@ defmodule CentralGPSWebAPI.Controllers.Device.Register do
       keys =  [ :_login_user, :_password, :imei, :msisdn, :uuid, :xtra_info ]
       headers = objectify_map Enum.into(conn.req_headers, %{})
       ip_header = :"x-forwarded-for"
-      ip = if Map.has_key?(headers,ip_header), do: to_string(headers[ip_header]), else: nil
+      ip = if Map.has_key?(headers, ip_header), do: to_string(headers[ip_header]), else: nil
       params = objectify_map(params)
       {_, result} = objectify_map(params, keys)
         |> (Map.update :_login_user, nil, fn(v)->(base64_decode v) end)
         |> (Map.update :_password,   nil, fn(v)->(base64_decode v) end)
         |> Map.values
-        |> Enum.concat([ (ip), (Atom.to_string :checkpoint_api),
-              %{ register: true, request_headers: headers } ])
+        |> Enum.concat([ (ip), ("centralgps_webapi"), %{ register: true, request_headers: headers } ])
         |> fn_chkapi_device_register
         {response_code, result} = (if result.status, do: {201, result},
                           else: {200, result |> Map.take [:status, :msg]})

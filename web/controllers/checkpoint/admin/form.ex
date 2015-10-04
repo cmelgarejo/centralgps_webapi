@@ -43,8 +43,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Form do
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:form_id, nil, &(parse_int(&1)))
-      {_, result} = fn_api_form_update((Map.drop(params, keys) |> Map.values) ++ [params.form_id, params.configuration_id, params.description])
-        json (conn |> put_status 200), result
+      {_, result} = fn_api_form_update((Map.drop(params, keys) |> Map.values) ++
+        [params.form_id, params.configuration_id, params.description])
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}

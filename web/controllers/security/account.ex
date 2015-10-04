@@ -64,7 +64,8 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
         |> Map.update(:user_language_template_id,    nil, &(parse_int(&1)))
         |> Map.update(:user_timezone, nil, &(parse_float(&1)))
         |> Map.update( :user_dob, nil, &(parse_datetime(&1)))
-      {_, result} = fn_api_account_read (Map.drop(params, keys) |> Map.values) ++ [params.account_id, params.account_type] #get the record and check first
+      {_, result} = fn_api_account_read (Map.drop(params, keys) |> Map.values) ++
+        [params.account_id, params.account_type] #get the record and check first
       if result.status do
         res = objectify_map result.res
         save_image_base64(params.image, params.image_file, res.profile_image)

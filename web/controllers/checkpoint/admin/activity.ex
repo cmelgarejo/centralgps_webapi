@@ -42,8 +42,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:activity_id, nil, &(parse_int(&1)))
-      {_, result} = fn_api_activity_update((Map.drop(params, keys) |> Map.values) ++ [params.activity_id, params.configuration_id, params.description])
-        json (conn |> put_status 200), result
+      {_, result} = fn_api_activity_update((Map.drop(params, keys) |> Map.values) ++
+        [params.activity_id, params.configuration_id, params.description])
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
