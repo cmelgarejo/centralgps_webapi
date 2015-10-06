@@ -40,7 +40,7 @@ defmodule CentralGPSWebAPI.Mixfile do
       #{:phoenix_html, "~> 1.4"},
       {:phoenix_ecto,            github: "phoenixframework/phoenix_ecto"},
       #{:phoenix_ecto, "~> 0.8"},
-      #{:postgrex,                github: "ericmj/postgrex", override: true},
+      #{:postgrex,                github: "ericmj/postgrex", override: true}, #head version kills ecto for now. (05/10/2015)
       {:postgrex,     ">= 0.0.0"},
       #{:cowboy, override: true,  github: "ninenines/cowboy"}
       {:cowboy,       "~> 1.0"}
