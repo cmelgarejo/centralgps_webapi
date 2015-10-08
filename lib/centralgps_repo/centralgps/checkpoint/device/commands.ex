@@ -11,16 +11,16 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_insert($1::text, $2::text, $3::bigint, $4::bigint, $5::double precision, $6::double precision, $7::double precision, $8::double precision, $9::text, $10::text, $11::timestamp without time zone, $12::timestamp without time zone, $13::timestamp without time zone);"
 
   def cmd_fn_chkapi_mark_update,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_update($1::text, $2::text, $3::bigint, $4::bigint, $5::double precision, $6::double precision, $7::double precision, $8::double precision, $9::text, $10::text, $11::timestamp without time zone, $12::timestamp without time zone, $13::timestamp without time zone);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_update($1::text, $2::text, $3::text, $4::text, $5::timestamp without time zone);"
 
   def cmd_fn_chkapi_mark_delete,
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_delete($1::text, $2::text);"
 
   def cmd_fn_chkapi_mark_activity_insert,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_insert($1::text, $2::bigint, $4::text, $5::bigint, $6::text, $7::timestamp without time zone, $8::timestamp without time zone, $9::jsonb);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_insert($1::text, $2::bigint, $3::text, $4::bigint, $5::text, $6::timestamp without time zone, $7::timestamp without time zone, $8::jsonb);"
 
   def cmd_fn_chkapi_mark_activity_update,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_update($1::text, $2::bigint, $4::text, $5::bigint, $6::text, $7::timestamp without time zone, $8::timestamp without time zone, $9::jsonb);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_update($1::text, $2::bigint, $3::text, $4::text, $5::timestamp without time zone, $6::jsonb);"
 
   def cmd_fn_chkapi_mark_activity_delete,
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_delete($1::text, $2::bigint, $3::text);"
@@ -29,7 +29,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_insert($1::text, $2::bigint, $3::bigint, $4::text, $5::bigint, $6::bigint, $7::double precision);"
 
   def cmd_fn_chkapi_mark_activity_item_update,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_update($1::text, $2::bigint, $3::bigint, $4::text, $5::bigint, $6::bigint, $7::double precision);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_update($1::text, $2::bigint, $3::text, $4::bigint, $5::bigint, $6::double precision);"
 
   def cmd_fn_chkapi_mark_activity_item_delete,
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_delete($1::text, $2::bigint, $3::bigint, $4::text);"
@@ -66,7 +66,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
   def cmd_fn_chkapi_item_list,
     do: "SELECT * FROM checkpoint.fn_chkapi_item_list($1::text, $2::text, $3::char);"
 
-  def cmd_fn_chkapi_measure_item_list,
+  def cmd_fn_chkapi_measure_unit_list,
     do: "SELECT * FROM checkpoint.fn_chkapi_measure_unit_list($1::text, $2::text, $3::char);"
 
   def cmd_fn_chkapi_client_list,

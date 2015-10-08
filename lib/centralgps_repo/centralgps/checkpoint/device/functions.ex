@@ -105,7 +105,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
   end
 
   def fn_chkapi_measure_unit_list(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_measure_item_list, params, filter_keys)
+    {row_count, result} = query(cmd_fn_chkapi_measure_unit_list, params, filter_keys)
     {row_count, hd(result)}
   end
 
