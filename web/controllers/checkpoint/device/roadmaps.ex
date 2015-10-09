@@ -8,7 +8,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Roadmaps do
       keys = [ :day ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |>  Map.update(:day, nil, &(parse_datetime(&1)))
+        |>  Map.update(:day, nil, &(parse_date(&1)))
       {_, result} = fn_chkapi_roadmaps ([ params._auth_token, params.day ])
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result

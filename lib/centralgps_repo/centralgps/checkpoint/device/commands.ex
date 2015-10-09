@@ -46,7 +46,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
 
   #Lists
   def cmd_fn_chkapi_roadmaps,
-    do: "SELECT * FROM checkpoint.fn_chkapi_roadmaps($1::text, $2::timestamp without time zone);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_roadmaps($1::text, $2::date);"
 
   def cmd_fn_chkapi_activity_list,
     do: "SELECT * FROM checkpoint.fn_chkapi_activity_list($1::text, $2::text, $3::char);"
