@@ -438,7 +438,7 @@ defmodule CentralGPS.Repo.Utilities do
   """
   def parse_datetime(value) do
     try do
-      if String.valid?(value) && String.first(value) && (elem Ecto.DateTime.cast(value), 0) == :ok do
+      if String.valid?(value) && String.first(value) && Ecto.DateTime.cast(value) != :error && (elem Ecto.DateTime.cast(value), 0) == :ok do
         elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(value),1)),1)
       else
         parse_date(value)
