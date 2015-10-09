@@ -441,7 +441,7 @@ defmodule CentralGPS.Repo.Utilities do
       if String.valid?(value) && String.first(value) && (elem Ecto.DateTime.cast(value), 0) == :ok do
         elem(Ecto.DateTime.dump(elem(Ecto.DateTime.cast(value),1)),1)
       else
-        nil
+        parse_date(value)
       end
     rescue
       e in _ ->
