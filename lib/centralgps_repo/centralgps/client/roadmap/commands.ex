@@ -1,20 +1,22 @@
 defmodule CentralGPS.Repo.Client.Roadmap.Commands do
   #DB Definition: FUNCTION client.fn_api_roadmap_create (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
-  # roadmap_name, roadmap_description, roadmap_days_of_week, roadmap_repetition, roadmap_one_time_date,
-  # roadmap_start_time, roadmap_end_time, roadmap_public, roadmap_active, roadmap_xtra_info)
+  #roadmap_name, roadmap_description, roadmap_notes, roadmap_one_time_date, roadmap_interval, roadmap_days_of_week,
+  #roadmap_months_of_year, roadmap_days_of_month, roadmap_recurs_every, roadmap_start_time time, roadmap_end_time time,
+  #roadmap_public, roadmap_active, roadmap_xtra_info)
   def cmd_fn_api_roadmap_create,
-    do: "SELECT * FROM client.fn_api_roadmap_create($1, $2, $3, $4, $5::jsonb, $6, $7, $8::integer[], $9::integer, $10::date, $11::time, $12::time, $13::boolean, $14::boolean, $15::jsonb);"
+    do: "SELECT * FROM client.fn_api_roadmap_create($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9::timestamp without time zone, $10::char, $11::integer[], $12::integer[], $13::integer[], $14::integer, $15::time, $16::time, $17::jsonb);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_read (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
   # roadmap_id)
   def cmd_fn_api_roadmap_read,
     do: "SELECT * FROM client.fn_api_roadmap_read($1, $2, $3, $4, $5::jsonb, $6::bigint);"
 
-  #DB Definition: FUNCTION client.fn_api_roadmap_update (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
-  # roadmap_id, roadmap_name, roadmap_description, roadmap_days_of_week, roadmap_repetition, roadmap_one_time_date,
-  # roadmap_start_time, roadmap_end_time, roadmap_active, roadmap_xtra_info)
+  #DB Definition: FUNCTION client.fn_api_roadmap_create (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
+  #roadmap_id, roadmap_name, roadmap_description, roadmap_notes, roadmap_one_time_date, roadmap_interval, roadmap_days_of_week,
+  #roadmap_months_of_year, roadmap_days_of_month, roadmap_recurs_every, roadmap_start_time time, roadmap_end_time time,
+  #roadmap_public, roadmap_active, roadmap_xtra_info)
   def cmd_fn_api_roadmap_update,
-    do: "SELECT * FROM client.fn_api_roadmap_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9::integer[], $10::integer, $11::date, $12::time, $13::time, $14::boolean, $15::boolean, $16::jsonb);"
+    do: "SELECT * FROM client.fn_api_roadmap_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10::timestamp without time zone, $11::char, $12::integer[], $13::integer[], $14::integer[], $15::integer, $16::time, $17::time, $18::jsonb);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_delete (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, roadmap_id)
   def cmd_fn_api_roadmap_delete,

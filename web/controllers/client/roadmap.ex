@@ -5,21 +5,24 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
 
   def create(conn, params) do
     try do
-      keys = [ :name, :description, :days_of_week, :one_time_date, :repetition,
-       :start_time, :end_time, :public, :active, :xtra_info ]
+      keys = [ :name, :description, :notes, :one_time_date, :interval, :days_of_week,
+        :months_of_year, :days_of_month, :recurs_every, :start_time, :end_time,
+        :public, :active, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:days_of_week,  nil, &(parse_integer_list(&1)))
-        |> Map.update(:one_time_date, nil, &(parse_date(&1)))
-        |> Map.update(:repetition,    nil, &(parse_int(&1)))
-        |> Map.update(:start_time,    nil, &(parse_time(&1)))
-        |> Map.update(:end_time,      nil, &(parse_time(&1)))
-        |> Map.update(:public,        nil, &(parse_boolean(&1)))
-        |> Map.update(:active,        nil, &(parse_boolean(&1)))
-        |> Map.update(:xtra_info, nil, &(&1))
+        |> Map.update(:one_time_date,   nil, &(parse_date(&1)))
+        |> Map.update(:days_of_week,    nil, &(parse_integer_list(&1)))
+        |> Map.update(:months_of_year,  nil, &(parse_integer_list(&1)))
+        |> Map.update(:days_of_month,   nil, &(parse_integer_list(&1)))
+        |> Map.update(:recurs_every,    nil, &(parse_int(&1)))
+        |> Map.update(:start_time,      nil, &(parse_time(&1)))
+        |> Map.update(:end_time,        nil, &(parse_time(&1)))
+        |> Map.update(:public,          nil, &(parse_boolean(&1)))
+        |> Map.update(:active,          nil, &(parse_boolean(&1)))
       {_, result} = fn_api_roadmap_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.name, params.description, params.days_of_week, params.repetition,
-          params.one_time_date, params.start_time, params.end_time, params.public,
+        [ params.name, params.description, params.notes, params.one_time_date,
+          params.interval, params.days_of_week, params.months_of_year, params.days_of_month,
+          params.recurs_every, params.start_time, params.end_time, params.public,
           params.active, params.xtra_info ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
@@ -47,22 +50,26 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
 
   def update(conn, params) do
     try do
-      keys = [ :roadmap_id, :name, :description, :days_of_week, :one_time_date, :repetition,
-        :start_time, :end_time, :public, :active, :xtra_info ]
+      keys = [ :roadmap_id, :name, :description, :notes, :one_time_date, :interval, :days_of_week,
+        :months_of_year, :days_of_month, :recurs_every, :start_time, :end_time,
+        :public, :active, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-      |> Map.update(:roadmap_id,    nil, &(parse_int(&1)))
-      |> Map.update(:days_of_week,  nil, &(parse_integer_list(&1)))
-      |> Map.update(:one_time_date, nil, &(parse_date(&1)))
-      |> Map.update(:repetition,    nil, &(parse_int(&1)))
-      |> Map.update(:start_time,    nil, &(parse_time(&1)))
-      |> Map.update(:end_time,      nil, &(parse_time(&1)))
-      |> Map.update(:public,        nil, &(parse_boolean(&1)))
-      |> Map.update(:active,        nil, &(parse_boolean(&1)))
+        |> Map.update(:one_time_date,   nil, &(parse_date(&1)))
+        |> Map.update(:days_of_week,    nil, &(parse_integer_list(&1)))
+        |> Map.update(:months_of_year,  nil, &(parse_integer_list(&1)))
+        |> Map.update(:days_of_month,   nil, &(parse_integer_list(&1)))
+        |> Map.update(:recurs_every,    nil, &(parse_int(&1)))
+        |> Map.update(:start_time,      nil, &(parse_time(&1)))
+        |> Map.update(:end_time,        nil, &(parse_time(&1)))
+        |> Map.update(:public,          nil, &(parse_boolean(&1)))
+        |> Map.update(:active,          nil, &(parse_boolean(&1)))
+        |> Map.update(:xtra_info,       nil, &(&1))
         {_, result} = fn_api_roadmap_update((Map.drop(params, keys) |> Map.values) ++
-          [ params.roadmap_id, params.name, params.description, params.days_of_week,
-            params.repetition, params.one_time_date, params.start_time, params.end_time,
-            params.public, params.active, params.xtra_info ])
+          [ params.roadmap_id, params.name, params.description, params.notes, params.one_time_date,
+            params.interval, params.days_of_week, params.months_of_year, params.days_of_month,
+            params.recurs_every, params.start_time, params.end_time, params.public,
+            params.active, params.xtra_info ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}

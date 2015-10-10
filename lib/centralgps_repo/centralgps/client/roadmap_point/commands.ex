@@ -1,10 +1,10 @@
 defmodule CentralGPS.Repo.Client.RoadmapPoint.Commands do
   #DB Definition: client.fn_api_roadmap_point_create (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
-  # roadmap_point_roadmap_id, roadmap_point_name, roadmap_point_description, roadmap_point_lat, roadmap_point_lon,
+  # roadmap_point_roadmap_id, roadmap_point_name, roadmap_point_description, roadmap_point_notes, roadmap_point_lat, roadmap_point_lon,
   # roadmap_point_order, roadmap_point_mean_arrival_time time, roadmap_point_mean_leave_time time,
   # roadmap_point_detection_radius, roadmap_point_active boolean, roadmap_point_xtra_info)
   def cmd_fn_api_roadmap_point_create,
-    do: "SELECT * FROM client.fn_api_roadmap_point_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9::double precision, $10::double precision, $11::integer, $12::time, $13::time, $14::integer, $15::boolean, $16::jsonb);"
+    do: "SELECT * FROM client.fn_api_roadmap_point_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10::double precision, $11::double precision, $12::integer, $13::time, $14::time, $15::integer, $16::boolean, $17::jsonb);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_point_read (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
   # roadmap_point_id, roadmap_point_roadmap_id)
@@ -12,11 +12,11 @@ defmodule CentralGPS.Repo.Client.RoadmapPoint.Commands do
     do: "SELECT * FROM client.fn_api_roadmap_point_read($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_point_update (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
-  # roadmap_point_id, roadmap_point_roadmap_id, roadmap_point_name, roadmap_point_description, roadmap_point_lat, roadmap_point_lon,
+  # roadmap_point_id, roadmap_point_roadmap_id, roadmap_point_name, roadmap_point_description, roadmap_point_notes, roadmap_point_lat, roadmap_point_lon,
   # roadmap_point_order, roadmap_point_mean_arrival_time time, roadmap_point_mean_leave_time time,
   # roadmap_point_detection_radius, roadmap_point_active boolean, roadmap_point_xtra_info)
   def cmd_fn_api_roadmap_point_update,
-    do: "SELECT * FROM client.fn_api_roadmap_point_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10::double precision, $11::double precision, $12::integer, $13::time, $14::time, $15::integer, $16::boolean, $17::jsonb);"
+    do: "SELECT * FROM client.fn_api_roadmap_point_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10, $11::double precision, $12::double precision, $13::integer, $14::time, $15::time, $16::integer, $17::boolean, $18::jsonb);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_point_delete (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
   # roadmap_point_id, roadmap_point_roadmap_id)

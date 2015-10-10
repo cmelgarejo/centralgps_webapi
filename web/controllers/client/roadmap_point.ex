@@ -5,7 +5,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
 
   def create(conn, params) do
     try do
-      keys = [ :roadmap_id, :name, :description, :lat, :lon, :point_order,
+      keys = [ :roadmap_id, :name, :notes, :description, :lat, :lon, :point_order,
         :mean_arrival_time, :mean_leave_time, :detection_radius, :active, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
@@ -17,9 +17,9 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
         |> Map.update(:mean_leave_time,   nil, &(parse_time(&1)))
         |> Map.update(:detection_radius,  nil, &(parse_int(&1)))
         |> Map.update(:active,            nil, &(parse_boolean(&1)))
-        |> Map.update(:xtra_info, nil, &(&1))
+        |> Map.update(:xtra_info,         nil, &(&1))
       {_, result} = fn_api_roadmap_point_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.roadmap_id, params.name, params.description, params.lat, params.lon,
+        [ params.roadmap_id, params.name, params.description, params.notes, params.lat, params.lon,
           params.point_order, params.mean_arrival_time, params.mean_leave_time,
           params.detection_radius, params.active, params.xtra_info ])
       {response_code, result} = (if result.status, do: {201, result},
@@ -50,7 +50,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
 
   def update(conn, params) do
     try do
-      keys = [ :roadmap_point_id, :roadmap_id, :name, :description, :lat, :lon, :point_order,
+      keys = [ :roadmap_point_id, :roadmap_id, :name, :description, :notes, :lat, :lon, :point_order,
         :mean_arrival_time, :mean_leave_time, :detection_radius, :active, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
@@ -63,9 +63,9 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
         |> Map.update(:mean_leave_time,   nil, &(parse_time(&1)))
         |> Map.update(:detection_radius,  nil, &(parse_int(&1)))
         |> Map.update(:active,            nil, &(parse_boolean(&1)))
-        |> Map.update(:xtra_info, nil, &(&1))
+        |> Map.update(:xtra_info,         nil, &(&1))
         {_, result} = fn_api_roadmap_point_update((Map.drop(params, keys) |> Map.values) ++
-          [ params.roadmap_point_id, params.roadmap_id, params.name, params.description,
+          [ params.roadmap_point_id, params.roadmap_id, params.name, params.description, params.notes,
             params.lat, params.lon, params.point_order, params.mean_arrival_time, params.mean_leave_time,
             params.detection_radius, params.active, params.xtra_info ])
       json (conn |> put_status 200), result
