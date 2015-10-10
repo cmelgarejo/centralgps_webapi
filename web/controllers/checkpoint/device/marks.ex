@@ -99,8 +99,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
       {_, result} = fn_chkapi_mark_insert ([ params._auth_token,
         params.token, params.notes, params.address, params.finished_at ])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -116,8 +115,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
       {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token,
         params.mark_token, params.notes, params.finished_at, params.xtra_info])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -135,8 +133,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:quantity,         nil, &(parse_float(&1)))
       {_, result} = fn_chkapi_mark_activity_item_insert ([ params._auth_token,
         params.id, params.mark_token, params.measure_unit_id, params.item_id, params.quantity ])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -148,8 +145,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       keys = [ :token ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
       {_, result} = fn_chkapi_mark_insert ([ params._auth_token, params.token ])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -164,8 +160,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:id,  nil, &(parse_int(&1)))
         |>  Map.update(:activity_id,  nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token, params.mark_token ])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -181,8 +176,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_item_insert ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token ])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -198,8 +192,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_image_insert ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token ])
-      response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
