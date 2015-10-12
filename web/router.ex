@@ -118,11 +118,11 @@ defmodule CentralGPSWebAPI.Router do
       delete  "/client/:client_id",    Checkpoint.Client, :delete
       get     "/client/",              Checkpoint.Client, :list
       #Client Contact
-      post    "/client_contact/create",        Checkpoint.ClientContact, :create
-      get     "/client_contact/:client_id",    Checkpoint.ClientContact, :read
-      put     "/client_contact/:client_id",    Checkpoint.ClientContact, :update
-      delete  "/client_contact/:client_id",    Checkpoint.ClientContact, :delete
-      get     "/client_contact/",              Checkpoint.ClientContact, :list
+      post    "/client/:client_id/contact/create",                Checkpoint.ClientContact, :create
+      get     "/client/:client_id/contact/:client_contact_id",    Checkpoint.ClientContact, :read
+      put     "/client/:client_id/contact/:client_contact_id",    Checkpoint.ClientContact, :update
+      delete  "/client/:client_id/contact/:client_contact_id",    Checkpoint.ClientContact, :delete
+      get     "/client/:client_id/contact/",                      Checkpoint.ClientContact, :list
       #Form
       post    "/form/create",      Checkpoint.Form, :create
       get     "/form/:form_id",    Checkpoint.Form, :read
