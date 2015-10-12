@@ -9,7 +9,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Roadmaps do
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:day, nil, &(parse_date(&1)))
-      {_, result} = fn_chkapi_roadmaps ([ params._auth_token, params.day ])
+      {row_count, result} = fn_chkapi_roadmaps ([ params._auth_token, params.day ])
       if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
       json conn, result
     rescue
