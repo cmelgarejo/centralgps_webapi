@@ -20,7 +20,7 @@ defmodule CentralGPSWebAPI.Mixfile do
   end
 
   def application do
-    apps = [:phoenix, :phoenix_html, :cowboy, :logger, :logger_file_backend, :postgrex, :ecto, :httpoison ]
+    apps = [ :cowboy, :ecto, :httpoison, :logger, :logger_file_backend,  :phoenix, :phoenix_html, :postgrex ]
     dev_apps = Mix.env == :dev && [ :reprise ] || []
     [ mod: {CentralGPSWebAPI, []}, applications: dev_apps ++ apps ]
   end
@@ -30,20 +30,20 @@ defmodule CentralGPSWebAPI.Mixfile do
 
   defp deps do
     [
+      #{:cowboy,              github: "ninenines/cowboy", override: true}
+      {:cowboy,               "~> 1.0"},
       {:exrm,                 github: "bitwalker/exrm"},
       {:httpoison,            github: "edgurgel/httpoison"},
       {:logger_file_backend,  github: "onkel-dirtus/logger_file_backend"},
       {:phoenix,              github: "phoenixframework/phoenix", override: true},
-      {:reprise,              github: "herenowcoder/reprise", only: :dev},
       {:phoenix_live_reload,  github: "phoenixframework/phoenix_live_reload", only: :dev},
       {:phoenix_html,         github: "phoenixframework/phoenix_html", override: true},
-      #{:phoenix_html, "~> 1.4"},
-      {:phoenix_ecto,            github: "phoenixframework/phoenix_ecto"},
-      #{:phoenix_ecto, "~> 0.8"},
-      #{:postgrex,                github: "ericmj/postgrex", override: true}, #head version kills ecto for now. (05/10/2015)
-      {:postgrex,     ">= 0.0.0"},
-      #{:cowboy, override: true,  github: "ninenines/cowboy"}
-      {:cowboy,       "~> 1.0"}
+      #{:phoenix_html,        "~> 1.4"},
+      {:phoenix_ecto,         github: "phoenixframework/phoenix_ecto"},
+      #{:phoenix_ecto,        "~> 0.8"},
+      #{:postgrex,            github: "ericmj/postgrex", override: true}, #head version kills ecto for now. (05/10/2015)
+      {:postgrex,             ">= 0.0.0"},
+      {:reprise,              github: "herenowcoder/reprise", only: :dev}
     ]
   end
 end
