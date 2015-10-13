@@ -23,10 +23,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
 
   def read(conn, params) do
     try do
-      keys = [ :id ]
+      keys = [ :client_contact_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
-        |> Map.update(:id, nil, &(parse_int(&1)))
+        |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_read
         json (conn |> put_status 200), result
@@ -38,10 +38,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
 
   def update(conn, params) do
     try do
-      keys = [ :id, :client_id, :name, :notes, :emails, :phones, :notify ]
+      keys = [ :client_contact_id, :client_id, :name, :notes, :emails, :phones, :notify ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:id, nil, &(parse_int(&1)))
+        |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.update(:client_id, nil, &(parse_int(&1)))
         |> Map.update(:notify, nil, &(parse_boolean(&1)))
       {_, result} = fn_api_client_contact_read (Map.drop(params, keys) |> Map.values) ++
@@ -60,10 +60,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
 
   def delete(conn, params) do
     try do
-      keys = [ :id ]
+      keys = [ :client_contact_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
-        |> Map.update(:id, nil, &(parse_int(&1)))
+        |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_delete
         json (conn |> put_status 200), result
