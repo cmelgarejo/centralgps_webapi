@@ -82,23 +82,28 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
     end
   end
 
-  def venue_create(conn, params) do
+  def create(conn, params) do
     try do
-      keys = [ :configuration_id, :venue_type_id, :name, :code, :description, :image, :image_file,
-        :lat, :lon, :detection_radius ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
+      keys = [ :configuration_id, :venue_type_id, :client_id, :active, :name, :code, :description,
+        :address, :image_path, :image_bin, :lat, :lon, :detection_radius, :xtra_info ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:configuration_id, nil,   &(parse_int(&1)))
-        |> Map.update(:venue_type_id,    nil,   &(parse_int(&1)))
-        |> Map.update(:detection_radius, nil,   &(parse_int(&1)))
-        |> Map.update(:lat,              nil,   &(parse_float(&1)))
-        |> Map.update(:lon,              nil,   &(parse_float(&1)))
+        |> Map.update(:configuration_id, nil, &(parse_int(&1)))
+        |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
+        |> Map.update(:client_id,        nil, &(parse_int(&1)))
+        |> Map.update(:detection_radius, nil, &(parse_int(&1)))
+        |> Map.update(:active,           nil, &(parse_boolean(&1)))
+        |> Map.update(:lat,              nil, &(parse_float(&1)))
+        |> Map.update(:lon,              nil, &(parse_float(&1)))
+        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
       {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.configuration_id, params.venue_type_id, params.name, params.code,
-          params.description, params.image, params.lat, params.lon, params.detection_radius, false])
+        [ params.configuration_id, params.venue_type_id, params.client_id, params.name,
+          params.code, params.description, params.address, params.image_path, params.image_bin,
+          params.lat, params.lon, params.detection_radius, params.active, params.xtra_info ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(params, :image_file)), do: save_image_base64(params.image, params.image_file)
+      if (response_code == 201 && Map.has_key?(result, :image_bin)), do:
+        save_image(params.image_path, params.image_bin)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}

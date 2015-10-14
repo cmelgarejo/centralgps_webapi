@@ -287,7 +287,7 @@ defmodule CentralGPS.Repo.Utilities do
     Enum.join([priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
 
   @doc """
-  Gets a filename, a file (and an old_filename, if exists it will delete it)
+  Gets a filename, a file (Base64 encoded), and optionally, an old_filename, if exists it will delete it
   and saves said image to the relative directory the image filename provides
   """
   def save_image_base64(filename, file, old_filename \\ "") do
@@ -297,6 +297,25 @@ defmodule CentralGPS.Repo.Utilities do
         if (!File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
         filename = Enum.join [ priv_static_path, filename ], "/"
         File.write!filename, Base.url_decode64!(file)
+      end
+    rescue
+      e in _ -> error_logger e, __ENV__, %{filename: filename, old_filename: old_filename, file: file}
+      :error
+    end
+    :ok
+  end
+
+  @doc """
+  Gets a filename, a file (binary), and optionally, an old_filename, if exists it will delete it
+  and saves said image to the relative directory the image filename provides
+  """
+  def save_image(filename, file, old_filename \\ "") do
+    try do
+      if !is_nil(filename) && !is_nil(file) do
+        if (old_filename != ""), do: File.rm Enum.join([ priv_static_path,  old_filename ], "/") #removes the old image
+        if (!File.exists?dest_dir(filename)), do: File.mkdir_p dest_dir(filename)
+        filename = Enum.join [ priv_static_path, filename ], "/"
+        File.write!filename, file
       end
     rescue
       e in _ -> error_logger e, __ENV__, %{filename: filename, old_filename: old_filename, file: file}

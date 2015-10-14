@@ -47,7 +47,6 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
       {_, result} = fn_api_client_contact_read (Map.drop(params, keys) |> Map.values) ++
         [params.id] #get the record and check first
       if result.status do
-        #res = objectify_map result.res
         {_, result} = fn_api_client_contact_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and xtra_info of the caller
           [ params.id, params.client_id, params.name, params.notes, params.emails, params.phones, params.notify ])
       end

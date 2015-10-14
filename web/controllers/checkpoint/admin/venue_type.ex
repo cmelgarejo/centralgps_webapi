@@ -3,18 +3,19 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
   import CentralGPS.Repo.Checkpoint.VenueType.Functions
   import CentralGPS.Repo.Utilities
 
-
   def create(conn, params) do
     try do
       keys = [ :configuration_id, :description, :image_path, :image_bin ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:activity_configuration_id, nil, &(parse_int(&1)))
+        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
       {_, result} = fn_api_venue_type_create((Map.drop(params, keys) |> Map.values) ++
         [ params.configuration_id, params.description, params.image_path, params.image_bin])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(result, :image_bin)), do: save_image_base64(params.image_path, params.image_bin)
+      if (response_code == 201 && Map.has_key?(result, :image_bin)), do:
+              save_image(params.image_path, params.image_bin)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -43,12 +44,13 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
-        |> Map.update(:venue_type_id, nil, &(parse_int(&1)))
+        |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
+        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
       {_, result} = fn_api_venue_type_read (Map.drop(params, keys) |> Map.values) ++
         [params.venue_type_id]
       if result.status do
         res = objectify_map result.res
-        save_image_base64(params.image_path, params.image_bin, res.image_path)
+        save_image(params.image_path, params.image_bin, res.image_path)
         {_, result} = fn_api_venue_type_update((Map.drop(params, keys) |> Map.values) ++
           [params.venue_type_id, params.configuration_id, params.description, params.image_path, params.image_bin])
       end

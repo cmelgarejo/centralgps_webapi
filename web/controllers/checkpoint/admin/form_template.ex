@@ -12,12 +12,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
         |> Map.update(:activity_id,     nil, &(parse_int(&1)))
         |> Map.update(:item_id,         nil, &(parse_int(&1)))
         |> Map.update(:measure_unit_id, nil, &(parse_int(&1)))
-        |> Map.values
       {_, result} = fn_api_form_template_create((Map.drop(params, keys) |> Map.values) ++
         [params.form_id, params.activity_id, params.item_id, params.measure_unit_id])
       {response_code, result} = (if result.status, do: {201, result},
                                    else: {200, result |> Map.take [:status, :msg]})
-        json (conn |> put_status response_code), result
+      json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -32,7 +31,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
         |> Map.update(:id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_form_template_read
-        json (conn |> put_status 200), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}

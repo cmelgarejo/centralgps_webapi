@@ -15,7 +15,6 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Item do
         [ params.configuration_id, params.name, params.description, params.notes, params.stock, params.min_qty, params.max_qty ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(params, :image_bin)), do: save_image_base64(params.image_path, params.image_bin)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -50,8 +49,6 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Item do
       {_, result} = fn_api_item_read (Map.drop(params, keys) |> Map.values) ++
         [params.item_id] #get the record and check first
       if result.status do
-        res = objectify_map result.res
-        save_image_base64(params.image, params.image_bin, res.item_image)
         {_, result} = fn_api_item_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and notes of the caller
           [ params.item_id, params.configuration_id, params.name, params.description, params.notes, params.stock, params.min_qty, params.max_qty ])
       end

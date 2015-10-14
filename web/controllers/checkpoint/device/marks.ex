@@ -79,9 +79,14 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:id,               nil, &(parse_int(&1)))
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
         |>  Map.update(:image_created_at, nil, &(parse_datetime(&1)))
+        |>  Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
       {_, result} = fn_chkapi_mark_activity_image_insert ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token, params.image_path,
         params.image_bin, params.image_bin, params.image_created_at ])
+      {response_code, result} = (if result.status, do: {201, result},
+                                 else: {200, result |> Map.take [:status, :msg]})
+      if (response_code == 201 && Map.has_key?(result, :image_bin)), do:
+        save_image(params.image_path, params.image_bin)
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
     rescue
