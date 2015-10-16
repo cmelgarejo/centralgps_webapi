@@ -7,7 +7,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
     try do
       keys = [ :token, :form_id, :venue_id, :lat, :lon, :accuracy, :altitude,
       :notes, :address, :executed_at, :finished_at, :position_at ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:form_id,      nil, &(parse_int(&1)))
         |>  Map.update(:venue_id,     nil, &(parse_int(&1)))
@@ -33,7 +33,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def register_mark_activity(conn, params) do
     try do
       keys = [ :id, :mark_token, :activity_id, :notes, :executed_at, :finished_at, :xtra_info ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,           nil, &(parse_int(&1)))
         |>  Map.update(:activity_id,  nil, &(parse_int(&1)))
@@ -53,7 +53,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def register_mark_activity_item(conn, params) do
     try do
       keys = [ :id, :mark_activity_id, :mark_token, :measure_unit_id, :item_id, :quantity ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,               nil, &(parse_int(&1)))
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
@@ -74,7 +74,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def register_mark_activity_image(conn, params) do
     try do
       keys = [ :id, :mark_activity_id, :mark_token, :image_path, :image_bin, :image_created_at ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,               nil, &(parse_int(&1)))
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
@@ -99,7 +99,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def update_mark(conn, params) do
     try do
       keys = [ :token, :notes, :address, :finished_at ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
       {_, result} = fn_chkapi_mark_insert ([ params._auth_token,
@@ -114,7 +114,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def update_mark_activity(conn, params) do
     try do
       keys = [ :id, :mark_token, :notes, :finished_at, :xtra_info ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,           nil, &(parse_int(&1)))
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
@@ -130,7 +130,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def update_mark_activity_item(conn, params) do
     try do
       keys = [ :id, :mark_token, :measure_unit_id, :item_id, :quantity ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,               nil, &(parse_int(&1)))
         |>  Map.update(:measure_unit_id,  nil, &(parse_int(&1)))
@@ -148,7 +148,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def delete_mark(conn, params) do
     try do
       keys = [ :token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = fn_chkapi_mark_insert ([ params._auth_token, params.token ])
       json (conn |> put_status 200), result
     rescue
@@ -160,7 +160,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def delete_mark_activity(conn, params) do
     try do
       keys = [ :id, :mark_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,  nil, &(parse_int(&1)))
         |>  Map.update(:activity_id,  nil, &(parse_int(&1)))
@@ -175,7 +175,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def delete_mark_activity_item(conn, params) do
     try do
       keys = [ :id, :mark_activity_id, :mark_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,               nil, &(parse_int(&1)))
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
@@ -191,7 +191,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
   def delete_mark_activity_image(conn, params) do
     try do
       keys = [ :id, :mark_activity_id, :mark_token ]
-      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req__, params, keys)
+      {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |>  Map.update(:id,               nil, &(parse_int(&1)))
         |>  Map.update(:mark_activity_id, nil, &(parse_int(&1)))
