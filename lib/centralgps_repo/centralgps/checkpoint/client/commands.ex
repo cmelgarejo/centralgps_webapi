@@ -12,7 +12,7 @@ defmodule CentralGPS.Repo.Checkpoint.Client.Commands do
   #DB Definition: checkpoint.fn_api_client_update (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, client_id,  client_configuration_id, client_name, client_description, client_xtra_info) RETURNS common.return_type_generic
   #Input JSON: [ :client_id, client_configuration_id, client_name, client_description, client_xtra_info ]
   def cmd_fn_api_client_update,
-    do: "SELECT * FROM checkpoint.fn_api_client_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10::jsonb);"
+    do: "SELECT * FROM checkpoint.fn_api_client_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10::boolean, $11::jsonb);"
 
   #DB Definition: checkpoint.fn_api_client_delete (_auth_token, _my_auth_type, _the_app_name, _the_ip_port, _xtra_info, client_id) RETURNS common.return_type_generic
   #Input JSON: [ :client_id ]
