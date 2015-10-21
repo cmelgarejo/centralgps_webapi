@@ -37,7 +37,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Client do
 
   def update(conn, params) do
     try do
-      keys = [ :client_id, :configuration_id, :name, :description, :xtra_info ]
+      keys = [ :client_id, :configuration_id, :name, :description, :active, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:client_id, nil, &(parse_int(&1)))
@@ -47,7 +47,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Client do
       if result.status do
         #res = objectify_map result.res
         {_, result} = fn_api_client_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and xtra_info of the caller
-         [params.client_id, params.configuration_id, params.name, params.description, params.xtra_info])
+         [params.client_id, params.configuration_id, params.name, params.description, params.active, params.xtra_info])
       end
       json (conn |> put_status 200), result
     rescue
