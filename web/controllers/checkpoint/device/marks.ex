@@ -40,8 +40,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:executed_at,  nil, &(parse_datetime(&1)))
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
         |>  Map.update(:position_at,  nil, &(parse_datetime(&1)))
-      {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token, params.activity_id,
-        params.mark_token params.notes, params.executed_at, params.finished_at, params.xtra_info ])
+      {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token, params.id,
+        params.mark_token, params.activity_id, params.notes, params.executed_at, params.finished_at, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
     rescue
