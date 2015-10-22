@@ -19,7 +19,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |>  Map.update(:finished_at,  nil, &(parse_datetime(&1)))
         |>  Map.update(:position_at,  nil, &(parse_datetime(&1)))
       {_, result} = fn_chkapi_mark_insert ([ params._auth_token,
-        params.token, params.form_id, params.lat, params.lon, params.accuracy,
+        params.token, params.form_id, params.venue_id, params.lat, params.lon, params.accuracy,
         params.altitude, params.notes, params.address, params.executed_at,
         params.finished_at, params.position_at])
       response_code = if result.status, do: 201, else: 200
