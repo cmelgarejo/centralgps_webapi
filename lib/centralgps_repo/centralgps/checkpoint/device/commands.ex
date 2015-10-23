@@ -26,10 +26,10 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_delete($1::text, $2::bigint, $3::text);"
 
   def cmd_fn_chkapi_mark_activity_item_insert,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_insert($1::text, $2::bigint, $3::bigint, $4::text, $5::bigint, $6::bigint, $7::double precision);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_insert($1::text, $2::bigint, $3::bigint, $4::text, $5::bigint, $6::bigint, $7::double precision, $8::jsonb);"
 
   def cmd_fn_chkapi_mark_activity_item_update,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_update($1::text, $2::bigint, $3::text, $4::bigint, $5::bigint, $6::double precision);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_update($1::text, $2::bigint, $3::text, $4::bigint, $5::bigint, $6::double precision, $7::jsonb);"
 
   def cmd_fn_chkapi_mark_activity_item_delete,
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_delete($1::text, $2::bigint, $3::bigint, $4::text);"
