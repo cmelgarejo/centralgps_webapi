@@ -11,7 +11,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_insert($1::text, $2::text, $3::bigint, $4::bigint, $5::double precision, $6::double precision, $7::double precision, $8::double precision, $9::text, $10::text, $11::timestamp without time zone, $12::timestamp without time zone, $13::timestamp without time zone);"
 
   def cmd_fn_chkapi_mark_update,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_update($1::text, $2::text, $3::text, $4::text, $5::timestamp without time zone);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_update($1::text, $2::text, $3::text, $4::timestamp without time zone);"
 
   def cmd_fn_chkapi_mark_delete,
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_delete($1::text, $2::text);"
