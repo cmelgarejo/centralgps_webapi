@@ -167,7 +167,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:id,  nil, &(parse_int(&1)))
-      {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token, params.id, params.mark_token ])
+      {_, result} = fn_chkapi_mark_activity_delete ([ params._auth_token, params.id, params.mark_token ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
@@ -182,7 +182,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       params = params
         |> Map.update(:id,               nil, &(parse_int(&1)))
         |> Map.update(:mark_activity_id, nil, &(parse_int(&1)))
-      {_, result} = fn_chkapi_mark_activity_item_insert ([ params._auth_token,
+      {_, result} = fn_chkapi_mark_activity_item_delete ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token ])
       json (conn |> put_status 200), result
     rescue
@@ -198,7 +198,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       params = params
         |> Map.update(:id,               nil, &(parse_int(&1)))
         |> Map.update(:mark_activity_id, nil, &(parse_int(&1)))
-      {_, result} = fn_chkapi_mark_activity_image_insert ([ params._auth_token,
+      {_, result} = fn_chkapi_mark_activity_image_delete ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token ])
       json (conn |> put_status 200), result
     rescue
