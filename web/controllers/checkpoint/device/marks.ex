@@ -167,7 +167,6 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:id,  nil, &(parse_int(&1)))
-        |> Map.update(:activity_id,  nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token, params.id, params.mark_token ])
       json (conn |> put_status 200), result
     rescue

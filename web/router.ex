@@ -86,10 +86,10 @@ defmodule CentralGPSWebAPI.Router do
       put     "/device/mark",                Device.Marks,    :update_mark
       put     "/device/mark_activity",       Device.Marks,    :update_mark_activity
       put     "/device/mark_activity_item",  Device.Marks,    :update_mark_activity_item
-      delete  "/device/mark",                Device.Marks,    :delete_mark
-      delete  "/device/mark_activity",       Device.Marks,    :delete_mark_activity
-      delete  "/device/mark_activity_item",  Device.Marks,    :delete_mark_activity_item
-      delete  "/device/mark_activity_image", Device.Marks,    :delete_mark_activity_image
+      delete  "/device/mark/:mark_token",                Device.Marks,    :delete_mark
+      delete  "/device/mark_activity/:mark_token/:id",   Device.Marks,    :delete_mark_activity
+      delete  "/device/mark_activity_item/:mark_token/:mark_activity_id/:id",  Device.Marks, :delete_mark_activity_item
+      delete  "/device/mark_activity_image/:mark_token/:mark_activity_id/:id", Device.Marks, :delete_mark_activity_image
       #Lists
       get     "/device/roadmaps/:day",               Device.Roadmaps,       :roadmaps
       get     "/device/forms",                       Device.Forms,          :forms
