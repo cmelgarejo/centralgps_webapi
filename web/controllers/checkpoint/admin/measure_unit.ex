@@ -5,7 +5,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.MeasureUnit do
 
   def create(conn, params) do
     try do
-      keys = [ :configuration_id, :name, :description, :notes ]
+      keys = [ :configuration_id, :name, :notes ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
@@ -37,7 +37,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.MeasureUnit do
 
   def update(conn, params) do
     try do
-      keys = [ :measure_unit_id, :configuration_id, :name, :description, :notes ]
+      keys = [ :measure_unit_id, :configuration_id, :name, :notes ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:measure_unit_id, nil, &(parse_int(&1)))
