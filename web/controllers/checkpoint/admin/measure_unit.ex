@@ -10,7 +10,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.MeasureUnit do
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
       {_, result} = fn_api_measure_unit_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.configuration_id, params.name, params.description, params.notes ])
+        [ params.configuration_id, params.name, params.notes ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       json (conn |> put_status response_code), result
@@ -46,7 +46,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.MeasureUnit do
         [params.measure_unit_id] #get the record and check first
       if result.status do
         {_, result} = fn_api_measure_unit_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and notes of the caller
-         [ params.measure_unit_id, params.configuration_id, params.name, params.description, params.notes ])
+         [ params.measure_unit_id, params.configuration_id, params.name, params.notes ])
       end
       json (conn |> put_status 200), result
     rescue
