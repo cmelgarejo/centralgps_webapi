@@ -1,18 +1,18 @@
 defmodule CentralGPS.Repo.Checkpoint.MeasureUnit.Commands do
-  #DB Definition: checkpoint.fn_api_measure_unit_create (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, measure_unit_configuration_id, measure_unit_name, measure_unit_description, measure_unit_notes) RETURNS common.return_type_generic
+  #DB Definition: checkpoint.fn_api_measure_unit_create (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, measure_unit_configuration_id, measure_unit_name, measure_unit_notes) RETURNS common.return_type_generic
   #Input JSON: [ measure_unit_configuration_id, measure_unit_name, measure_unit_description, measure_unit_notes ]
   def cmd_fn_api_measure_unit_create,
-    do: "SELECT * FROM checkpoint.fn_api_measure_unit_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9);"
+    do: "SELECT * FROM checkpoint.fn_api_measure_unit_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8);"
 
   #DB Definition: checkpoint.fn_api_measure_unit_read (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, measure_unit_id) RETURNS common.return_type_generic
   #Input JSON:[ :measure_unit_id ]
   def cmd_fn_api_measure_unit_read,
     do: "SELECT * FROM checkpoint.fn_api_measure_unit_read($1, $2, $3, $4, $5::jsonb, $6::bigint);"
 
-  #DB Definition: checkpoint.fn_api_measure_unit_update (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, measure_unit_id, measure_unit_configuration_id, measure_unit_name, measure_unit_description, measure_unit_notes) RETURNS common.return_type_generic
-  #Input JSON: [ :measure_unit_id, measure_unit_configuration_id, measure_unit_name, measure_unit_description, measure_unit_notes ]
+  #DB Definition: checkpoint.fn_api_measure_unit_update (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, measure_unit_id, measure_unit_configuration_id, measure_unit_name, measure_unit_notes) RETURNS common.return_type_generic
+  #Input JSON: [ :measure_unit_id, measure_unit_configuration_id, measure_unit_name, measure_unit_notes ]
   def cmd_fn_api_measure_unit_update,
-    do: "SELECT * FROM checkpoint.fn_api_measure_unit_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::bigint, $9, $10, $11);"
+    do: "SELECT * FROM checkpoint.fn_api_measure_unit_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9);"
 
   #DB Definition: checkpoint.fn_api_measure_unit_delete (_auth_token, _my_auth_type, _the_app_name, _the_ip_port, _xtra_info, measure_unit_id) RETURNS common.return_type_generic
   #Input JSON: [ :measure_unit_id ]
