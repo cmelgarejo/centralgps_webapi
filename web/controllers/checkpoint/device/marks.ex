@@ -9,20 +9,20 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       :notes, :address, :executed_at, :finished_at, :position_at ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:form_id,      nil, &(parse_int(&1)))
-        |> Map.update(:venue_id,     nil, &(parse_int(&1)))
-        |> Map.update(:client_contact_id,     nil, &(parse_int(&1)))
-        |> Map.update(:lat,          nil, &(parse_float(&1)))
-        |> Map.update(:lon,          nil, &(parse_float(&1)))
-        |> Map.update(:accuracy,     nil, &(parse_float(&1)))
-        |> Map.update(:altitude,     nil, &(parse_float(&1)))
-        |> Map.update(:executed_at,  nil, &(parse_datetime(&1)))
-        |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
-        |> Map.update(:position_at,  nil, &(parse_datetime(&1)))
+        |> Map.update(:form_id,           nil, &(parse_int(&1)))
+        |> Map.update(:venue_id,          nil, &(parse_int(&1)))
+        |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
+        |> Map.update(:lat,               nil, &(parse_float(&1)))
+        |> Map.update(:lon,               nil, &(parse_float(&1)))
+        |> Map.update(:accuracy,          nil, &(parse_float(&1)))
+        |> Map.update(:altitude,          nil, &(parse_float(&1)))
+        |> Map.update(:executed_at,       nil, &(parse_datetime(&1)))
+        |> Map.update(:finished_at,       nil, &(parse_datetime(&1)))
+        |> Map.update(:position_at,       nil, &(parse_datetime(&1)))
       {_, result} = fn_chkapi_mark_create ([ params._auth_token,
         params.token, params.form_id, params.venue_id, params.lat, params.lon, params.accuracy,
-        params.altitude, params.notes, params.address, params.executed_at,
-        params.finished_at, params.position_at])
+        params.altitude, params.notes, params.address, params.client_contact_id,
+        params.executed_at, params.finished_at, params.position_at])
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
     rescue
@@ -105,8 +105,9 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
-      {_, result} = fn_chkapi_mark_update ([ params._auth_token,
-        params.token, params.notes, params.finished_at ])
+        |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
+      {_, result} = fn_chkapi_mark_update ([ params._auth_token, params.token,
+        params.client_contact_id, params.notes, params.finished_at ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
