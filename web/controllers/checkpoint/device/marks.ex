@@ -11,6 +11,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       params = params
         |> Map.update(:form_id,      nil, &(parse_int(&1)))
         |> Map.update(:venue_id,     nil, &(parse_int(&1)))
+        |> Map.update(:client_contact_id,     nil, &(parse_int(&1)))
         |> Map.update(:lat,          nil, &(parse_float(&1)))
         |> Map.update(:lon,          nil, &(parse_float(&1)))
         |> Map.update(:accuracy,     nil, &(parse_float(&1)))
