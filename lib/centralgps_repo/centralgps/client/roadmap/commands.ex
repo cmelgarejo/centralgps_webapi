@@ -4,7 +4,7 @@ defmodule CentralGPS.Repo.Client.Roadmap.Commands do
   #roadmap_months_of_year, roadmap_days_of_month, roadmap_recurs_every, roadmap_start_time time, roadmap_end_time time,
   #roadmap_public, roadmap_active, roadmap_xtra_info)
   def cmd_fn_api_roadmap_create,
-    do: "SELECT * FROM client.fn_api_roadmap_create($1::text, $2::text, $3::text, $4::text, $5::jsonb, $6::text, $7::text, $8::text, $9::timestamp without time zone, $10::char, $11::integer[], $12::integer[], $13::integer[], $14::integer, $15::time, $16::time, $17::boolean, $18::boolean, $19::jsonb);"
+    do: "SELECT * FROM client.fn_api_roadmap_create($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9::date, $10::char, $11::integer[], $12::integer[], $13::integer[], $14::integer, $15::time, $16::time, $17::boolean, $18::boolean, $19::jsonb);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_read (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
   # roadmap_id)
@@ -16,7 +16,7 @@ defmodule CentralGPS.Repo.Client.Roadmap.Commands do
   #roadmap_months_of_year, roadmap_days_of_month, roadmap_recurs_every, roadmap_start_time time, roadmap_end_time time,
   #roadmap_public, roadmap_active, roadmap_xtra_info)
   def cmd_fn_api_roadmap_update,
-    do: "SELECT * FROM client.fn_api_roadmap_update($1::text, $2::text, $3::text, $4::text, $5::jsonb, $6::bigint, $7::text, $8::text, $9::text, $10::timestamp without time zone, $11::char, $12::integer[], $13::integer[], $14::integer[], $15::integer, $16::time, $17::time, $18::boolean, $19::boolean, $20::jsonb);" 
+    do: "SELECT * FROM client.fn_api_roadmap_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10::date, $11::char, $12::integer[], $13::integer[], $14::integer[], $15::integer, $16::time, $17::time, $18::boolean, $19::boolean, $20::jsonb);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_delete (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, roadmap_id)
   def cmd_fn_api_roadmap_delete,
