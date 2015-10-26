@@ -16,7 +16,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> Map.update(:active,           nil, &(parse_boolean(&1)))
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
-        |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
+        |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: nil, else: nil))
       {_, result} = fn_api_venue_create((Map.drop(params, keys) |> Map.values) ++
         [params.configuration_id, params.venue_type_id, params.client_id, params.name,
          params.code, params.description, params.address, params.image_path, params.image_bin,
@@ -53,9 +53,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         :address, :image_path, :image_bin, :lat, :lon, :detection_radius, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:venue_id, nil, &(parse_int(&1)))
+        |> Map.update(:venue_id,         nil, &(parse_int(&1)))
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
-        |> Map.update(:client_id, nil, &(parse_int(&1)))
+        |> Map.update(:client_id,        nil, &(parse_int(&1)))
         |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
         |> Map.update(:detection_radius, nil, &(parse_int(&1)))
         |> Map.update(:active,           nil, &(parse_boolean(&1)))
@@ -66,7 +66,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         [params.venue_id] #get the record and check first
       if result.status do
         res = objectify_map result.res
-        save_image(params.image, params.image_bin, res.venue_image)
+        save_image(params.image_path, params.image_bin, res.venue_image)
         {_, result} = fn_api_venue_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and xtra_info of the caller
          [params.venue_id, params.configuration_id, params.venue_type_id, params.client_id,
           params.name, params.code, params.description, params.address,

@@ -2,7 +2,7 @@ defmodule CentralGPS.Repo.Checkpoint.Venue.Commands do
   #DB Definition: checkpoint.fn_api_venue_create (text,text,text,text,jsonb,bigint,bigint,bigint,text,text,text,text,text,bytea,double precision,double precision,integer,boolean,jsonb)
   #Input JSON: [ :configuration_id, :venue_type_id, :name, :code, :description, :image, :lat, :lon, :detection_radius, :active = TRUE /*always*/, :xtra_info ]
   def cmd_fn_api_venue_create,
-    do: "SELECT * FROM checkpoint.fn_api_venue_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8:bigint, $9, $10, $11, $12, $13, $14::bytea, $15::double precision, $16::double precision, $17::integer, $18::boolean, $19::jsonb);"
+    do: "SELECT * FROM checkpoint.fn_api_venue_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::bigint, $9, $10, $11, $12, $13, $14::bytea, $15::double precision, $16::double precision, $17::integer, $18::boolean, $19::jsonb);"
 
   #DB Definition: checkpoint.fn_api_venue_read (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, venue_type_id) RETURNS common.return_type_generic
   #Input JSON:[ "venue_type_id", "account_type"]
