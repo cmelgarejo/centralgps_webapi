@@ -14,8 +14,8 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
   end
 
   #Mark(ing) CRUDs
-  def fn_chkapi_mark_insert(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_mark_insert, params, filter_keys)
+  def fn_chkapi_mark_create(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_mark_create, params, filter_keys)
     {row_count, hd(result)}
   end
   def fn_chkapi_mark_update(params, filter_keys \\ []) do
@@ -27,8 +27,8 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
     {row_count, hd(result)}
   end
 
-  def fn_chkapi_mark_activity_insert(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_mark_activity_insert, params, filter_keys)
+  def fn_chkapi_mark_activity_create(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_mark_activity_create, params, filter_keys)
     {row_count, hd(result)}
   end
   def fn_chkapi_mark_activity_update(params, filter_keys \\ []) do
@@ -40,8 +40,8 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
     {row_count, hd(result)}
   end
 
-  def fn_chkapi_mark_activity_item_insert(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_mark_activity_item_insert, params, filter_keys)
+  def fn_chkapi_mark_activity_item_create(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_mark_activity_item_create, params, filter_keys)
     {row_count, hd(result)}
   end
   def fn_chkapi_mark_activity_item_update(params, filter_keys \\ []) do
@@ -53,8 +53,8 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
     {row_count, hd(result)}
   end
 
-  def fn_chkapi_mark_activity_image_insert(params, filter_keys \\ []) do
-    {row_count, result} = query(cmd_fn_chkapi_mark_activity_image_insert, params, filter_keys)
+  def fn_chkapi_mark_activity_image_create(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_mark_activity_image_create, params, filter_keys)
     {row_count, hd(result)}
   end
   def fn_chkapi_mark_activity_image_delete(params, filter_keys \\ []) do

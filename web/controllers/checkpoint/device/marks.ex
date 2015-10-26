@@ -18,7 +18,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:executed_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:position_at,  nil, &(parse_datetime(&1)))
-      {_, result} = fn_chkapi_mark_insert ([ params._auth_token,
+      {_, result} = fn_chkapi_mark_create ([ params._auth_token,
         params.token, params.form_id, params.venue_id, params.lat, params.lon, params.accuracy,
         params.altitude, params.notes, params.address, params.executed_at,
         params.finished_at, params.position_at])
@@ -41,7 +41,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:position_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:xtra_info,    nil, &(&1))
-      {_, result} = fn_chkapi_mark_activity_insert ([ params._auth_token, params.id,
+      {_, result} = fn_chkapi_mark_activity_create ([ params._auth_token, params.id,
         params.mark_token, params.activity_id, params.notes, params.executed_at, params.finished_at, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
@@ -62,7 +62,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:item_id,          nil, &(parse_int(&1)))
         |> Map.update(:quantity,         nil, &(parse_float(&1)))
         |> Map.update(:xtra_info,        nil, &(&1))
-      {_, result} = fn_chkapi_mark_activity_item_insert ([ params._auth_token,
+      {_, result} = fn_chkapi_mark_activity_item_create ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token, params.measure_unit_id,
         params.item_id, params.quantity, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
@@ -82,7 +82,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:mark_activity_id, nil, &(parse_int(&1)))
         |> Map.update(:image_created_at, nil, &(parse_datetime(&1)))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
-      {_, result} = fn_chkapi_mark_activity_image_insert ([ params._auth_token,
+      {_, result} = fn_chkapi_mark_activity_image_create ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token, params.image_path,
         params.image_bin, params.image_bin, params.image_created_at ])
       {response_code, result} = (if result.status, do: {201, result},
@@ -153,7 +153,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
     try do
       keys = [ :token ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
-      {_, result} = fn_chkapi_mark_insert ([ params._auth_token, params.token ])
+      {_, result} = fn_chkapi_mark_create ([ params._auth_token, params.token ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
