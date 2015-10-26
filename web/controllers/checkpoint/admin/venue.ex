@@ -11,7 +11,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
-        |> Map.update(:client_id, nil, &(parse_int(&1)))
+        |> Map.update(:client_id,        nil, &(parse_int(&1)))
         |> Map.update(:detection_radius, nil, &(parse_int(&1)))
         |> Map.update(:active,           nil, &(parse_boolean(&1)))
         |> Map.update(:lat,              nil, &(parse_float(&1)))
