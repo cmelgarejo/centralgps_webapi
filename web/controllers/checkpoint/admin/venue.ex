@@ -23,7 +23,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
          params.lat, params.lon, params.detection_radius, params.active, params.xtra_info])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
+      if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
         save_image(params.image_path, params.image_bin)
       json (conn |> put_status response_code), result
     rescue
@@ -66,7 +66,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         [params.venue_id] #get the record and check first
       if result.status do
         res = objectify_map result.res
-        save_image(params.image_path, params.image_bin, res.venue_image)
+        if (Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
+          save_image(params.image_path, params.image_bin, res.image_path)
         {_, result} = fn_api_venue_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and xtra_info of the caller
          [params.venue_id, params.configuration_id, params.venue_type_id, params.client_id,
           params.name, params.code, params.description, params.address,
