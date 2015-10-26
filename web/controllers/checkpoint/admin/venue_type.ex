@@ -9,7 +9,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:activity_configuration_id, nil, &(parse_int(&1)))
-        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
+        |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_venue_type_create((Map.drop(params, keys) |> Map.values) ++
         [ params.configuration_id, params.description, params.image_path, params.image_bin])
       {response_code, result} = (if result.status, do: {201, result},
@@ -45,7 +45,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
-        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
+        |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_venue_type_read (Map.drop(params, keys) |> Map.values) ++
         [params.venue_type_id]
       if result.status do

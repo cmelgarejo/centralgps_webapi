@@ -16,7 +16,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> Map.update(:active,           nil, &(parse_boolean(&1)))
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
-        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
+        |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_venue_create((Map.drop(params, keys) |> Map.values) ++
         [params.configuration_id, params.venue_type_id, params.client_id, params.name,
          params.code, params.description, params.address, params.image_path, params.image_bin,
@@ -61,7 +61,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> Map.update(:active,           nil, &(parse_boolean(&1)))
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
-        |> Map.update(:image_bin,        nil, &(Base.url_decode64!(&1)))
+        |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_venue_read (Map.drop(params, keys) |> Map.values) ++
         [params.venue_id] #get the record and check first
       if result.status do
