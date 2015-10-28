@@ -71,10 +71,10 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_measure_unit_list($1::text, $2::text, $3::char);"
 
   def cmd_fn_chkapi_client_list,
-    do: "SELECT * FROM checkpoint.fn_chkapi_item_list($1::text, $2::text, $3::char);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_client_list($1::text, $2::text, $3::char);"
 
   def cmd_fn_chkapi_client_contact_list,
-    do: "SELECT * FROM checkpoint.fn_chkapi_item_list($1::text, $2::text, $3::char);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_client_contact_list($1::text, $2::text, $3::char);"
 
   #Not implemented
   def cmd_fn_chkapi_near_venue_list,
