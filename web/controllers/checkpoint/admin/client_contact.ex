@@ -55,7 +55,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         if (Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
           save_image(params.image_path, params.image_bin, res.image_path)
         {_, result} = fn_api_client_contact_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and xtra_info of the caller
-          [ params.id, params.client_id, params.name, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
+          [ params.client_contact_id, params.client_id, params.name, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       end
       json (conn |> put_status 200), result
     rescue
