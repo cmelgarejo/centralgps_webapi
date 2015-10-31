@@ -29,7 +29,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_read
-        json (conn |> put_status 200), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -65,7 +65,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_delete
-        json (conn |> put_status 200), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -78,7 +78,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
       {_, result} = params
         |> Map.values
         |> fn_api_client_contact_list
-        json (conn |> put_status 200), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
