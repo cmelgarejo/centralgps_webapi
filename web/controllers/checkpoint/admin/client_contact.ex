@@ -74,7 +74,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
 
   def list(conn, params) do
     try do
-      keys = [ :roadmap_id ]
+      keys = [ :client_id ]
       {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
         |> Map.update(:client_id, nil, &(parse_int(&1)))
