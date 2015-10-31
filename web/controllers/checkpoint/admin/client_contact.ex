@@ -49,7 +49,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         |> Map.update(:notify,            nil, &(parse_boolean(&1)))
         |> Map.update(:image_bin,         nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_client_contact_read (Map.drop(params, keys) |> Map.values) ++
-        [params.id] #get the record and check first
+        [params.client_contact_id] #get the record and check first
       if result.status do
         res = objectify_map result.res
         if (Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
