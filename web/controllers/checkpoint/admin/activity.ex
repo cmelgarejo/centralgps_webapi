@@ -68,7 +68,9 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
 
   def list(conn, params) do
     try do
-      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params)
+      keys = [ :form_id ]
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params, keys)
+        |> Map.update(:form_id, nil, &(parse_int(&1)))
       {_, result} = params
         |> Map.values
         |> fn_api_activity_list
