@@ -5,15 +5,15 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
 
   def create(conn, params) do
     try do
-      keys = [ :configuration_id, :description ]
+      keys = [ :configuration_id, :form_id, :description ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
-      {_, result} = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
-        |> Map.values
-        |> fn_api_activity_create
-        {response_code, result} = (if result.status, do: {201, result},
-                                   else: {200, result |> Map.take [:status, :msg]})
-        json (conn |> put_status response_code), result
+        |> Map.update(:form_id,          nil, &(parse_int(&1)))
+      {_, result} = fn_api_activity_create((Map.drop(params, keys) |> Map.values) ++
+        [ params.configuration_id, params.form_id, params.description ])
+      {response_code, result} = (if result.status, do: {201, result},
+                                 else: {200, result |> Map.take [:status, :msg]})
+      json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
