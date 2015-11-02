@@ -21,6 +21,6 @@ defmodule CentralGPS.Repo.Checkpoint.Activity.Commands do
 
   #DB Definition: checkpoint.fn_api_activity_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit, search_column, search_phrase) RETURNS common.return_type_json_list
   def cmd_fn_api_activity_list,
-    do: "SELECT * FROM checkpoint.fn_api_activity_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text, $10::text, $11::text);"
+    do: "SELECT * FROM checkpoint.fn_api_activity_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text, $10::text, $11::text, $12::bigint);"
 
 end
