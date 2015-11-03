@@ -88,7 +88,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
   def list_items(conn, params) do
     try do
       keys = [ :form_id, :activity_id ]
-      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:form_id,          nil, &(parse_int(&1)))
         |> Map.update(:activity_id,      nil, &(parse_int(&1)))
