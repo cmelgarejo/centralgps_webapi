@@ -7,6 +7,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
     try do
       keys = [ :configuration_id, :form_id, :description ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:form_id,          nil, &(parse_int(&1)))
       {_, result} = fn_api_activity_create((Map.drop(params, keys) |> Map.values) ++
