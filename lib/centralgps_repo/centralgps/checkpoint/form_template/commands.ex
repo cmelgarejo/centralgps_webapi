@@ -24,4 +24,7 @@ defmodule CentralGPS.Repo.Checkpoint.FormTemplate.Commands do
   def cmd_fn_api_form_template_list,
     do: "SELECT * FROM checkpoint.fn_api_form_template_list($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text, $10::text, $11::text);"
 
+  def cmd_fn_api_form_template_list_items,
+    do: "SELECT * FROM checkpoint.fn_api_form_template_list_items($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::text, $9::text, $10::text, $11::text, $12::bigint, $13::bigint);"
+
 end

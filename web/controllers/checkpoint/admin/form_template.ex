@@ -65,7 +65,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
         |> Map.update(:form_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_form_template_delete
-        json (conn |> put_status 200), result
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
@@ -78,7 +78,20 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
       {_, result} = params
         |> Map.values
         |> fn_api_form_template_list
-        json (conn |> put_status 200), result
+      json (conn |> put_status 200), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+    end
+  end
+
+  def list_items(conn, params) do
+    try do
+      keys = [ :form_id, :activity_id ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      {_, result} = fn_api_form_template_list_items((Map.drop(params, keys) |> Map.values) ++
+        [ params.form_id, params.activity_id ])
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
