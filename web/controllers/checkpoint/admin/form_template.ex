@@ -62,7 +62,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
       keys = [ :form_template_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
-        |> Map.update(:form_id, nil, &(parse_int(&1)))
+        |> Map.update(:form_template_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_form_template_delete
       json (conn |> put_status 200), result
