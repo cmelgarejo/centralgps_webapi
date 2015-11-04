@@ -17,7 +17,7 @@ defmodule CentralGPS.Repo.Checkpoint.FormTemplate.Commands do
   #DB Definition: checkpoint.fn_api_form_template_delete (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, form_template_id, form_template_remove_item) RETURNS common.return_type_generic
   #Input JSON: [ :form_template_id,]
   def cmd_fn_api_form_template_delete,
-    do: "SELECT * FROM checkpoint.fn_api_form_template_delete($1, $2, $3, $4, $5::jsonb, $6::bigint, $6::boolean);"
+    do: "SELECT * FROM checkpoint.fn_api_form_template_delete($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::boolean);"
 
   #DB Definition: checkpoint.fn_api_form_template_list (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, _offset, _limit, search_column, search_phrase) RETURNS common.return_type_json_list
   #Input JSON: [ :_auth_type ]
