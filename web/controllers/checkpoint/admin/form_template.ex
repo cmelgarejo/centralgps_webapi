@@ -59,10 +59,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.FormTemplate do
 
   def delete(conn, params) do
     try do
-      keys = [ :form_template_id ]
+      keys = [ :form_template_id, :remove_items ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
-        |> Map.update(:form_template_id, nil, &(parse_int(&1)))
+        |> Map.update(:form_template_id, nil,   &(parse_int(&1)))
+        |> Map.update(:remove_items,     false, &(parse_boolean(&1)))
         |> Map.values
         |> fn_api_form_template_delete
       json (conn |> put_status 200), result
