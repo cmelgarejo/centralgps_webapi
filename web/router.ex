@@ -131,9 +131,9 @@ defmodule CentralGPSWebAPI.Router do
       get     "/form/",            Checkpoint.Form, :list
       #Form Templates
       post    "/form_template/create",                Checkpoint.FormTemplate, :create
-      get     "/form_template/:form_id",              Checkpoint.FormTemplate, :read
-      put     "/form_template/:form_id",              Checkpoint.FormTemplate, :update
-      delete  "/form_template/:form_id",              Checkpoint.FormTemplate, :delete
+      get     "/form_template/:form_template_id",     Checkpoint.FormTemplate, :read
+      put     "/form_template/:form_template_id",     Checkpoint.FormTemplate, :update
+      delete  "/form_template/:form_template_id",     Checkpoint.FormTemplate, :delete
       get     "/form_template/",                      Checkpoint.FormTemplate, :list
       get     "/form_template/:form_id/:activity_id", Checkpoint.FormTemplate, :list_items
       #Activities
