@@ -35,7 +35,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_item_delete($1::text, $2::bigint, $3::bigint, $4::text);"
 
   def cmd_fn_chkapi_mark_activity_image_create,
-    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_image_create($1::text, $2::bigint, $3::bigint, $4::text, $5::text, $6::text, $7::bytea, $8::timestamp without time zone);"
+    do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_image_create($1::text, $2::bigint, $3::bigint, $4::text, $5::text, $6::bytea, $7::timestamp without time zone);"
 
   def cmd_fn_chkapi_mark_activity_image_delete,
     do: "SELECT * FROM checkpoint.fn_chkapi_mark_activity_image_delete($1::text, $2::bigint, $3::bigint, $4::text);"
