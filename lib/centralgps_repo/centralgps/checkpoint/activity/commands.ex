@@ -7,7 +7,7 @@ defmodule CentralGPS.Repo.Checkpoint.Activity.Commands do
   #DB Definition: checkpoint.fn_api_activity_read (_auth_token text, _auth_type, _the_app_name, _the_ip_port, _xtra_info, activity_id) RETURNS common.return_type_generic
   #Input JSON:[ :activity_id ]
   def cmd_fn_api_activity_read,
-    do: "SELECT * FROM checkpoint.fn_api_activity_read($1, $2, $3, $4, $5::jsonb, $6::bigint);"
+    do: "SELECT * FROM checkpoint.fn_api_activity_read($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint);"
 
   #DB Definition: checkpoint.fn_api_activity_update (_auth_token text, _auth_type, _the_app_name, _the_ip_port, _xtra_info, activity_id, activity_configuration_id, activity_description) RETURNS common.return_type_generic
   #Input JSON: [ :activity_id, :configuration_id, :description ]

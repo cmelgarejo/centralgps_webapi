@@ -23,9 +23,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
 
   def read(conn, params) do
     try do
-      keys = [ :activity_id ]
+      keys = [ :form_id, :activity_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
+        |> Map.update(:form_id, nil, &(parse_int(&1)))
         |> Map.update(:activity_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_activity_read
