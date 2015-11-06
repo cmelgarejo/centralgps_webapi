@@ -28,8 +28,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
       params = params
         |> Map.update(:form_id, nil, &(parse_int(&1)))
         |> Map.update(:activity_id, nil, &(parse_int(&1)))
-      {_, result} = fn_api_activity_update((Map.drop(params, keys) |> Map.values) ++
-        [ params.form_id, params.activity_id  ])
+      {_, result} = fn_api_activity_read((Map.drop(params, keys) |> Map.values) ++
+        [ params.form_id, params.activity_id ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
