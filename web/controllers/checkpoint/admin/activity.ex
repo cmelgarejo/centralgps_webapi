@@ -25,12 +25,12 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Activity do
     try do
       keys = [ :form_id, :activity_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
-      {_, result} = params
+      params = params
         |> Map.update(:form_id, nil, &(parse_int(&1)))
         |> Map.update(:activity_id, nil, &(parse_int(&1)))
-        |> Map.values
-        |> fn_api_activity_read
-        json (conn |> put_status 200), result
+      {_, result} = fn_api_activity_update((Map.drop(params, keys) |> Map.values) ++
+        [ params.form_id, params.activity_id  ])
+      json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
