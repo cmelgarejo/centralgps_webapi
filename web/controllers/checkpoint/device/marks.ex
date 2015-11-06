@@ -85,7 +85,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_chkapi_mark_activity_image_create ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token, params.image_path,
-        params.image_bin, params.image_bin, params.image_created_at ])
+        params.image_bin, params.image_created_at ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       if (response_code == 201 && Map.has_key?(result, :image_bin)), do:
