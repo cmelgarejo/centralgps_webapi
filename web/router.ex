@@ -1,4 +1,4 @@
-defmodule CentralGPSWebAPI.Router do
+  defmodule CentralGPSWebAPI.Router do
   use Phoenix.Router
 
   pipeline :api do
