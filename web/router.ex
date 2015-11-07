@@ -138,7 +138,7 @@
       get     "/form_template/:form_id/:activity_id",           Checkpoint.FormTemplate, :list_items
       #Activities
       post    "/activity/create",                Checkpoint.Activity, :create
-      get     "/activity/:activity_id/:form_id", Checkpoint.Activity, :read
+      get     "/activity/:form_id/:activity_id", Checkpoint.Activity, :read
       put     "/activity/:activity_id",          Checkpoint.Activity, :update
       delete  "/activity/:activity_id",          Checkpoint.Activity, :delete
       get     "/activity/",                      Checkpoint.Activity, :list
