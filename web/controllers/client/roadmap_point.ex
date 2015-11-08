@@ -75,6 +75,22 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
     end
   end
 
+  def update_point_order(conn, params) do
+    try do
+      keys = [ :roadmap_point_id, :roadmap_point_order ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
+        |> Map.update(:roadmap_point_id,    nil, &(parse_int(&1)))
+        |> Map.update(:roadmap_point_order, nil, &(parse_int(&1)))
+        {_, result} = fn_api_roadmap_point_update_point_order((Map.drop(params, keys) |> Map.values) ++
+          [ params.roadmap_point_id, params.roadmap_point_order ])
+      json (conn |> put_status 200), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+    end
+  end
+
   def delete(conn, params) do
     try do
       keys = [ :roadmap_id, :roadmap_point_id ]

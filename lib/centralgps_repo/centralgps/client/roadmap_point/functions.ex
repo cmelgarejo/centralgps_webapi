@@ -18,6 +18,11 @@ defmodule CentralGPS.Repo.Client.RoadmapPoint.Functions do
     {row_count, hd(result)}
   end
 
+  def fn_api_roadmap_point_update_point_order(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_api_roadmap_point_update_point_order, params, filter_keys)
+    {row_count, hd(result)}
+  end
+
   def fn_api_roadmap_point_delete(params, filter_keys \\ []) do
     {row_count, result} = query(cmd_fn_api_roadmap_point_delete, params, filter_keys)
     {row_count, hd(result)}

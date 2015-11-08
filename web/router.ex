@@ -53,11 +53,12 @@
   scope "/api/v1/client/roadmaps/:roadmap_id/points", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
-    post    "/create",             Client.RoadmapPoint, :create
-    get     "/:roadmap_point_id",  Client.RoadmapPoint, :read
-    put     "/:roadmap_point_id",  Client.RoadmapPoint, :update
-    delete  "/:roadmap_point_id",  Client.RoadmapPoint, :delete
-    get     "/",                   Client.RoadmapPoint, :list
+    post    "/create",                          Client.RoadmapPoint, :create
+    get     "/:roadmap_point_id",               Client.RoadmapPoint, :read
+    put     "/:roadmap_point_id",               Client.RoadmapPoint, :update
+    put     "/:roadmap_point_id/:point_order",  Client.RoadmapPoint, :update_point_order
+    delete  "/:roadmap_point_id",               Client.RoadmapPoint, :delete
+    get     "/",                                Client.RoadmapPoint, :list
   end
 
   scope "/api/v1/monitor", CentralGPSWebAPI.Controllers do
