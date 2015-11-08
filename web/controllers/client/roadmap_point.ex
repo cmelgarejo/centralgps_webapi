@@ -55,11 +55,12 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
     try do
       keys = [ :roadmap_point_id, :roadmap_id, :name, :description, :notes, :lat, :lon, :point_order,
         :mean_arrival_time, :mean_leave_time, :detection_radius, :active, :xtra_info,
-        :venue_id, :form_id ]
+        :rpvf_id, :venue_id, :form_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:roadmap_point_id,  nil, &(parse_int(&1)))
         |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
+        |> Map.update(:rpvf_id,           nil, &(parse_int(&1)))
         |> Map.update(:venue_id,          nil, &(parse_int(&1)))
         |> Map.update(:form_id,           nil, &(parse_int(&1)))
         |> Map.update(:lat,               nil, &(parse_float(&1)))
@@ -73,7 +74,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
         {_, result} = fn_api_roadmap_point_update((Map.drop(params, keys) |> Map.values) ++
           [ params.roadmap_point_id, params.roadmap_id, params.name, params.description, params.notes,
             params.lat, params.lon, params.point_order, params.mean_arrival_time, params.mean_leave_time,
-            params.detection_radius, params.active, params.xtra_info, params.venue_id, params.form_id ])
+            params.detection_radius, params.active, params.xtra_info, params.rpvf_id, params.venue_id, params.form_id ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
