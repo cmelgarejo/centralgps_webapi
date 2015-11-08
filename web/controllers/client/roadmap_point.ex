@@ -81,7 +81,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.RoadmapPoint do
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:roadmap_point_id,    nil, &(parse_int(&1)))
-        |> Map.update(:roadmap_point_order, nil, &(parse_int(&1)))
+        |> Map.update(:roadmap_point_order, nil, &(parse_boolean(&1)))
         {_, result} = fn_api_roadmap_point_update_point_order((Map.drop(params, keys) |> Map.values) ++
           [ params.roadmap_point_id, params.roadmap_point_order ])
       json (conn |> put_status 200), result

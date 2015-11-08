@@ -19,7 +19,7 @@ defmodule CentralGPS.Repo.Client.RoadmapPoint.Commands do
     do: "SELECT * FROM client.fn_api_roadmap_point_update($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8, $9, $10, $11::double precision, $12::double precision, $13::integer, $14::time, $15::time, $16::integer, $17::boolean, $18::jsonb);"
 
   def cmd_fn_api_roadmap_point_update_point_order,
-    do: "SELECT * FROM client.fn_api_roadmap_point_update_point_order($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::integer);"
+    do: "SELECT * FROM client.fn_api_roadmap_point_update_point_order($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::boolean);"
 
   #DB Definition: FUNCTION client.fn_api_roadmap_point_delete (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info,
   # roadmap_point_id, roadmap_point_roadmap_id)
