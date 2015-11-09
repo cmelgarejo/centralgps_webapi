@@ -13,12 +13,12 @@
     post    "/login/:auth_type", Security.Login, :login
     post    "/logout/:account_type", Security.Login, :logout
 
-    put     "/accounts/activate/:account_type/:account_id", Security.Account, :activate
-    post    "/accounts/create/:account_type",               Security.Account, :create
-    get     "/accounts/:account_type/:account_id",          Security.Account, :read
-    put     "/accounts/:account_type/:account_id",          Security.Account, :update
-    delete  "/accounts/:account_type/:account_id",          Security.Account, :delete
-    get     "/accounts",                                    Security.Account, :list
+    put     "/account/activate/:account_type/:account_id", Security.Account, :activate
+    post    "/account/create/:account_type",               Security.Account, :create
+    get     "/account/:account_type/:account_id",          Security.Account, :read
+    put     "/account/:account_type/:account_id",          Security.Account, :update
+    delete  "/account/:account_type/:account_id",          Security.Account, :delete
+    get     "/account",                                    Security.Account, :list
 
     post    "/accounts/:account_type/:account_id/roles/create/:role_id",  Security.Account.Role, :create
     delete  "/accounts/:account_type/:account_id/roles/:role_id",         Security.Account.Role, :delete
@@ -32,22 +32,27 @@
   scope "/api/v1/client/asset", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
+    #CRUD AssetRoadmap
     post    "/:asset_id/roadmap/create",      Client.AssetRoadmap, :create
     get     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :read
     put     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :update
     delete  "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :delete
-    get     "/:asset_id/roadmap",             Client.AssetRoadmap, :list
-    get     "/roadmap",                       Client.AssetRoadmap, :all_list
+    get     "/:asset_id/roadmaps",            Client.AssetRoadmap, :roadmap_list
+
   end
 
   scope "/api/v1/client/roadmaps", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
+    #CRUD Roadmaps
     post    "/create",       Client.Roadmap, :create
     get     "/:roadmap_id",  Client.Roadmap, :read
     put     "/:roadmap_id",  Client.Roadmap, :update
     delete  "/:roadmap_id",  Client.Roadmap, :delete
     get     "/",             Client.Roadmap, :list
+
+    get     "/:roadmap_id/assets", Client.AssetRoadmap, :asset_list
+
   end
 
   scope "/api/v1/client/roadmaps/:roadmap_id/points", CentralGPSWebAPI.Controllers do

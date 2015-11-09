@@ -105,4 +105,5 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
       e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
     end
   end
+
 end
