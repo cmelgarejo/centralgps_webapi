@@ -38,7 +38,7 @@
     put     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :update
     delete  "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :delete
     #AssetRoadmap List
-    get     "/:asset_id/roadmaps",            Client.AssetRoadmap, :roadmap_list
+    get     "/:asset_id/roadmap",            Client.AssetRoadmap, :roadmap_list
 
   end
 
@@ -51,8 +51,14 @@
     put     "/:roadmap_id",  Client.Roadmap, :update
     delete  "/:roadmap_id",  Client.Roadmap, :delete
     get     "/",             Client.Roadmap, :list
+
+    #CRUD AssetRoadmap
+    post    "/:roadmap_id/asset/create",    Client.AssetRoadmap, :create
+    get     "/:roadmap_id/asset/:asset_id", Client.AssetRoadmap, :read
+    put     "/:roadmap_id/asset/:asset_id", Client.AssetRoadmap, :update
+    delete  "/:roadmap_id/asset/:asset_id", Client.AssetRoadmap, :delete
     #AssetRoadmap List
-    get     "/:roadmap_id/assets", Client.AssetRoadmap, :asset_list
+    get     "/:roadmap_id/asset", Client.AssetRoadmap, :asset_list
 
   end
 
