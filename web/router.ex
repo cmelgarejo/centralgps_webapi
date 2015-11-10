@@ -20,12 +20,12 @@
     delete  "/account/:account_type/:account_id",          Security.Account, :delete
     get     "/account",                                    Security.Account, :list
 
-    post    "/accounts/:account_type/:account_id/roles/create/:role_id",  Security.Account.Role, :create
-    delete  "/accounts/:account_type/:account_id/roles/:role_id",         Security.Account.Role, :delete
+    post    "/account/:account_type/:account_id/roles/create/:role_id",  Security.Account.Role, :create
+    delete  "/account/:account_type/:account_id/roles/:role_id",         Security.Account.Role, :delete
 
-    post    "/accounts/:account_type/:account_id/permissions/create/:permission_id",  Security.Account.Permission, :create
-    delete  "/accounts/:account_type/:account_id/permissions/:permission_id",         Security.Account.Permission, :delete
-    get     "/accounts/:account_type/:feature_code/:code", Security.Account.Permission, :check
+    post    "/account/:account_type/:account_id/permission/create/:permission_id",  Security.Account.Permission, :create
+    delete  "/account/:account_type/:account_id/permission/:permission_id",         Security.Account.Permission, :delete
+    get     "/account/:account_type/:feature_code/:code", Security.Account.Permission, :check
 
   end
 
@@ -42,7 +42,7 @@
 
   end
 
-  scope "/api/v1/client/roadmaps", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/client/roadmap", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     #CRUD Roadmaps
