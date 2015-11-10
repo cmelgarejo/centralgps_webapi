@@ -3,6 +3,8 @@ defmodule CentralGPSWebAPI.Controllers.Client.Asset do
   import CentralGPS.Repo.Client.Asset.Functions
   import CentralGPS.Repo.Utilities
 
+
+
   def asset_list(conn, params) do
     try do
       {_, params} = list_auth_proc_headers_and_params(conn.req_headers, params)

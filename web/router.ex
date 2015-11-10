@@ -32,6 +32,13 @@
   scope "/api/v1/client/asset", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
+    #CRUD Asset
+    post    "/create",    Client.Asset, :create
+    get     "/:asset_id", Client.Asset, :read
+    put     "/:asset_id", Client.Asset, :update
+    delete  "/:asset_id", Client.Asset, :delete
+    delete  "/",          Client.Asset, :asset_list
+
     #CRUD AssetRoadmap
     post    "/:asset_id/roadmap/create",      Client.AssetRoadmap, :create
     get     "/:asset_id/roadmap/:roadmap_id", Client.AssetRoadmap, :read
