@@ -62,7 +62,7 @@
 
   end
 
-  scope "/api/v1/client/roadmaps/:roadmap_id/points", CentralGPSWebAPI.Controllers do
+  scope "/api/v1/client/roadmap/:roadmap_id/point", CentralGPSWebAPI.Controllers do
     pipe_through :api
 
     post    "/create",                                 Client.RoadmapPoint, :create
