@@ -9,7 +9,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
-        |> Map.update(:asset_id,          nil, &(parse_float(&1)))
+        |> Map.update(:asset_id,          nil, &(parse_int(&1)))
         |> Map.update(:alert,             nil, &(parse_boolean(&1)))
       {_, result} = fn_api_asset_roadmap_create((Map.drop(params, keys) |> Map.values) ++
         [ params.asset_id, params.roadmap_id, params.emails, params.phones, params.alert ])
@@ -45,7 +45,7 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:roadmap_id,        nil, &(parse_int(&1)))
-        |> Map.update(:asset_id,          nil, &(parse_float(&1)))
+        |> Map.update(:asset_id,          nil, &(parse_int(&1)))
         |> Map.update(:alert,             nil, &(parse_boolean(&1)))
       {_, result} = fn_api_asset_roadmap_update((Map.drop(params, keys) |> Map.values) ++
         [ params.asset_id, params.roadmap_id, params.emails, params.phones, params.alert ])
