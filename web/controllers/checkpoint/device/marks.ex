@@ -101,7 +101,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
 
   def update_mark(conn, params) do
     try do
-      keys = [ :token, :notes, :finished_at ]
+      keys = [ :token, :notes, :client_contact_id, :finished_at ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
