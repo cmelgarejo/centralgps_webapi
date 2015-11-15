@@ -34,7 +34,7 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
         [ params.configuration_id, params.description, params.image_path, params.image_bin])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(result, :image_bin)), do:
+      if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
         save_image(params.image_path, params.image_bin)
       json (conn |> put_status response_code), result
     rescue
