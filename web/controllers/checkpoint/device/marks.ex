@@ -84,7 +84,6 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:image_created_at, nil, &(parse_datetime(&1)))
         |> Map.update(:image_path,       nil, &(if (&1 != nil), do: "/images/checkpoint/mark/" <> params.mark_token <> "/activity/" <> to_string(params.mark_activity_id) <> "/" <> &1, else: nil))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
-      integer.to
       {_, result} = fn_chkapi_mark_activity_image_create ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token, params.image_path,
         params.image_bin, params.image_created_at ])
