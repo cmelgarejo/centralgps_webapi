@@ -89,7 +89,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         params.image_bin, params.image_created_at ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(result, :image_bin)), do:
+      if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
         save_image(params.image_path, params.image_bin)
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
