@@ -84,7 +84,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
 
   def create(conn, params) do
     try do
-      keys = [ :configuration_id, :venue_type_id, :client_id, :active, :name, :code, :description,
+      keys = [ :configuration_id, :venue_type_id, :client_id, :name, :code, :description,
         :address, :image_path, :image_bin, :lat, :lon, :detection_radius, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
