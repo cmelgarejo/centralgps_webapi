@@ -97,7 +97,7 @@
       #Device record (history)
       post    "/device/record",              Device.Record,   :record
       #Venue creative mode
-      post    "/device/venues/create",       Device.Venues,   :venue_create
+      post    "/device/venues/create",       Device.Venues,   :create
       #Mark CRUDs
       post    "/device/mark",                Device.Marks,    :register_mark
       post    "/device/mark_activity",       Device.Marks,    :register_mark_activity
