@@ -2,6 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Checkpoint.Device.Functions
+  import CentralGPS.Repo.Checkpoint.Client.Functions
 
   def venue_types(conn, params) do
     try do
@@ -82,13 +83,13 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
     end
   end
 
-  def create(conn, params) do
+  #Creative mode
+  def creative_mode_create(conn, params) do
     try do
-      keys = [ :configuration_id, :venue_type_id, :client_id, :name, :code, :description,
+      keys = [ :venue_type_id, :client_id, :name, :code, :description,
         :address, :image_path, :image_bin, :lat, :lon, :detection_radius, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
         |> Map.update(:client_id,        nil, &(parse_int(&1)))
         |> Map.update(:detection_radius, nil, &(parse_int(&1)))
@@ -96,10 +97,13 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
-      {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.configuration_id, params.venue_type_id, params.client_id, params.name,
-          params.code, params.description, params.address, params.image_path, params.image_bin,
-          params.lat, params.lon, params.detection_radius, params.active, params.xtra_info ])
+      {_, result} = fn_api_client_read((Map.drop(params, keys) |> Map.values) ++ params.client_id)
+      if(result.status) do
+        {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++
+          [ result.res.configuration_id, params.venue_type_id, params.client_id, params.name,
+            params.code, params.description, params.address, params.image_path, params.image_bin,
+            params.lat, params.lon, params.detection_radius, params.active, params.xtra_info ])
+      end
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
