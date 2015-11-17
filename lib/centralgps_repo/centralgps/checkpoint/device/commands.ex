@@ -43,7 +43,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
   #Venue creative mode
   #checkpoint.fn_api_venue_create (venue_configuration_id, venue_type_id, client_id, venue_name, venue_code, venue_description, venue_address, venue_image_path, venue_image_bin, venue_lat, venue_lon, venue_detection_radius, venue_active, venue_xtra_info)
   def cmd_fn_chkapi_venue_create,
-    do: "SELECT * FROM checkpoint.fn_api_venue_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::bigint, $9, $10, $11, $12, $13, $14::bytea, $15::double precision, $16::double precision, 17::integer, $18::boolean, $19::jsonb);"
+    do: "SELECT * FROM checkpoint.fn_api_venue_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7::bigint, $8::bigint, $9, $10, $11, $12, $13, $14::bytea, $15::double precision, $16::double precision, $17::integer, $18::boolean, $19::jsonb);"
 
   #Lists
   def cmd_fn_chkapi_roadmaps,
