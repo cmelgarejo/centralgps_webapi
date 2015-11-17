@@ -93,21 +93,21 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
         |> Map.update(:venue_type_id,    nil, &(parse_int(&1)))
         |> Map.update(:client_id,        nil, &(parse_int(&1)))
         |> Map.update(:detection_radius, nil, &(parse_int(&1)))
-        |> Map.update(:active,           nil, &(parse_boolean(&1)))
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_client_read((Map.drop(params, keys) |> Map.values) ++ [params.client_id])
-      if(result.status) do
+      if (result.status) do
+        res = objectify_map result.res
         {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++
-          [ result.res.configuration_id, params.venue_type_id, params.client_id, params.name,
+          [ res.configuration_id, params.venue_type_id, params.client_id, params.name,
             params.code, params.description, params.address, params.image_path, params.image_bin,
-            params.lat, params.lon, params.detection_radius, params.active, params.xtra_info ])
+            params.lat, params.lon, params.detection_radius, false, params.xtra_info ])
+        {response_code, result} = (if result.status, do: {201, result},
+                                   else: {200, result |> Map.take [:status, :msg]})
+        if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
+          save_image(params.image_path, params.image_bin)
       end
-      {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
-      if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
-        save_image(params.image_path, params.image_bin)
       json (conn |> put_status response_code), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
