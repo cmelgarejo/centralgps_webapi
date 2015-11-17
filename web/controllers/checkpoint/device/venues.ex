@@ -97,7 +97,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
-      {_, result} = fn_api_client_read((Map.drop(params, keys) |> Map.values) ++ params.client_id)
+      {_, result} = fn_api_client_read((Map.drop(params, keys) |> Map.values) ++ [params.client_id])
       if(result.status) do
         {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++
           [ result.res.configuration_id, params.venue_type_id, params.client_id, params.name,
