@@ -16,7 +16,7 @@
   "logger_file_backend": {:git, "https://github.com/onkel-dirtus/logger_file_backend.git", "fae5c4177ce428167a6fd5f7be660acf0e182ae4", []},
   "mimerl": {:hex, :mimerl, "1.0.0"},
   "neotoma": {:hex, :neotoma, "1.7.3"},
-  "phoenix": {:git, "https://github.com/phoenixframework/phoenix.git", "bb797d4016151189f212edfaf5db51bcdbd8941b", []},
+  "phoenix": {:git, "https://github.com/phoenixframework/phoenix.git", "deaf4a13b5ed2aa990527252802dcf74dbb8e236", []},
   "phoenix_ecto": {:git, "https://github.com/phoenixframework/phoenix_ecto.git", "11126cac0b2648164b8ed27f652c86a950ec263c", []},
   "phoenix_html": {:git, "https://github.com/phoenixframework/phoenix_html.git", "0007701fa1336847206c1549636d10bc71ebc843", []},
   "phoenix_live_reload": {:git, "https://github.com/phoenixframework/phoenix_live_reload.git", "a024e1d9c5f7350f8d0d1efbc9b4c386b240cdad", []},
