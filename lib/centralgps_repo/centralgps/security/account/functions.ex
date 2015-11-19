@@ -1,6 +1,6 @@
-defmodule CentralGPS.Repo.Security.Functions do
+defmodule CentralGPS.Repo.Security.Account.Functions do
   import CentralGPS.Repo
-  import CentralGPS.Repo.Security.Commands
+  import CentralGPS.Repo.Security.Account.Commands
   require Logger
 
   def fn_api_login(params, filter_keys \\ []) do

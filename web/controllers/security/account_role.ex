@@ -1,7 +1,7 @@
 defmodule CentralGPSWebAPI.Controllers.Security.Account.Role do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
-  import CentralGPS.Repo.Security.Functions
+  import CentralGPS.Repo.Security.Account.Functions
 
 
   def create(conn, params) do

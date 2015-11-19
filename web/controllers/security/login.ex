@@ -1,7 +1,7 @@
 defmodule CentralGPSWebAPI.Controllers.Security.Login do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
-  import CentralGPS.Repo.Security.Functions
+  import CentralGPS.Repo.Security.Account.Functions
 
   def login(conn, params) do
     try do
