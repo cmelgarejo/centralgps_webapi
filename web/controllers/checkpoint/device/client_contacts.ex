@@ -34,4 +34,25 @@ defmodule CentralGPSWebAPI.Controllers.Device.ClientContacts do
     end
   end
 
+  def creative_mode_create(conn, params) do
+    try do
+      keys = [ :client_id, :name, :notes, :emails, :phones, :notify, :image_path, :image_bin ]
+      {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
+      params = params
+        |> Map.update(:client_id, nil, &(parse_int(&1)))
+        |> Map.update(:notify,    nil, &(parse_boolean(&1)))
+        |> Map.update(:image_bin, nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
+      {_, result} = fn_chkapi_client_contact_create((Map.drop(params, keys) |> Map.values) ++
+        [ params.client_id, params.name, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
+      {response_code, result} = (if result.status, do: {201, result},
+                                 else: {200, result |> Map.take [:status, :msg]})
+      if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
+        save_image(params.image_path, params.image_bin)
+      json (conn |> put_status response_code), result
+    rescue
+      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+    end
+  end
+
 end

@@ -68,6 +68,12 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Functions do
     {row_count, hd(result)}
   end
 
+  #Venue creative mode
+  def fn_chkapi_client_contact_create(params, filter_keys \\ []) do
+    {row_count, result} = query(cmd_fn_chkapi_client_contact_create, params, filter_keys)
+    {row_count, hd(result)}
+  end
+
   #Lists
   def fn_chkapi_roadmaps(params, filter_keys \\ []) do
     {row_count, result} = query(cmd_fn_chkapi_roadmaps, params, filter_keys)

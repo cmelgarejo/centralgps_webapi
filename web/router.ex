@@ -98,6 +98,8 @@
       post    "/device/record",              Device.Record,   :record
       #Venue creative mode
       post    "/device/venues/create",       Device.Venues,   :creative_mode_create
+      #Client contact creative mode
+      post    "/device/client_contacts/create",       Device.ClientContacts,   :creative_mode_create
       #Mark CRUDs
       post    "/device/mark",                Device.Marks,    :register_mark
       post    "/device/mark_activity",       Device.Marks,    :register_mark_activity

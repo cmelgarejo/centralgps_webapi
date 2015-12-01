@@ -108,7 +108,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_update ([ params._auth_token, params.token,
-        params.client_contact_id, params.notes, params.finished_at ])
+        (if (params.client_contact_id == 0), do: nil, else: params.client_contact_id), params.notes, params.finished_at ])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
