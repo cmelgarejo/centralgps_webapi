@@ -33,17 +33,21 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
 
   def register_mark_activity(conn, params) do
     try do
-      keys = [ :id, :mark_token, :activity_id, :notes, :executed_at, :finished_at ]
+      keys = [ :id, :mark_token, :activity_id, :notes, :executed_at, :finished_at, :private, :pending, :event_at ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:id,           nil, &(parse_int(&1)))
         |> Map.update(:activity_id,  nil, &(parse_int(&1)))
         |> Map.update(:executed_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
+        |> Map.update(:private,      nil, &(parse_boolean(&1)))
+        |> Map.update(:pending,      nil, &(parse_boolean(&1)))
+        |> Map.update(:event_at,     nil, &(parse_datetime(&1)))
         |> Map.update(:position_at,  nil, &(parse_datetime(&1)))
         |> Map.update(:xtra_info,    nil, &(&1))
       {_, result} = fn_chkapi_mark_activity_create ([ params._auth_token, params.id,
-        params.mark_token, params.activity_id, params.notes, params.executed_at, params.finished_at, params.xtra_info ])
+        params.mark_token, params.activity_id, params.notes, params.executed_at,
+        params.finished_at, params.private, params.pending, params.event_at, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
       json (conn |> put_status response_code), result
     rescue
@@ -118,14 +122,18 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
 
   def update_mark_activity(conn, params) do
     try do
-      keys = [ :id, :mark_token, :notes, :finished_at ]
+      keys = [ :id, :mark_token, :notes, :finished_at, :private, :pending, :event_at ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:id,           nil, &(parse_int(&1)))
         |> Map.update(:finished_at,  nil, &(parse_datetime(&1)))
+        |> Map.update(:private,      nil, &(parse_boolean(&1)))
+        |> Map.update(:pending,      nil, &(parse_boolean(&1)))
+        |> Map.update(:event_at,     nil, &(parse_datetime(&1)))
         |> Map.update(:xtra_info,    nil, &(&1))
       {_, result} = fn_chkapi_mark_activity_update ([ params._auth_token, params.id,
-        params.mark_token, params.notes, params.finished_at, params.xtra_info])
+        params.mark_token, params.notes, params.finished_at, params.private,
+        params.pending, params.event_at, params.xtra_info])
       json (conn |> put_status 200), result
     rescue
       e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
