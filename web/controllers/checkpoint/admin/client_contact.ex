@@ -5,14 +5,15 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
 
   def create(conn, params) do
     try do
-      keys = [ :client_id, :name, :notes, :emails, :phones, :notify, :image_path, :image_bin ]
+      keys = [ :client_id, :name, :identity_document, :notes, :emails, :phones, :notify, :image_path, :image_bin ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:client_id, nil, &(parse_int(&1)))
         |> Map.update(:notify,    nil, &(parse_boolean(&1)))
         |> Map.update(:image_bin, nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_client_contact_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.client_id, params.name, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
+        [ params.client_id, params.name, params.notes, params.identity_document,
+          params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
@@ -41,7 +42,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
 
   def update(conn, params) do
     try do
-      keys = [ :client_contact_id, :client_id, :name, :notes, :emails, :phones, :notify, :image_path, :image_bin ]
+      keys = [ :client_contact_id, :client_id, :name, :identity_document, :notes, :emails, :phones, :notify, :image_path, :image_bin ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
@@ -55,7 +56,8 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         if (Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
           save_image(params.image_path, params.image_bin, res.image_path)
         {_, result} = fn_api_client_contact_update((Map.drop(params, keys) |> Map.values) ++ #drop the params first, and leave only the "head" parameters, auth_token, auth_type, app_name, ip, and xtra_info of the caller
-          [ params.client_contact_id, params.client_id, params.name, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
+          [ params.client_contact_id, params.client_id, params.name, params.identity_document,
+            params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       end
       json (conn |> put_status 200), result
     rescue
