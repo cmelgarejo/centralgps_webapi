@@ -48,7 +48,7 @@ defmodule CentralGPS.Repo.Checkpoint.Device.Commands do
   #Client contact creative mode
   #checkpoint.fn_api_venue_create (venue_configuration_id, venue_type_id, client_id, venue_name, venue_code, venue_description, venue_address, venue_image_path, venue_image_bin, venue_lat, venue_lon, venue_detection_radius, venue_active, venue_xtra_info)
   def cmd_fn_chkapi_client_contact_create,
-    do: "SELECT * FROM checkpoint.fn_api_client_contact_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10, $11::boolean, $12, $13::bytea);"
+    do: "SELECT * FROM checkpoint.fn_api_client_contact_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10, $11, $12::boolean, $13, $14::bytea);"
 
   #Lists
   def cmd_fn_chkapi_roadmaps,
