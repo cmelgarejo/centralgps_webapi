@@ -43,7 +43,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.ClientContacts do
         |> Map.update(:notify,    nil, &(parse_boolean(&1)))
         |> Map.update(:image_bin, nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_chkapi_client_contact_create((Map.drop(params, keys) |> Map.values) ++
-        [ params.client_id, params.name, params.notes, params.identity_document, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
+        [ params.client_id, params.name, params.identity_document, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       {response_code, result} = (if result.status, do: {201, result},
                                  else: {200, result |> Map.take [:status, :msg]})
       if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
