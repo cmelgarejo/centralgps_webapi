@@ -20,10 +20,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Record do
         params.bearing, params.accuracy, params.altitude, params.status,
         params.address, params.ip_port, params.position_at, params.xtra_info])
       response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

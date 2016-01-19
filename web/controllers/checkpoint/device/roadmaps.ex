@@ -10,11 +10,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.Roadmaps do
       params = params
         |>  Map.update(:day, nil, &(parse_date(&1)))
       {row_count, result} = fn_chkapi_roadmaps ([ params._auth_token, params.day ])
-      if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
+      if row_count < 1, do: {conn, result} = {(conn |> put_status(204)), []}
       json conn, result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

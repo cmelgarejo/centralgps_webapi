@@ -25,11 +25,11 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
           params.recurs_every, params.start_time, params.end_time, params.public,
           params.active, params.xtra_info ])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
-      json (conn |> put_status response_code), result
+                                 else: {200, result |> Map.take([:status, :msg])})
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -41,10 +41,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_read
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -71,10 +71,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
             params.interval, params.days_of_week, params.months_of_year, params.days_of_month,
             params.recurs_every, params.start_time, params.end_time, params.public,
             params.active, params.xtra_info ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -86,10 +86,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
         |> Map.update(:roadmap_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_delete
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -99,10 +99,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.Roadmap do
       {_, result} = params
         |> Map.values
         |> fn_api_roadmap_list
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

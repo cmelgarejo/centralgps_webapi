@@ -13,11 +13,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
         |> Map.values
         |> fn_api_account_permission_create
         {response_code, result} = (if result.status, do: {201, result},
-                                else: {200, result |> Map.take [:status, :msg]})
-        json (conn |> put_status response_code), result
+                                else: {200, result |> Map.take([:status, :msg])})
+        json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -29,10 +29,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_permission_delete
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -44,11 +44,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account.Permission do
         |> Map.values
         |> fn_api_account_permission_check
         {response_code, result} = (if result.status, do: {200, result},
-                                else: {200, result |> Map.take [:status, :msg]})
-        json (conn |> put_status response_code), result
+                                else: {200, result |> Map.take([:status, :msg])})
+        json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

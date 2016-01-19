@@ -160,8 +160,8 @@ defmodule CentralGPS.Repo.Utilities do
   def error_logger(ex, env, vars \\ []) do
     require Logger
     env = Macro.Env.stacktrace(env) |> hd
-    message = "[#{env |> elem 0}.#{env |> elem 1}]: #{inspect ex}
-    file: #{env |> elem(3) |> hd |> elem (1)}
+    message = "[#{env |> elem(0)}.#{env |> elem(1)}]: #{inspect ex}
+    file: #{env |> elem(3) |> hd |> elem(1)}
     line: #{env |> elem(3) |> tl |> hd |> elem(1)}
     vars: #{inspect vars}"
     Logger.error message
@@ -248,7 +248,7 @@ defmodule CentralGPS.Repo.Utilities do
         table = elem table, 1
         if table.num_rows > 0 do
           result = (for r <- table.rows, do:
-            E.zip((table.columns |> E.map &(S.to_atom &1)), r) |> E.into(%{}))
+            E.zip((table.columns |> E.map(&(S.to_atom &1), r)))|> E.into(%{}))
          { table.num_rows,
            (if (!E.empty?filter), do:
              (for m <- result, do: Map.take(m, filter)), else: result) }
@@ -284,7 +284,7 @@ defmodule CentralGPS.Repo.Utilities do
   end
 
   defp dest_dir(filename), do:
-    Enum.join([priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join "/")], "/")
+    Enum.join([priv_static_path, (String.split(filename, "/") |> Enum.reverse |> tl |> Enum.reverse |> Enum.join("/"))], "/")
 
   @doc """
   Gets a filename, a file (Base64 encoded), and optionally, an old_filename, if exists it will delete it

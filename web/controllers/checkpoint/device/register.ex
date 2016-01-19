@@ -17,11 +17,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.Register do
         |> Enum.concat([ (ip), ("centralgps_webapi"), %{ register: true, request_headers: headers } ])
         |> fn_chkapi_device_register
         {response_code, result} = (if result.status, do: {201, result},
-                          else: {200, result |> Map.take [:status, :msg]})
-        json (conn |> put_status response_code), result
+                          else: {200, result |> Map.take([:status, :msg])})
+        json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

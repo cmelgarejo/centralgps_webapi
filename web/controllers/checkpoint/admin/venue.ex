@@ -22,13 +22,13 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
          params.code, params.description, params.address, params.image_path, params.image_bin,
          params.lat, params.lon, params.detection_radius, params.active, params.xtra_info])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
+                                 else: {200, result |> Map.take([:status, :msg])})
       if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
         save_image(params.image_path, params.image_bin)
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -40,10 +40,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> Map.update(:venue_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_read
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -74,10 +74,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
           params.image_path, params.image_bin, params.lat, params.lon, params.detection_radius,
           params.active, params.xtra_info])
       end
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -89,10 +89,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
         |> Map.update(:venue_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_venue_delete
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -102,10 +102,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Venue do
       {_, result} = params
         |> Map.values
         |> fn_api_venue_list
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 end

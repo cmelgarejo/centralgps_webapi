@@ -16,11 +16,11 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.RoadmapPointVenueForm do
       {_, result} = fn_api_roadmap_point_venue_form_create((Map.drop(params, keys) |> Map.values) ++
         [ params.configuration_id, params.form_id, params.roadmap_point_id, params.venue_id ])
       {response_code, result} = (if result.status, do: {201, result},
-                                   else: {200, result |> Map.take [:status, :msg]})
-        json (conn |> put_status response_code), result
+                                   else: {200, result |> Map.take([:status, :msg])})
+        json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -32,10 +32,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.RoadmapPointVenueForm do
         |> Map.update(:roadmap_point_venue_form_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_point_venue_form_read
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -51,10 +51,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.RoadmapPointVenueForm do
         |> Map.update(:form_id,          nil, &(parse_int(&1)))
       {_, result} = fn_api_roadmap_point_venue_form_update((Map.drop(params, keys) |> Map.values) ++
         [ params.roadmap_point_venue_form_id, params.configuration_id, params.form_id, params.roadmap_point_id, params.venue_id ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -66,10 +66,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.RoadmapPointVenueForm do
         |> Map.update(:roadmap_point_venue_form_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_roadmap_point_venue_form_delete
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -79,10 +79,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.RoadmapPointVenueForm do
       {_, result} = params
         |> Map.values
         |> fn_api_roadmap_point_venue_form_list
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 end

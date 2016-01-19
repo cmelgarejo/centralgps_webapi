@@ -10,11 +10,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       {_, result} = params
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
-        |> fn_api_account_active
-        json (conn |> put_status 200), result
+        |> (fn_api_account_active)
+      json((conn |> put_status(200)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json((conn |> put_status(400)), %{status: false, msg: e.message})
+      e in Exception -> json((conn |> put_status(500)), %{status: false, msg: e.message})
     end
   end
 
@@ -38,13 +38,13 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
           params.language_template_id, params.name, params.image_path, params.image_bin,
           params.timezone, params.xtra_info ])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
+                                 else: {200, result |> Map.take([:status, :msg])})
       if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
         save_image(params.image_path, params.image_bin)
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json((conn |> put_status(400)), %{status: false, msg: e.message})
+      e in Exception -> json((conn |> put_status(500)), %{status: false, msg: e.message})
     end
   end
 
@@ -56,10 +56,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_read
-        json (conn |> put_status 200), result
+        json((conn |> put_status(200)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json((conn |> put_status(400)), %{status: false, msg: e.message})
+      e in Exception -> json((conn |> put_status(500)), %{status: false, msg: e.message})
     end
   end
 
@@ -71,10 +71,11 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:account_id,           nil, &(parse_int(&1)))
+        |> Map.update(:login_password,       nil, &(if (&1 == "" || &1 == " "), do: nil, else: &1))
         |> Map.update(:language_template_id, nil, &(parse_int(&1)))
         |> Map.update(:timezone,             nil, &(parse_float(&1)))
         |> Map.update(:dob,                  nil, &(parse_datetime(&1)))
-        |> Map.update(:image_bin,            nil, &(Base.url_decode64!(&1)))
+        |> Map.update(:image_bin,            nil, &(if (&1 == nil), do: nil, else: Base.url_decode64!(&1)))
       {_, result} = fn_api_account_read((Map.drop(params, keys) |> Map.values) ++
         [ params.account_id, params.account_type ])#get the record and check first
       if result.status do
@@ -87,10 +88,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
            params.language_template_id, params.name, params.image_path, params.image_bin,
            params.timezone, params.xtra_info ])
       end
-      json (conn |> put_status 200), result
+      json((conn |> put_status(200)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json((conn |> put_status(400)), %{status: false, msg: e.message})
+      e in Exception -> json((conn |> put_status(500)), %{status: false, msg: e.message})
     end
   end
 
@@ -102,10 +103,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
         |> Map.update(:account_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_account_delete
-        json (conn |> put_status 200), result
+        json((conn |> put_status(200)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json((conn |> put_status(400)), %{status: false, msg: e.message})
+      e in Exception -> json((conn |> put_status(500)), %{status: false, msg: e.message})
     end
   end
 
@@ -115,10 +116,10 @@ defmodule CentralGPSWebAPI.Controllers.Security.Account do
       {_, result} = params
         |> Map.values
         |> fn_api_account_list
-        json (conn |> put_status 200), result
+        json((conn |> put_status(200)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json((conn |> put_status(400)), %{status: false, msg: e.message})
+      e in Exception -> json((conn |> put_status(500)), %{status: false, msg: e.message})
     end
   end
 end

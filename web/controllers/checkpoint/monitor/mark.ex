@@ -14,10 +14,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Mark do
         |> Map.update(:stop_at,  nil, &(parse_datetime(&1)))
         |> Map.values
         |> fn_api_monitor_mark_list
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

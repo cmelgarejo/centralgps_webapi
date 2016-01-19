@@ -10,11 +10,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.Forms do
       |> Map.values #trim just the value we want from the request (auth_token)
       |> Enum.concat([ nil, "A"]) #The form to sync is ALL, and no sync_token
       |> fn_chkapi_form_list
-      if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
+      if row_count < 1, do: {conn, result} = {(conn |> put_status(204)), []}
       json conn, result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -26,11 +26,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.Forms do
       |> Map.values #get: auth and sync tokens
       |> Enum.concat(["U"]) #and UPDATE form
       |> fn_chkapi_form_list
-      if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
+      if row_count < 1, do: {conn, result} = {(conn |> put_status(204)), []}
       json conn, result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

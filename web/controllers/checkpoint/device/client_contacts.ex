@@ -10,11 +10,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.ClientContacts do
         |> Map.values #trim just the value we want from the request (auth_token)
         |> Enum.concat([ nil, "A"]) #The form to sync is ALL, and no sync_token
         |> fn_chkapi_client_contact_list
-      if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
+      if row_count < 1, do: {conn, result} = {(conn |> put_status(204)), []}
       json conn, result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -26,11 +26,11 @@ defmodule CentralGPSWebAPI.Controllers.Device.ClientContacts do
         |> Map.values #get: auth and sync tokens
         |> Enum.concat(["U"]) #and UPDATE form
         |> fn_chkapi_client_contact_list
-      if row_count < 1, do: {conn, result} = {(conn |> put_status 204), []}
+      if row_count < 1, do: {conn, result} = {(conn |> put_status(204)), []}
       json conn, result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -45,13 +45,13 @@ defmodule CentralGPSWebAPI.Controllers.Device.ClientContacts do
       {_, result} = fn_chkapi_client_contact_create((Map.drop(params, keys) |> Map.values) ++
         [ params.client_id, params.name, params.identity_document, params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
+                                 else: {200, result |> Map.take([:status, :msg])})
       if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
         save_image(params.image_path, params.image_bin)
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

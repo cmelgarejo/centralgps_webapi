@@ -24,10 +24,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         params.altitude, params.notes, params.address, params.client_contact_id,
         params.executed_at, params.finished_at, params.position_at])
       response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -49,10 +49,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         params.mark_token, params.activity_id, params.notes, params.executed_at,
         params.finished_at, params.private, params.pending, params.event_at, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -71,10 +71,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         params.id, params.mark_activity_id, params.mark_token, params.measure_unit_id,
         params.item_id, params.quantity, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -92,14 +92,14 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         params.id, params.mark_activity_id, params.mark_token, params.image_path,
         params.image_bin, params.image_created_at ])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
+                                 else: {200, result |> Map.take([:status, :msg])})
       if (response_code == 201 && Map.has_key?(params, :image_bin)), do:
         save_image(params.image_path, params.image_bin)
       response_code = if result.status, do: 201, else: 200
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -113,10 +113,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_update ([ params._auth_token, params.token,
         (if (params.client_contact_id == 0), do: nil, else: params.client_contact_id), params.notes, params.finished_at ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -134,10 +134,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       {_, result} = fn_chkapi_mark_activity_update ([ params._auth_token, params.id,
         params.mark_token, params.notes, params.finished_at, params.private,
         params.pending, params.event_at, params.xtra_info])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -153,10 +153,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:xtra_info,        nil, &(&1))
       {_, result} = fn_chkapi_mark_activity_item_update ([ params._auth_token,
         params.id, params.mark_token, params.measure_unit_id, params.item_id, params.quantity, params.xtra_info ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -165,10 +165,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       keys = [ :token ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = fn_chkapi_mark_create ([ params._auth_token, params.token ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -179,10 +179,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
       params = params
         |> Map.update(:id,  nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_delete ([ params._auth_token, params.id, params.mark_token ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -195,10 +195,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:mark_activity_id, nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_item_delete ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -211,10 +211,10 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:mark_activity_id, nil, &(parse_int(&1)))
       {_, result} = fn_chkapi_mark_activity_image_delete ([ params._auth_token,
         params.id, params.mark_activity_id, params.mark_token ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 

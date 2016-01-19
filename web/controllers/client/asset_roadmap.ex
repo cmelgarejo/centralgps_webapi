@@ -14,11 +14,11 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, result} = fn_api_asset_roadmap_create((Map.drop(params, keys) |> Map.values) ++
         [ params.asset_id, params.roadmap_id, params.emails, params.phones, params.alert ])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
-      json (conn |> put_status response_code), result
+                                 else: {200, result |> Map.take([:status, :msg])})
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -32,10 +32,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, result} =
         fn_api_asset_roadmap_read (Map.drop(params, keys) |> Map.values) ++
           [ params.asset_id, params.roadmap_id ]
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -49,10 +49,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
         |> Map.update(:alert,             nil, &(parse_boolean(&1)))
       {_, result} = fn_api_asset_roadmap_update((Map.drop(params, keys) |> Map.values) ++
         [ params.asset_id, params.roadmap_id, params.emails, params.phones, params.alert ])
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -66,10 +66,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, result} =
         fn_api_asset_roadmap_delete (Map.drop(params, keys) |> Map.values) ++
           [ params.asset_id, params.roadmap_id ]
-        json (conn |> put_status 200), result
+        json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -80,10 +80,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, result} =
         fn_api_asset_roadmap_list (Map.drop(params, keys) |> Map.values) ++
           [ parse_int(params.asset_id), nil ]
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -94,10 +94,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, result} =
         fn_api_asset_roadmap_list (Map.drop(params, keys) |> Map.values) ++
           [ nil, parse_int(params.roadmap_id) ]
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -107,10 +107,10 @@ defmodule CentralGPSWebAPI.Controllers.Client.AssetRoadmap do
       {_, result} = params
         |> Map.values
         |> fn_api_asset_roadmap_all_list
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 end

@@ -15,13 +15,13 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         [ params.client_id, params.name, params.notes, params.identity_document,
           params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       {response_code, result} = (if result.status, do: {201, result},
-                                 else: {200, result |> Map.take [:status, :msg]})
+                                 else: {200, result |> Map.take([:status, :msg])})
       if (response_code == 201 && Map.has_key?(params, :image_bin) && params.image_bin != nil), do:
         save_image(params.image_path, params.image_bin)
-      json (conn |> put_status response_code), result
+      json((conn |> put_status(response_code)), result)
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -33,10 +33,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_read
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -59,10 +59,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
           [ params.client_contact_id, params.client_id, params.name, params.identity_document,
             params.notes, params.emails, params.phones, params.notify, params.image_path, params.image_bin ])
       end
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -74,10 +74,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         |> Map.update(:client_contact_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_delete
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 
@@ -89,10 +89,10 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.ClientContact do
         |> Map.update(:client_id, nil, &(parse_int(&1)))
         |> Map.values
         |> fn_api_client_contact_list
-      json (conn |> put_status 200), result
+      json (conn |> put_status(200)), result
     rescue
-      e in ArgumentError -> json (conn |> put_status 400), %{status: false, msg: e.message}
-      e in Exception -> json (conn |> put_status 500), %{status: false, msg: e.message}
+      e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
+      e in Exception -> json (conn |> put_status(500)), %{status: false, msg: e.message}
     end
   end
 end
