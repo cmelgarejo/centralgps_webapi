@@ -7,7 +7,7 @@ use Mix.Config
 # You should also configure the url host to something
 # meaningful, we use this information when generating URLs.
 config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
-  http: [host: "api.centralgps.net", port: 4000], #port: {:system, "PORT"} && 4000],
+  http: [port: 4000], #port: {:system, "PORT"} && 4000],
   url:  [host: "api.centralgps.net"],
   debug_errors: false,
   root: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.2.0",
