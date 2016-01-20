@@ -10,7 +10,7 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   http: [port: 4000], #port: {:system, "PORT"} && 4000],
   url:  [host: "api.centralgps.net"],
   debug_errors: false,
-  root: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.2.0",
+  root: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.2.1",
   cache_static_manifest: "priv/static/manifest.json"
 # ## SSL Support
 #

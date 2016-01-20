@@ -20,7 +20,7 @@ defmodule CentralGPSWebAPI.Mixfile do
   end
 
   def application do
-    apps = [ :cowboy, :ecto, :httpoison, :logger, :logger_file_backend, :phoenix, :phoenix_html, :phoenix_ecto, :postgrex ]
+    apps = [ :conform, :cowboy, :ecto, :httpoison, :logger, :logger_file_backend, :phoenix, :phoenix_html, :phoenix_ecto, :postgrex ]
     dev_apps = Mix.env == :dev && [ :reprise ] || []
     [ mod: {CentralGPSWebAPI, []}, applications: dev_apps ++ apps ]
   end
@@ -33,6 +33,7 @@ defmodule CentralGPSWebAPI.Mixfile do
       #{:cowboy,              github: "ninenines/cowboy", override: true}
       {:cowboy,               "~> 1.0"},
       {:exrm,                 github: "bitwalker/exrm"},
+      {:conform,                 github: "bitwalker/conform"},
       {:httpoison,            github: "edgurgel/httpoison"},
       {:logger_file_backend,  github: "onkel-dirtus/logger_file_backend"},
       {:phoenix,              github: "phoenixframework/phoenix", override: true},

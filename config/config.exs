@@ -10,8 +10,8 @@ use Mix.Config
 config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
   #url: [host: "api.centralgps.net"],
   # Uncomment on prod server & delete the next line of the same config
-  #root: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.2.0",
-  root: Path.expand("..", __DIR__),
+  root: "/usr/bin/central_g_p_s_web_a_p_i/lib/central_g_p_s_web_a_p_i-1.2.1",
+  #root: Path.expand("..", __DIR__),
   secret_key_base: "aLIFKvszPTOoXoAYQ3RL9qdUfmhEyEesWFMi5OwQd80sME26l3tyrZzb9digCZXj",
   debug_errors: false,
   code_reloader: false,
@@ -42,12 +42,12 @@ config :central_g_p_s_web_a_p_i, CentralGPSWebAPI.Endpoint,
     path: "logs/warn.log",
     level: :warn
 
-  config :logger,
-      backends: [:console,
-      {LoggerFileBackend, :error_log},
-      {LoggerFileBackend, :warn_log},
-      {LoggerFileBackend, :info_log},
-      {LoggerFileBackend, :debug_log}]
+  # config :logger,
+  #     backends: [:console,
+  #     {LoggerFileBackend, :error_log},
+  #     {LoggerFileBackend, :warn_log},
+  #     {LoggerFileBackend, :info_log},
+  #     {LoggerFileBackend, :debug_log}]
 
   # Import environment specific config. This must remain at the bottom
   # of this file so it overrides the configuration defined above.

@@ -1,6 +1,6 @@
 %{"bbmustache": {:hex, :bbmustache, "1.0.3"},
   "certifi": {:hex, :certifi, "0.3.0"},
-  "conform": {:hex, :conform, "0.16.0"},
+  "conform": {:git, "https://github.com/bitwalker/conform.git", "b011ed5c6db42306d7ae86e3f9922235c35893b7", []},
   "connection": {:hex, :connection, "1.0.2"},
   "cowboy": {:hex, :cowboy, "1.0.4"},
   "cowlib": {:hex, :cowlib, "1.0.2"},
