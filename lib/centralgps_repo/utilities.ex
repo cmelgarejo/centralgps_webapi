@@ -248,7 +248,7 @@ defmodule CentralGPS.Repo.Utilities do
         table = elem table, 1
         if table.num_rows > 0 do
           result = (for r <- table.rows, do:
-            E.zip((table.columns |> E.map(&(S.to_atom &1), r)))|> E.into(%{}))
+            E.zip((table.columns |> E.map(&(S.to_atom &1))), r) |> E.into(%{}))
          { table.num_rows,
            (if (!E.empty?filter), do:
              (for m <- result, do: Map.take(m, filter)), else: result) }
