@@ -20,7 +20,7 @@ defmodule CentralGPSWebAPI.Mixfile do
   end
 
   def application do
-    apps = [ :conform, :cowboy, :ecto, :httpoison, :logger, :logger_file_backend, :phoenix, :phoenix_html, :phoenix_ecto, :postgrex ]
+    apps = [ :connection, :cowboy, :ecto, :httpoison, :logger, :logger_file_backend, :phoenix, :phoenix_html, :phoenix_ecto, :postgrex ]
     dev_apps = Mix.env == :dev && [ :reprise ] || []
     [ mod: {CentralGPSWebAPI, []}, applications: dev_apps ++ apps ]
   end
@@ -33,7 +33,7 @@ defmodule CentralGPSWebAPI.Mixfile do
       #{:cowboy,              github: "ninenines/cowboy", override: true}
       {:cowboy,               "~> 1.0"},
       {:exrm,                 github: "bitwalker/exrm"},
-      {:conform,                 github: "bitwalker/conform"},
+      #{:conform,              github: "bitwalker/conform", only: :dev}, #only good to create the onfig schema and .conf file
       {:httpoison,            github: "edgurgel/httpoison"},
       {:logger_file_backend,  github: "onkel-dirtus/logger_file_backend"},
       {:phoenix,              github: "phoenixframework/phoenix", override: true},
@@ -42,8 +42,8 @@ defmodule CentralGPSWebAPI.Mixfile do
       #{:phoenix_html,        "~> 1.4"},
       {:phoenix_ecto,         github: "phoenixframework/phoenix_ecto"},
       #{:phoenix_ecto,        "~> 0.8"},
-      #{:postgrex,            github: "ericmj/postgrex", override: true}, #head version kills ecto for now. (05/10/2015)
-      {:postgrex,             ">= 0.0.0"},
+      #{:postgrex,             github: "ericmj/postgrex", override: true}, #Still no fix for Postgrex.Connection (19/1/2016)
+      {:postgrex,             ">= 0.0.0"}, #0.10.0 Still uses :connection fix on apps list
       {:reprise,              github: "herenowcoder/reprise", only: :dev}
     ]
   end
