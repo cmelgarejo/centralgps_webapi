@@ -2,7 +2,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
   use CentralGPSWebAPI.Web, :controller
   import CentralGPS.Repo.Utilities
   import CentralGPS.Repo.Checkpoint.Device.Functions
-  import CentralGPS.Repo.Checkpoint.Client.Functions
+  import CentralGPS.Repo.Checkpoint.VenueType.Functions
 
   def venue_types(conn, params) do
     try do
@@ -96,7 +96,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Venues do
         |> Map.update(:lat,              nil, &(parse_float(&1)))
         |> Map.update(:lon,              nil, &(parse_float(&1)))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
-      {response_code, result} = fn_api_client_read((Map.drop(params, keys) |> Map.values) ++ [params.client_id])
+      {response_code, result} = fn_api_venue_type_read (Map.drop(params, keys) |> Map.values) ++ [params.venue_type_id]
       if (result.status) do
         res = objectify_map result.res
         {_, result} = fn_chkapi_venue_create((Map.drop(params, keys) |> Map.values) ++
