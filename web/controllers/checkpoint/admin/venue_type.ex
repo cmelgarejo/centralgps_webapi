@@ -8,7 +8,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.VenueType do
       keys = [ :configuration_id, :description, :image_path, :image_bin ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
-        |> Map.update(:activity_configuration_id, nil, &(parse_int(&1)))
+        |> Map.update(:configuration_id, nil, &(parse_int(&1)))
         |> Map.update(:image_bin,        nil, &(if (&1 != nil), do: Base.url_decode64!(&1), else: nil))
       {_, result} = fn_api_venue_type_create((Map.drop(params, keys) |> Map.values) ++
         [ params.configuration_id, params.description, params.image_path, params.image_bin])
