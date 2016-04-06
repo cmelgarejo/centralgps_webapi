@@ -58,7 +58,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
 
   def register_mark_activity_item(conn, params) do
     try do
-      keys = [ :id, :mark_activity_id, :mark_token, :measure_unit_id, :item_id, :quantity ]
+      keys = [ :id, :mark_activity_id, :mark_token, :item_id, :measure_unit_id, :quantity, :xtra_info ]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:id,               nil, &(parse_int(&1)))
@@ -68,8 +68,8 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:quantity,         nil, &(parse_float(&1)))
         |> Map.update(:xtra_info,        nil, &(&1))
       {_, result} = fn_chkapi_mark_activity_item_create ([ params._auth_token,
-        params.id, params.mark_activity_id, params.mark_token, params.measure_unit_id,
-        params.item_id, params.quantity, params.xtra_info ])
+        params.id, params.mark_activity_id, params.mark_token, params.item_id,
+        params.measure_unit_id, params.quantity, params.xtra_info ])
       response_code = if result.status, do: 201, else: 200
       json((conn |> put_status(response_code)), result)
     rescue
@@ -143,7 +143,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
 
   def update_mark_activity_item(conn, params) do
     try do
-      keys = [ :id, :mark_token, :measure_unit_id, :item_id, :quantity ]
+      keys = [ :id, :mark_token, :item_id, :measure_unit_id, :quantity, :xtra_info]
       {_, params} = checkpoint_auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:id,               nil, &(parse_int(&1)))
@@ -152,7 +152,7 @@ defmodule CentralGPSWebAPI.Controllers.Device.Marks do
         |> Map.update(:quantity,         nil, &(parse_float(&1)))
         |> Map.update(:xtra_info,        nil, &(&1))
       {_, result} = fn_chkapi_mark_activity_item_update ([ params._auth_token,
-        params.id, params.mark_token, params.measure_unit_id, params.item_id, params.quantity, params.xtra_info ])
+        params.id, params.mark_token, params.item_id, params.measure_unit_id, params.quantity, params.xtra_info ])
       json (conn |> put_status(200)), result
     rescue
       e in ArgumentError -> json (conn |> put_status(400)), %{status: false, msg: e.message}
