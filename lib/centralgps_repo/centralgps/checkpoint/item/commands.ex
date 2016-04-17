@@ -2,7 +2,7 @@ defmodule CentralGPS.Repo.Checkpoint.Item.Commands do
   #DB Definition: checkpoint.fn_api_item_create (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, item_configuration_id, item_name, item_description, item_notes, item_stock) RETURNS common.return_type_generic
   #Input JSON: [ item_configuration_id, item_name, item_description, item_xtra_info ]
   def cmd_fn_api_item_create,
-    do: "SELECT * FROM checkpoint.fn_api_item_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10, $11, $12::double precision, $13::double precision, $14::double precision, $15::jsonb);"
+    do: "SELECT * FROM checkpoint.fn_api_item_create($1, $2, $3, $4, $5::jsonb, $6::bigint, $7, $8, $9, $10, $11::double precision, $12::double precision, $13::double precision, $14::jsonb);"
 
   #DB Definition: checkpoint.fn_api_item_read (_auth_token, _auth_type, _the_app_name, _the_ip_port, _xtra_info, item_id) RETURNS common.return_type_generic
   #Input JSON:[ :item_id ]
