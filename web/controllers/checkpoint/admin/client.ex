@@ -21,7 +21,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Client do
   end
 
   def read(conn, params) do
-    try dopush
+    try do
       keys = [ :client_id ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       {_, result} = params
