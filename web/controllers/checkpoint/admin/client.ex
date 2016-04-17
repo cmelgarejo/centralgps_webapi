@@ -5,7 +5,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Client do
 
   def create(conn, params) do
     try do
-      keys = [ :configuration_id, :name, :description, :xtra_info ]
+      keys = [ :configuration_id, :name, :code, :description, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:configuration_id, nil, &(parse_int(&1)))
@@ -37,7 +37,7 @@ defmodule CentralGPSWebAPI.Controllers.Checkpoint.Client do
 
   def update(conn, params) do
     try do
-      keys = [ :client_id, :configuration_id, :name, :description, :xtra_info ]
+      keys = [ :client_id, :configuration_id, :name, :code, :description, :xtra_info ]
       {_, params} = auth_proc_headers_and_params(conn.req_headers, params, keys)
       params = params
         |> Map.update(:client_id, nil, &(parse_int(&1)))
