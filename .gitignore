@@ -4,7 +4,8 @@
 /deps
 /*.ez
 /logs
+.svn
 # Generate on crash by the VM
 erl_crash.dump
 #Mix lock file
-#mix.lock
+mix.lock
